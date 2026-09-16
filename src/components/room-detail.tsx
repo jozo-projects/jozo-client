@@ -16,7 +16,7 @@ interface RoomDetailProps {
 
 const RoomDetail: React.FC<RoomDetailProps> = ({ roomData }) => {
   return (
-    <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-6">
+    <div className="glass-surface mx-auto max-w-4xl rounded-2xl p-6">
       {/* Room Name */}
       <h1 className="text-3xl font-bold mb-4">{roomData.name}</h1>
 

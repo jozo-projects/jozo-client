@@ -22,7 +22,7 @@ export default function NotFound() {
         </div>
 
         {/* Error Message */}
-        <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-2xl p-8 mb-8">
+        <div className="glass-surface mb-8 rounded-3xl p-8">
           <h2 className="text-3xl font-bold text-foreground mb-4">
             Oops! Trang không tồn tại
           </h2>
@@ -43,13 +43,13 @@ export default function NotFound() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
               <Link
                 href="/medium"
-                className="bg-white border-2 border-primary text-primary font-semibold py-3 px-6 rounded-xl hover:bg-accent transition-all duration-300"
+                className="glass-control text-primary font-semibold py-3 px-6 rounded-xl transition-all duration-300"
               >
                 Đặt S-Box (1-5 người)
               </Link>
               <Link
                 href="/large"
-                className="bg-white border-2 border-primary text-primary font-semibold py-3 px-6 rounded-xl hover:bg-accent transition-all duration-300"
+                className="glass-control text-primary font-semibold py-3 px-6 rounded-xl transition-all duration-300"
               >
                 Đặt L-Box
               </Link>

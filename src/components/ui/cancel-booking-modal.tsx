@@ -26,7 +26,7 @@ export default function CancelBookingModal({
 
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50 bg-primary/40">
-      <div className="bg-white rounded-lg p-6 w-full max-w-md mx-4">
+      <div className="glass-overlay relative mx-4 w-full max-w-md rounded-2xl p-6">
         <div className="text-center">
           <div className="bg-red-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
             <svg

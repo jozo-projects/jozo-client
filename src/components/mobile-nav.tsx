@@ -59,7 +59,7 @@ export default function MobileMenu({
     <div className="flex sm:hidden">
       <button
         onClick={() => setMenuOpen(!menuOpen)}
-        className={`group relative inline-flex h-11 w-11 items-center justify-center rounded-xl border border-primary/20 bg-background/80 text-primary shadow-sm backdrop-blur transition-all duration-300 ${
+        className={`glass-control group relative inline-flex h-11 w-11 items-center justify-center rounded-xl text-primary transition-all duration-300 ${
           menuOpen ? "border-primary/50 bg-primary/10" : "hover:bg-primary/5"
         }`}
         aria-label="Toggle Menu"
@@ -113,7 +113,7 @@ export default function MobileMenu({
             />
             <div
               id="mobile-drawer-menu"
-              className={`fixed inset-y-0 right-0 z-[10001] w-[min(86vw,22rem)] border-l border-primary/15 bg-background/95 text-primary shadow-[0_24px_60px_hsl(var(--foreground)/0.2)] backdrop-blur-xl transform ${
+              className={`glass-overlay fixed inset-y-0 right-0 z-[10001] w-[min(86vw,22rem)] text-primary shadow-[0_24px_60px_hsl(var(--foreground)/0.2)] transform ${
                 menuOpen ? "translate-x-0" : "translate-x-full"
               } transition-transform duration-300 ease-out`}
             >
@@ -131,7 +131,7 @@ export default function MobileMenu({
                       type="button"
                       onClick={() => setMenuOpen(false)}
                       aria-label="Close Menu"
-                      className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-primary/20 text-primary/80 transition hover:bg-primary/10 hover:text-primary"
+                      className="glass-control inline-flex h-9 w-9 items-center justify-center rounded-lg text-primary/80 transition hover:text-primary"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -156,7 +156,7 @@ export default function MobileMenu({
                     <Link
                       href="/profile"
                       onClick={() => setMenuOpen(false)}
-                      className="mb-4 flex items-center gap-3 rounded-2xl border border-primary/15 bg-primary/5 px-4 py-3 transition hover:bg-primary/10"
+                      className="glass-control mb-4 flex items-center gap-3 rounded-2xl px-4 py-3 transition"
                     >
                       <div className="grid h-10 w-10 place-items-center rounded-full bg-primary text-sm font-bold text-primary-foreground">
                         {(displayName[0] || "U").toUpperCase()}

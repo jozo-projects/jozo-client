@@ -14,7 +14,7 @@ export default function PromotionSection({
   if (!promotions.length) return null;
 
   return (
-    <section className="mb-10 sm:mb-16 border border-border bg-gradient-to-b from-card to-muted/60 p-4 sm:p-8 md:p-10 rounded-xl sm:rounded-2xl shadow-sm">
+    <section className="glass-surface mb-10 rounded-2xl p-4 sm:mb-16 sm:p-8 md:p-10">
       <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between mb-4 sm:mb-6">
         <div>
           <Typography

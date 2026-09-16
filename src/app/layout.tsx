@@ -91,7 +91,7 @@ export default function RootLayout({
         </main>
 
         {/* Footer */}
-        <div className="relative z-10">
+        <div className="relative z-0">
           <TwoColumnFooter />
         </div>
         <Toaster />

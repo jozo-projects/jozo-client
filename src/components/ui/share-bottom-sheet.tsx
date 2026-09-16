@@ -191,7 +191,7 @@ export const ShareBottomSheet = ({
 
       {/* Bottom Sheet */}
       <div
-        className={`relative w-full bg-white rounded-t-3xl shadow-2xl transform transition-transform duration-300 ${
+        className={`glass-overlay relative w-full rounded-t-3xl transform transition-transform duration-300 ${
           isOpen ? "translate-y-0" : "translate-y-full"
         }`}
       >

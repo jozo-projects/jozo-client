@@ -78,41 +78,183 @@ body {
   }
 }
 
+@layer components {
+  /* iOS 26-inspired Liquid Glass web approximation. */
+  .glass-surface,
+  .glass-control,
+  .glass-overlay {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    border: 1px solid hsl(var(--glass-border));
+    background:
+      linear-gradient(135deg, hsl(var(--glass-highlight) / 0.28), transparent 38%),
+      linear-gradient(110deg, hsl(var(--glass-tint) / 0.12), transparent 56%),
+      hsl(var(--glass-bg) / 0.42);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(175%) contrast(108%);
+    backdrop-filter: blur(var(--glass-blur)) saturate(175%) contrast(108%);
+    box-shadow:
+      inset 0 1px 0 hsl(var(--glass-highlight) / 0.72),
+      inset 1px 0 0 hsl(var(--glass-highlight) / 0.18),
+      inset 0 -1px 0 hsl(var(--glass-shadow) / 0.12),
+      0 14px 36px hsl(var(--glass-shadow) / 0.12);
+  }
+
+  /* A soft refraction layer and a narrow specular edge create thickness. */
+  .glass-surface::before,
+  .glass-control::before,
+  .glass-overlay::before {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    background:
+      radial-gradient(ellipse 80% 60% at 12% -10%, hsl(var(--glass-highlight) / 0.5), transparent 58%),
+      radial-gradient(ellipse 60% 80% at 105% 110%, hsl(var(--glass-tint) / 0.16), transparent 64%),
+      linear-gradient(105deg, transparent 28%, hsl(var(--glass-highlight) / 0.1) 48%, transparent 64%);
+    content: "";
+    pointer-events: none;
+  }
+
+  .glass-surface::after,
+  .glass-control::after,
+  .glass-overlay::after {
+    position: absolute;
+    inset: 1px;
+    z-index: 1;
+    border: 1px solid hsl(var(--glass-highlight) / 0.16);
+    border-radius: inherit;
+    content: "";
+    pointer-events: none;
+  }
+
+  .glass-surface[data-glass-variant="subtle"] {
+    background: hsl(var(--glass-bg) / 0.24);
+    box-shadow: inset 0 1px 0 hsl(var(--glass-highlight) / 0.4);
+  }
+
+  .glass-surface[data-glass-variant="elevated"],
+  .glass-overlay {
+    background:
+      linear-gradient(135deg, hsl(var(--glass-highlight) / 0.34), transparent 42%),
+      linear-gradient(110deg, hsl(var(--glass-tint) / 0.18), transparent 58%),
+      hsl(var(--glass-bg-strong) / 0.58);
+    -webkit-backdrop-filter: blur(30px) saturate(185%) contrast(108%);
+    backdrop-filter: blur(30px) saturate(185%) contrast(108%);
+    box-shadow:
+      inset 0 1px 0 hsl(var(--glass-highlight) / 0.8),
+      inset 0 -1px 0 hsl(var(--glass-shadow) / 0.14),
+      0 24px 64px hsl(var(--glass-shadow) / 0.2);
+  }
+
+  .glass-control {
+    border-color: hsl(var(--glass-control-border));
+    background:
+      linear-gradient(135deg, hsl(var(--glass-highlight) / 0.3), transparent 52%),
+      hsl(var(--glass-control-bg) / 0.42);
+    box-shadow:
+      inset 0 1px 0 hsl(var(--glass-highlight) / 0.58),
+      0 4px 14px hsl(var(--glass-shadow) / 0.08);
+    transition: background-color 180ms ease, border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+  }
+
+  .glass-control:hover {
+    background:
+      linear-gradient(135deg, hsl(var(--glass-highlight) / 0.42), transparent 52%),
+      hsl(var(--glass-control-bg) / 0.58);
+    border-color: hsl(var(--glass-control-border-hover));
+    box-shadow:
+      inset 0 1px 0 hsl(var(--glass-highlight) / 0.68),
+      0 6px 18px hsl(var(--glass-shadow) / 0.12);
+  }
+
+  .glass-control:active {
+    transform: scale(0.985);
+    box-shadow: inset 0 1px 2px hsl(var(--glass-shadow) / 0.16);
+  }
+
+  .glass-control:focus-visible,
+  .glass-surface :is(input, select, textarea):focus-visible {
+    outline: none;
+    border-color: hsl(var(--glass-focus));
+    box-shadow: 0 0 0 3px hsl(var(--glass-focus) / 0.2), inset 0 1px 0 hsl(var(--glass-highlight) / 0.5);
+  }
+
+  @supports not ((backdrop-filter: blur(1px))) {
+    .glass-surface,
+    .glass-control,
+    .glass-overlay {
+      background: hsl(var(--glass-bg-strong) / 0.94);
+    }
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .glass-surface,
+  .glass-control,
+  .glass-overlay {
+    background: hsl(var(--glass-bg-strong) / 0.98);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glass-control {
+    transition: none;
+  }
+
+  .glass-control:active {
+    transform: none;
+  }
+}
+
 @layer base {
   :root {
-    /* Nền đỏ nhạt — đậm hơn trước một chút; chữ tông đỏ */
-    --background: 0 52% 86%;
-    --foreground: 0 82% 28%;
-    --card: 0 0% 100%;
-    --card-foreground: 0 82% 28%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 82% 28%;
-    --primary: 0 91% 40%;
+    /* Medium-dark ruby ambient foundation: red remains JOZO's accent and light source. */
+    --background: 0 26% 12%;
+    --foreground: 0 20% 96%;
+    --card: 0 24% 17%;
+    --card-foreground: 0 20% 96%;
+    --popover: 0 24% 17%;
+    --popover-foreground: 0 20% 96%;
+    --primary: 0 84% 58%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 0 42% 91%;
-    --secondary-foreground: 0 82% 28%;
-    --muted: 0 46% 84%;
-    --muted-foreground: 0 55% 34%;
-    --accent: 44 54% 91%;
-    --accent-foreground: 0 82% 28%;
-    --destructive: 0 78% 48%;
+    --secondary: 0 22% 23%;
+    --secondary-foreground: 0 20% 94%;
+    --muted: 0 20% 22%;
+    --muted-foreground: 0 14% 76%;
+    --accent: 0 42% 28%;
+    --accent-foreground: 0 20% 96%;
+    --destructive: 0 72% 48%;
     --destructive-foreground: 0 0% 100%;
-    --border: 0 38% 78%;
-    --input: 0 0% 100%;
-    --ring: 0 91% 40%;
-    --chart-1: 0 91% 40%;
-    --chart-2: 0 72% 45%;
-    --chart-3: 0 55% 36%;
-    --chart-4: 15 75% 48%;
-    --chart-5: 350 55% 42%;
+    --border: 0 22% 34%;
+    --input: 0 24% 21%;
+    --ring: 0 84% 58%;
+    --chart-1: 0 84% 58%;
+    --chart-2: 8 78% 54%;
+    --chart-3: 350 68% 52%;
+    --chart-4: 20 78% 55%;
+    --chart-5: 330 58% 58%;
     --radius: 0.5rem;
-    --lightpink: 0 91% 40%;
-    --cyan: 0 65% 42%;
-    --beige: 44 54% 91%;
-    --brand-muted: 0 44% 88%;
-    --brand-muted-border: 0 40% 76%;
-    --brand-hover: 0 91% 32%;
-    --brand-soft: 0 48% 90%;
+    --lightpink: 0 84% 58%;
+    --cyan: 8 78% 54%;
+    --beige: 0 35% 24%;
+    --brand-muted: 0 24% 23%;
+    --brand-muted-border: 0 24% 36%;
+    --brand-hover: 0 84% 48%;
+    --brand-soft: 0 30% 27%;
+    --glass-bg: 0 26% 24%;
+    --glass-bg-strong: 0 28% 16%;
+    --glass-tint: 0 84% 58%;
+    --glass-highlight: 0 0% 100%;
+    --glass-border: 0 35% 96% / 0.28;
+    --glass-control-border: 0 30% 70% / 0.48;
+    --glass-control-border-hover: 0 72% 72% / 0.72;
+    --glass-control-bg: 0 25% 27%;
+    --glass-shadow: 0 30% 5%;
+    --glass-focus: 0 84% 62%;
+    --glass-blur: 26px;
   }
   .dark {
     --background: 0 35% 8%;
@@ -146,6 +288,17 @@ body {
     --brand-muted-border: 0 18% 26%;
     --brand-hover: 0 85% 42%;
     --brand-soft: 0 25% 18%;
+    --glass-bg: 0 28% 15%;
+    --glass-bg-strong: 0 30% 11%;
+    --glass-tint: 0 78% 48%;
+    --glass-highlight: 0 40% 96%;
+    --glass-border: 0 35% 92% / 0.2;
+    --glass-control-border: 0 18% 30%;
+    --glass-control-border-hover: 0 45% 48%;
+    --glass-control-bg: 0 25% 17%;
+    --glass-shadow: 0 30% 3%;
+    --glass-focus: 0 78% 55%;
+    --glass-blur: 22px;
   }
 }
 
@@ -159,6 +312,12 @@ body {
   body {
     min-height: 100vh;
     background-color: hsl(var(--background));
+    background-image:
+      radial-gradient(circle at 8% 4%, hsl(var(--primary) / 0.28), transparent 28rem),
+      radial-gradient(circle at 92% 18%, hsl(350 72% 48% / 0.2), transparent 24rem),
+      radial-gradient(circle at 50% 100%, hsl(15 78% 44% / 0.16), transparent 30rem),
+      linear-gradient(145deg, hsl(0 26% 13%), hsl(350 26% 10%) 52%, hsl(0 30% 14%));
+    background-attachment: fixed;
     color: hsl(var(--foreground));
   }
 }

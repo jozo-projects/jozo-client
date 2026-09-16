@@ -50,7 +50,7 @@ export default function RoomCard({
   const displayPrice = minPrice || 0;
 
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow group">
+    <div className="glass-surface group rounded-2xl overflow-hidden transition-transform duration-300 hover:-translate-y-0.5">
       {/* Carousel — không bọc Link để vuốt/chuyển ảnh không bị navigate */}
       <div className="relative z-10">
         <RoomImageCarousel
@@ -65,7 +65,7 @@ export default function RoomCard({
       <Link href={bookingUrl} className="block p-4 sm:p-5">
         <div className="mb-2">
           <span
-            className={`inline-block text-xs px-2.5 py-1 rounded-md ${badgeClass}`}
+            className={`glass-control inline-block text-xs px-2.5 py-1 rounded-full ${badgeClass}`}
           >
             {typeBadge}
           </span>
@@ -95,7 +95,7 @@ export default function RoomCard({
           )}
         </div>
 
-        <span className="w-full bg-primary hover:bg-brand-hover text-primary-foreground font-medium py-2 px-4 rounded-lg transition-colors animate-buttonheartbeat flex items-center justify-center">
+        <span className="glass-control w-full border-primary/20 bg-primary/80 text-primary-foreground hover:bg-primary font-medium py-2 px-4 rounded-full transition-colors animate-buttonheartbeat flex items-center justify-center">
           <Calendar className="w-4 h-4 mr-2" />
           Đặt ngay
         </span>

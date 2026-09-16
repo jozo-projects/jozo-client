@@ -105,8 +105,8 @@ export default function UserMenu({
         aria-expanded={open}
         aria-haspopup="menu"
         className={cn(
-          "flex max-w-[180px] items-center gap-2 rounded-full border border-primary/20",
-          "bg-background/80 px-2.5 py-1.5 text-sm text-primary shadow-sm backdrop-blur",
+          "glass-control flex max-w-[180px] items-center gap-2 rounded-full",
+          "px-2.5 py-1.5 text-sm text-primary",
           "transition hover:border-primary/40 hover:bg-primary/5",
           open && "border-primary/45 bg-primary/10",
         )}
@@ -147,8 +147,8 @@ export default function UserMenu({
         <div
           role="menu"
           className={cn(
-            "absolute right-0 z-[10002] mt-2 w-72 overflow-hidden rounded-2xl",
-            "border border-primary/15 bg-background/95 text-primary shadow-[0_20px_50px_hsl(var(--foreground)/0.18)] backdrop-blur-xl",
+          "glass-overlay absolute right-0 z-[10002] mt-2 w-72 overflow-hidden rounded-2xl",
+          "text-primary shadow-[0_20px_50px_hsl(var(--foreground)/0.18)]",
           )}
         >
           <div className="border-b border-primary/10 bg-primary/5 px-4 py-4">

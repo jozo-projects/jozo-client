@@ -103,9 +103,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
           inputMode={type === "number" ? "numeric" : props.inputMode}
           aria-invalid={Boolean(error)}
           className={cn(
-            "w-full border rounded px-3 py-2 text-foreground outline-none",
-            "transition-all duration-200 ease-in-out",
-            "focus:ring-2 focus:ring-primary focus:border-primary",
+            "glass-control w-full rounded px-3 py-2 text-foreground outline-none",
             error && [
               "border-red-500",
               "animate-shake-vertical",

@@ -60,7 +60,13 @@ export async function ensureIndexes() {
     const db = client.db("jozo");
     const collection = db.collection("users");
 
-    await collection.createIndex({ phone_number: 1 }, { unique: true });
+    await collection.createIndex(
+      { phone_number: 1 },
+      {
+        unique: true,
+        partialFilterExpression: { phone_number: { $type: "string" } },
+      },
+    );
 
     await collection.createIndex(
       { email: 1 },

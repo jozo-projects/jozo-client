@@ -8,7 +8,13 @@ import {
   MessageCircleMore,
   X,
 } from "lucide-react";
-import { useCallback, useState, type ElementType } from "react";
+import { createPortal } from "react-dom";
+import {
+  useCallback,
+  useState,
+  useSyncExternalStore,
+  type ElementType,
+} from "react";
 
 type ContactAction = {
   label: string;
@@ -25,10 +31,15 @@ const PHONE_LABEL = "Gọi";
 const PHONE_HREF = "tel:0359660934";
 
 const buttonBaseClass =
-  "flex items-center gap-2 rounded-full border border-border bg-card px-4 py-2 text-sm font-semibold text-foreground shadow-lg backdrop-blur transition hover:-translate-y-0.5 hover:shadow-xl hover:bg-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary";
+  "glass-control flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold text-foreground transition hover:-translate-y-0.5 hover:bg-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary";
 
 const FloatingContactButtons = () => {
   const [open, setOpen] = useState(true);
+  const mounted = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false,
+  );
 
   const handleBookingClick = useCallback(() => {
     const el = document.getElementById("booking");
@@ -48,7 +59,7 @@ const FloatingContactButtons = () => {
     { label: "TikTok", href: TIKTOK_URL, icon: Music2 },
   ];
 
-  return (
+  const floatingContent = (
     <div className="fixed right-3 bottom-4 sm:right-4 sm:bottom-6 z-50 flex flex-col items-end gap-2 sm:gap-3">
       <div
         className={`flex flex-col items-end gap-3 transition-all ${
@@ -84,13 +95,16 @@ const FloatingContactButtons = () => {
       <button
         type="button"
         onClick={toggleOpen}
-        className="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg transition hover:-translate-y-0.5 hover:shadow-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+        className="glass-control flex h-12 w-12 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg transition hover:-translate-y-0.5 hover:shadow-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
         aria-label={open ? "Đóng liên hệ" : "Mở liên hệ"}
       >
         {open ? <X className="h-6 w-6" /> : <MessageCircleMore className="h-6 w-6" />}
       </button>
     </div>
   );
+
+  if (!mounted) return null;
+  return createPortal(floatingContent, document.body);
 };
 
 export default FloatingContactButtons;

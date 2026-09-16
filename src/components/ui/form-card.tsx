@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 
 export const formCardClassName =
-  "bg-white rounded-lg shadow-md border border-red-100 p-4 sm:p-6";
+  "glass-surface rounded-lg p-4 sm:p-6";
 
 type FormCardProps = React.ComponentProps<"div">;
 

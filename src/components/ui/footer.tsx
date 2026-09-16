@@ -27,7 +27,7 @@ const TwoColumnFooter = () => {
   return (
     <footer
       aria-labelledby="footer-heading"
-      className="relative w-full overflow-hidden border-t border-primary/20 bg-background/45 pt-2 text-primary shadow-[0_10px_35px_hsl(var(--primary)/0.12)] backdrop-blur-xl"
+      className="glass-surface relative w-full overflow-hidden rounded-t-[2rem] border-x-0 border-b-0 pt-2 text-primary"
     >
       <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
         <GlowLine

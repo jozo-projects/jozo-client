@@ -22,7 +22,7 @@ export default function PromotionCard({
 
   return (
     <Link href={`/promotions/${promotion.slug}`} className="block h-full">
-      <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 group border border-red-100 h-full flex flex-col">
+      <div className="glass-surface group overflow-hidden rounded-2xl h-full flex flex-col transition-transform duration-300 hover:-translate-y-1">
         {/* Image Section */}
         <div className="relative h-48 w-full overflow-hidden">
           <Image
@@ -39,7 +39,7 @@ export default function PromotionCard({
               promotion.slug === "dang-ky-thanh-vien" ||
               promotion.slug === "jozo-comeback-tang-2-gio"
                 ? "bg-primary text-primary-foreground"
-                : "bg-white/90 text-primary"
+                : "glass-control text-primary"
             }`}
           >
             {promotion.slug === "dang-ky-thanh-vien"

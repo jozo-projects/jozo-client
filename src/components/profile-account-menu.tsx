@@ -83,7 +83,7 @@ export function ProfileAccountMenu({
 
   return (
     <>
-      <div className="rounded-2xl border border-gray-100 bg-white shadow-sm overflow-hidden">
+      <div className="glass-surface overflow-hidden rounded-2xl shadow-sm">
         <div className="px-5 py-4 border-b border-gray-100">
           <h2 className="text-base font-semibold text-gray-900">
             Tài khoản
@@ -172,7 +172,7 @@ export function ProfileAccountMenu({
             role="dialog"
             aria-modal="true"
             aria-labelledby="profile-details-title"
-            className={`relative w-full sm:max-w-md bg-white rounded-t-3xl sm:rounded-2xl shadow-2xl transform transition-transform duration-300 max-h-[85vh] flex flex-col ${
+            className={`glass-overlay relative w-full sm:max-w-md rounded-t-3xl sm:rounded-2xl shadow-2xl transform transition-transform duration-300 max-h-[85vh] flex flex-col ${
               detailsOpen
                 ? "translate-y-0 sm:scale-100"
                 : "translate-y-full sm:translate-y-0 sm:scale-95"

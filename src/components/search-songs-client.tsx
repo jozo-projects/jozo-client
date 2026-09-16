@@ -159,7 +159,7 @@ export default function SearchSongsClient({
       <h1 className="text-3xl font-bold mb-6">Tìm kiếm video</h1>
 
       {roomScheduleId && (
-        <div className="mb-6 bg-gradient-to-r from-background to-red-50/40 border border-red-100 rounded-lg p-4">
+        <div className="glass-surface mb-6 rounded-2xl p-4">
           <div className="flex items-center gap-3">
             <div className="bg-red-100 rounded-full p-2">
               <svg
@@ -244,7 +244,7 @@ export default function SearchSongsClient({
           <p>{error}</p>
         </div>
       ) : loading ? (
-        <div className="bg-white rounded-lg shadow-lg p-6 text-center">
+        <div className="glass-surface rounded-2xl p-6 text-center">
           <JozoLoaderWithText
             text="Đang tìm kiếm video..."
             size="lg"
@@ -262,7 +262,7 @@ export default function SearchSongsClient({
             {data.videos.map((video) => (
               <div
                 key={video.video_id}
-                className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
+                className="glass-surface overflow-hidden rounded-2xl transition-transform duration-300 hover:-translate-y-0.5"
               >
                 <div className="relative">
                   <Image
@@ -420,7 +420,7 @@ export default function SearchSongsClient({
             }
           }}
         >
-          <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[80vh] flex flex-col">
+          <div className="glass-overlay flex max-h-[80vh] w-full max-w-2xl flex-col rounded-2xl">
             {/* Modal Header */}
             <div className="flex items-center justify-between p-6 border-b border-primary/12">
               <div className="flex items-center gap-3">

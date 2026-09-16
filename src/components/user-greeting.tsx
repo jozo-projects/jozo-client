@@ -11,7 +11,7 @@ export default async function UserGreeting() {
 
   return (
     <div className="w-full mb-6">
-      <div className="flex items-center gap-3 bg-white/80 backdrop-blur rounded-xl shadow p-3 border border-pink-100">
+      <div className="glass-control flex items-center gap-3 rounded-2xl p-3">
         {avatarUrl ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img

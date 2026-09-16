@@ -53,7 +53,7 @@ export default async function HomeRoomSection() {
   return (
     <section
       id="booking"
-      className="mb-10 sm:mb-16 border border-border bg-gradient-to-b from-card to-muted/60 p-4 sm:p-8 md:p-10 rounded-xl sm:rounded-2xl shadow-sm"
+      className="glass-surface rounded-2xl border-border/70 p-4 sm:p-8 md:p-10 mb-10 sm:mb-16"
     >
       <div className="max-w-6xl mx-auto">
         <MobileSnapSlider

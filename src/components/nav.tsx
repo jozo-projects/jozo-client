@@ -53,7 +53,7 @@ export default function Nav({
   return (
     <div className="fixed top-0 left-0 right-0 z-40">
       <nav
-        className={`relative mx-auto border-b border-primary/20 bg-background/45 text-primary shadow-[0_10px_35px_hsl(var(--primary)/0.12)] backdrop-blur-xl transition-all duration-500 ease-in-out ${
+        className={`glass-surface relative mx-auto rounded-b-2xl border-t-0 border-primary/20 text-primary shadow-[0_10px_35px_hsl(var(--primary)/0.12)] transition-all duration-500 ease-in-out ${
           showHeader ? "translate-y-0" : "-translate-y-full"
         }`}
       >

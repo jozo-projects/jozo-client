@@ -34,8 +34,7 @@ export function RecruitmentSuccessModal({
       role="presentation"
       onClick={onClose}
     >
-      <div
-        className="relative w-full max-w-md rounded-xl border border-primary/15 bg-white p-6 shadow-lg md:p-8"
+      <div className="glass-overlay relative w-full max-w-md rounded-xl p-6 shadow-lg md:p-8"
         role="dialog"
         aria-modal="true"
         aria-labelledby="recruitment-success-title"

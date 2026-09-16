@@ -79,10 +79,10 @@ export default function SignalParticlesBackground({
 
           const highlightCheck = Math.sin(column * 12.34) * Math.cos(row * 56.78);
           const color: [number, number, number] = highlightCheck > 0.98
-            ? [0.23, 0.51, 0.9]
+            ? [1, 0.24, 0.28]
             : highlightCheck < -0.98
-              ? [0.55, 0.36, 0.95]
-              : [0.58, 0.64, 0.72];
+              ? [0.95, 0.42, 0.48]
+              : [0.82, 0.58, 0.62];
           const alpha = Math.min(0.7, (signal - 0.1) * 0.85) * baseAlpha;
           const radius = highlightCheck > 0.98 || highlightCheck < -0.98 ? 1.9 : 1.35;
 
@@ -126,7 +126,7 @@ export default function SignalParticlesBackground({
   }, [opacity, spacing, speed]);
 
   return (
-    <div ref={hostRef} className={cn("pointer-events-none bg-[#0a0a0a]", className)} aria-hidden="true">
+    <div ref={hostRef} className={cn("pointer-events-none", className)} aria-hidden="true">
       <canvas ref={canvasRef} className="block h-full w-full" />
     </div>
   );
