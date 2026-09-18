@@ -79,6 +79,16 @@ body {
 }
 
 @layer components {
+  /* Native select menus can inherit the OS dark color scheme even on white controls. */
+  .booking-form-select {
+    color-scheme: light;
+  }
+
+  .booking-form-select option {
+    background-color: #ffffff;
+    color: #111827;
+  }
+
   /* iOS 26-inspired Liquid Glass web approximation. */
   .glass-surface,
   .glass-control,

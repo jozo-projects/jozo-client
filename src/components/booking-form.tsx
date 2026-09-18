@@ -18,7 +18,7 @@ import { Price } from "@/types/price";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
 import { vi } from "date-fns/locale";
-import { Phone, User, ArrowLeft, Upload, X } from "lucide-react";
+import { Phone, User, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -340,10 +340,6 @@ export default function BookingForm({ roomType, prices }: BookingFormProps) {
   const [selectedDuration, setSelectedDuration] = useState<number>(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isClient, setIsClient] = useState(false);
-  const [photoConsent, setPhotoConsent] = useState(false);
-  const [photoFiles, setPhotoFiles] = useState<File[]>([]);
-  const [photoPreviews, setPhotoPreviews] = useState<string[]>([]);
-  const [photoError, setPhotoError] = useState<string>("");
 
   // Modal states
   const [showConfirmModal, setShowConfirmModal] = useState(false);
@@ -532,18 +528,24 @@ export default function BookingForm({ roomType, prices }: BookingFormProps) {
         const startTimeISO = createISOString(selectedDate, selectedStartTime);
         const endTimeISO = createISOString(selectedDate, endTime);
 
-        const formData = new FormData();
-        formData.append("customerName", data.customerName);
-        formData.append("customerPhone", data.customerPhone);
-        formData.append("roomType", data.roomType);
-        formData.append("startTime", startTimeISO);
-        formData.append("endTime", endTimeISO);
-        formData.append("note", buildBookingNote(data.activityType, data.note) || "");
-        formData.append("photoConsent", String(photoConsent));
-        if (photoConsent) photoFiles.forEach((file) => formData.append("photos", file));
+        // Tạm ẩn photoConsent/photos vì BE chưa hỗ trợ multipart.
+        const bookingData: BookingRequest = {
+          customerName: data.customerName,
+          customerPhone: data.customerPhone,
+          roomType: data.roomType,
+          startTime: startTimeISO,
+          endTime: endTimeISO,
+          note: buildBookingNote(data.activityType, data.note),
+        };
 
         const apiUrl = createApiEndpoint("/bookings/online");
-        const response = await fetch(apiUrl, { method: "POST", body: formData });
+        const response = await fetch(apiUrl, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(bookingData),
+        });
 
         const result = await response.json();
 
@@ -750,11 +752,17 @@ export default function BookingForm({ roomType, prices }: BookingFormProps) {
                 </label>
                 <select
                   {...register("activityType")}
-                  className="w-full border rounded px-3 py-2 text-foreground outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+                  className="booking-form-select w-full rounded border border-primary/20 bg-white px-3 py-2 text-gray-900 outline-none focus:border-primary focus:ring-2 focus:ring-primary disabled:cursor-not-allowed disabled:bg-gray-100 disabled:text-gray-500"
                 >
-                  <option value="">Chọn dịch vụ</option>
+                  <option value="" className="bg-white text-gray-900">
+                    Chọn dịch vụ
+                  </option>
                   {ACTIVITY_OPTIONS.map((opt) => (
-                    <option key={opt.value} value={opt.value}>
+                    <option
+                      key={opt.value}
+                      value={opt.value}
+                      className="bg-white text-gray-900"
+                    >
                       {opt.label}
                     </option>
                   ))}
@@ -766,40 +774,6 @@ export default function BookingForm({ roomType, prices }: BookingFormProps) {
                 )}
               </div>
             )}
-
-            <div className="rounded-lg border border-primary/20 p-4 space-y-3">
-              <label className="flex items-center gap-3 text-primary cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={photoConsent}
-                  onChange={(event) => {
-                    setPhotoConsent(event.target.checked);
-                    if (!event.target.checked) { setPhotoFiles([]); setPhotoPreviews([]); }
-                  }}
-                  className="h-4 w-4"
-                />
-                <span className="font-medium">Cho phép hiển thị hình ảnh trên TV</span>
-              </label>
-              <p className="text-sm text-muted-foreground">Ảnh được ẩn mặc định. Staff chỉ hiển thị khi khách đã tới.</p>
-              {photoConsent && (
-                <div className="space-y-3">
-                  <label className="group flex min-h-36 cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-primary/30 bg-primary/5 p-4 text-center transition hover:border-primary hover:bg-primary/10">
-                    {photoPreviews[0] ? (
-                      <div className="relative w-full max-w-xs">
-                        <img src={photoPreviews[0]} alt="Ảnh đã chọn" className="h-40 w-full rounded-lg object-cover shadow-sm" />
-                        <span className="absolute bottom-2 left-2 rounded bg-black/60 px-2 py-1 text-xs text-white">Bấm để đổi ảnh</span>
-                      </div>
-                    ) : (
-                      <><Upload className="mb-2 h-8 w-8 text-primary" /><span className="font-medium text-primary">Chọn ảnh để hiển thị</span><span className="mt-1 text-xs text-muted-foreground">JPG, PNG hoặc WEBP · tối đa 10 MB</span></>
-                    )}
-                    <input type="file" accept="image/jpeg,image/png,image/webp" className="hidden" onChange={(event) => { const file = event.target.files?.[0]; if (file && file.size > 10 * 1024 * 1024) { setPhotoFiles([]); setPhotoPreviews([]); setPhotoError("Ảnh quá lớn. Vui lòng chọn ảnh nhỏ hơn 10 MB."); return; } setPhotoError(""); const files = file ? [file] : []; setPhotoFiles(files); setPhotoPreviews(files.map((item) => URL.createObjectURL(item))); }} />
-                  </label>
-                  {photoPreviews[0] && <button type="button" onClick={() => { setPhotoFiles([]); setPhotoPreviews([]); }} className="inline-flex items-center gap-1 text-sm text-red-600 hover:text-red-700"><X className="h-4 w-4" /> Xóa ảnh</button>}
-                  {photoError && <p className="text-sm text-red-600">{photoError}</p>}
-                  <p className="text-xs text-muted-foreground">Ảnh được ẩn mặc định. Staff chỉ hiển thị khi khách đã tới.</p>
-                </div>
-              )}
-            </div>
 
             <Input
               label="Ghi chú"
@@ -883,14 +857,20 @@ export default function BookingForm({ roomType, prices }: BookingFormProps) {
                       shouldTouch: true,
                     });
                   }}
-                  className="w-full border rounded px-3 py-2 text-foreground outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+                  className="booking-form-select w-full rounded border border-primary/20 bg-white px-3 py-2 text-gray-900 outline-none focus:border-primary focus:ring-2 focus:ring-primary disabled:cursor-not-allowed disabled:bg-gray-100 disabled:text-gray-500"
                   disabled={!isClient || !selectedDate}
                 >
-                  <option value="">Chọn giờ bắt đầu</option>
+                  <option value="" className="bg-white text-gray-900">
+                    Chọn giờ bắt đầu
+                  </option>
                   {isClient &&
                     selectedDate &&
                     availableTimes.map((time) => (
-                      <option key={time} value={time}>
+                      <option
+                        key={time}
+                        value={time}
+                        className="bg-white text-gray-900"
+                      >
                         {time}
                       </option>
                     ))}
@@ -922,10 +902,14 @@ export default function BookingForm({ roomType, prices }: BookingFormProps) {
                       const duration = parseFloat(e.target.value);
                       setSelectedDuration(duration);
                     }}
-                    className="w-full border rounded px-3 py-2 text-foreground outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+                    className="booking-form-select w-full rounded border border-primary/20 bg-white px-3 py-2 text-gray-900 outline-none focus:border-primary focus:ring-2 focus:ring-primary disabled:cursor-not-allowed disabled:bg-gray-100 disabled:text-gray-500"
                   >
                     {durationOptions.map((option) => (
-                      <option key={option.value} value={option.value}>
+                      <option
+                        key={option.value}
+                        value={option.value}
+                        className="bg-white text-gray-900"
+                      >
                         {option.label}
                       </option>
                     ))}
