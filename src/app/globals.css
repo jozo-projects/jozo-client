@@ -90,11 +90,7 @@ body {
 }
 
 @layer components {
-  /* Native select menus can inherit the OS dark color scheme even on white controls. */
-  .booking-form-select {
-    color-scheme: light;
-  }
-
+  /* Native select menus keep a light option list; the closed control follows glass. */
   .booking-form-select option {
     background-color: #ffffff;
     color: #111827;
@@ -119,6 +115,7 @@ body {
       inset 1px 0 0 hsl(var(--glass-highlight) / 0.18),
       inset 0 -1px 0 hsl(var(--glass-shadow) / 0.12),
       0 14px 36px hsl(var(--glass-shadow) / 0.12);
+    color: hsl(var(--foreground));
   }
 
   /* A soft refraction layer and a narrow specular edge create thickness. */
@@ -194,6 +191,46 @@ body {
     box-shadow: inset 0 1px 2px hsl(var(--glass-shadow) / 0.16);
   }
 
+  .page-title {
+    @apply text-2xl font-bold tracking-tight text-foreground sm:text-3xl;
+  }
+
+  .page-lede {
+    @apply mt-2 text-sm leading-relaxed text-foreground/75 sm:text-base;
+  }
+
+  .section-title {
+    @apply text-xl font-semibold tracking-tight text-foreground sm:text-2xl;
+  }
+
+  .section-lede {
+    @apply mt-2 text-sm leading-relaxed text-foreground/75;
+  }
+
+  .card-title {
+    @apply text-base font-semibold tracking-tight text-foreground;
+  }
+
+  .body-copy {
+    @apply text-sm leading-relaxed text-foreground/80;
+  }
+
+  .meta-copy {
+    @apply text-xs leading-relaxed text-foreground/65;
+  }
+
+  .back-link {
+    @apply mb-6 inline-flex items-center text-sm font-medium text-foreground/80 transition-colors hover:text-foreground;
+  }
+
+  .back-link svg {
+    @apply mr-2 h-4 w-4 shrink-0;
+  }
+
+  .text-link {
+    @apply font-semibold text-primary hover:underline;
+  }
+
   .glass-control:focus-visible,
   .glass-surface :is(input, select, textarea):focus-visible {
     outline: none;
@@ -207,6 +244,29 @@ body {
     .glass-overlay {
       background: hsl(var(--glass-bg-strong) / 0.94);
     }
+  }
+
+  /*
+   * Theme tokens assume a dark canvas (--foreground is near-white).
+   * Solid white panels would otherwise inherit invisible text.
+   */
+  .bg-white:not([class*="bg-white/"]),
+  .surface-paper {
+    --foreground: 0 0% 12%;
+    --heading: 0 0% 10%;
+    --muted-foreground: 0 0% 32%;
+    --card-foreground: 0 0% 12%;
+    color: hsl(var(--foreground));
+  }
+
+  /* Dark / inverted islands inside a white panel keep light ink. */
+  .bg-white:not([class*="bg-white/"])
+    :is(.text-white, [class*="text-white/"], .text-primary-foreground),
+  .surface-paper :is(.text-white, [class*="text-white/"], .text-primary-foreground) {
+    --foreground: 0 20% 96%;
+    --heading: 0 12% 88%;
+    --muted-foreground: 0 14% 76%;
+    --card-foreground: 0 20% 96%;
   }
 }
 
@@ -327,6 +387,7 @@ body {
 
 @layer base {
   /* Headings should anchor the page; reserve red for actions and links. */
+  h1[class*="text-primary"],
   h2[class*="text-primary"],
   h3[class*="text-primary"],
   h4[class*="text-primary"] {

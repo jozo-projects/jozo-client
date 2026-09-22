@@ -308,13 +308,13 @@ function BookingSearchContent() {
         ></div>
       </div>
 
-      <div className="mx-auto max-w-6xl w-full relative z-10 py-8 sm:py-12 md:py-20">
+      <div className="mx-auto w-full max-w-3xl py-2">
         {/* Header */}
-        <div className="text-center mb-8 sm:mb-12">
-          <h1 className="font-bold text-primary mb-3 text-xl sm:text-2xl">
+        <div className="mb-8 text-center">
+          <h1 className="page-title">
             Tra cứu đặt box
           </h1>
-          <p className="text-base sm:text-xl text-primary/70 max-w-2xl mx-auto leading-relaxed">
+          <p className="page-lede mx-auto max-w-2xl">
             Nhập số điện thoại để tra cứu thông tin đặt box
           </p>
         </div>
@@ -335,7 +335,7 @@ function BookingSearchContent() {
                   }
                 }}
                 maxLength={10}
-                className="h-14 text-lg border-2 border-primary/12 rounded-xl focus:border-primary focus:ring-4 focus:ring-brand-soft transition-all duration-300 hover:border-primary/18"
+                className="h-11 flex-1 text-sm"
                 onKeyDown={(e) => e.key === "Enter" && handleSearch()}
               />
             </div>
@@ -343,7 +343,7 @@ function BookingSearchContent() {
               onClick={handleSearch}
               disabled={loading}
               type="button"
-              className="h-14 px-10 bg-primary animate-buttonheartbeat text-primary-foreground font-semibold rounded-xl transition-all duration-1000 transform hover:scale-105 hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center gap-3"
+              className="flex h-11 items-center gap-2 rounded-xl px-6"
             >
               {loading ? (
                 <>
@@ -372,23 +372,21 @@ function BookingSearchContent() {
           </div>
 
           {error && (
-            <div className="mt-6 p-4 bg-red-50/80 backdrop-blur-sm border border-red-200 rounded-xl animate-in slide-in-from-top-2 duration-300">
-              <div className="flex items-center gap-3">
-                <svg
-                  className="w-5 h-5 text-red-500 flex-shrink-0"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-                <p className="text-red-700 font-medium">{error}</p>
-              </div>
+            <div className="mt-6 flex items-center gap-3 rounded-xl border border-red-400/30 bg-red-500/10 p-4">
+              <svg
+                className="h-5 w-5 shrink-0 text-red-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+              <p className="font-medium text-red-300">{error}</p>
             </div>
           )}
         </FormCard>
@@ -410,8 +408,8 @@ function BookingSearchContent() {
                     onClick={() => handleTabChange(tab.key as TabType)}
                     className={`relative flex-shrink-0 py-3 px-2 sm:py-4 sm:px-4 lg:px-6 font-semibold text-xs sm:text-sm rounded-xl transition-all duration-300 transform hover:scale-105 whitespace-nowrap ${
                       activeTab === tab.key
-                        ? "bg-white text-primary shadow-lg border border-border"
-                        : "text-primary/70 hover:text-foreground hover:bg-white/50"
+                        ? "glass-control text-foreground"
+                        : "text-foreground/75 hover:text-foreground hover:bg-white/5"
                     }`}
                   >
                     <span className="flex items-center justify-center gap-1 sm:gap-2">
@@ -690,7 +688,7 @@ function BookingSearchContent() {
       {/* Detail Modal */}
       {showDetailModal && selectedBooking && (
         <div className="fixed inset-0 bg-primary/45 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+          <div className="glass-overlay rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             {/* Modal Header */}
             <div className="bg-gradient-to-r from-primary to-red-700 text-primary-foreground p-6 rounded-t-3xl">
               <div className="flex items-center justify-between">
@@ -865,7 +863,7 @@ function BookingSearchContent() {
       {/* Cancel Confirmation Modal */}
       {showCancelModal && bookingToCancel && (
         <div className="fixed inset-0 bg-primary/45 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl shadow-2xl max-w-md w-full">
+          <div className="glass-overlay rounded-3xl max-w-md w-full">
             {/* Modal Header */}
             <div className="bg-gradient-to-r from-red-500 to-red-600 text-white p-6 rounded-t-3xl">
               <div className="flex items-center justify-between">

@@ -50,7 +50,7 @@ export function ProfileAccountMenu({
           label: "Thông tin chi tiết",
           description: "Xem hồ sơ cá nhân",
           icon: UserCircle,
-          iconBg: "bg-pink-100 text-pink-600",
+          iconBg: "bg-primary/15 text-primary",
           onClick: () => setDetailsOpen(true),
         },
         {
@@ -58,7 +58,7 @@ export function ProfileAccountMenu({
           label: "Đổi mật khẩu",
           description: "Cập nhật mật khẩu đăng nhập",
           icon: KeyRound,
-          iconBg: "bg-violet-100 text-violet-600",
+          iconBg: "bg-primary/15 text-primary",
           href: "/profile/change-password",
         },
         {
@@ -66,7 +66,7 @@ export function ProfileAccountMenu({
           label: "Về trang chủ",
           description: "Quay lại trang đặt phòng",
           icon: Home,
-          iconBg: "bg-sky-100 text-sky-600",
+          iconBg: "bg-primary/15 text-primary",
           href: "/",
         },
       ]
@@ -76,7 +76,7 @@ export function ProfileAccountMenu({
           label: "Về trang chủ",
           description: "Quay lại trang đặt phòng",
           icon: Home,
-          iconBg: "bg-sky-100 text-sky-600",
+          iconBg: "bg-primary/15 text-primary",
           href: "/",
         },
       ];
@@ -84,26 +84,26 @@ export function ProfileAccountMenu({
   return (
     <>
       <div className="glass-surface overflow-hidden rounded-2xl shadow-sm">
-        <div className="px-5 py-4 border-b border-gray-100">
-          <h2 className="text-base font-semibold text-gray-900">
+        <div className="px-5 py-4 border-b border-white/10">
+          <h2 className="text-base font-semibold text-foreground">
             Tài khoản
           </h2>
-          <p className="text-xs text-gray-500 mt-0.5">
+          <p className="text-xs text-foreground/70 mt-0.5">
             Quản lý thông tin và cài đặt cá nhân
           </p>
         </div>
 
         {!isAuthed && (
-          <div className="px-5 py-4 text-sm text-gray-600">
+          <div className="px-5 py-4 text-sm text-foreground/80">
             Chưa đăng nhập.{" "}
-            <Link href="/login" className="font-semibold text-pink-600 hover:underline">
+            <Link href="/login" className="text-link">
               Đăng nhập
             </Link>{" "}
             để xem thông tin chi tiết.
           </div>
         )}
 
-        <ul className="divide-y divide-gray-100">
+        <ul className="divide-y divide-white/10">
           {menuItems.map((item) => {
             const Icon = item.icon;
             const content = (
@@ -114,14 +114,14 @@ export function ProfileAccountMenu({
                   <Icon className="h-5 w-5" />
                 </div>
                 <div className="flex-1 min-w-0 text-left">
-                  <p className="text-sm font-semibold text-gray-900">
+                  <p className="text-sm font-semibold text-foreground">
                     {item.label}
                   </p>
-                  <p className="text-xs text-gray-500 truncate">
+                  <p className="text-xs text-foreground/65 truncate">
                     {item.description}
                   </p>
                 </div>
-                <ChevronRight className="h-4 w-4 shrink-0 text-gray-400" />
+                <ChevronRight className="h-4 w-4 shrink-0 text-foreground/40" />
               </>
             );
 
@@ -130,7 +130,7 @@ export function ProfileAccountMenu({
                 {item.href ? (
                   <Link
                     href={item.href}
-                    className="flex items-center gap-3 px-5 py-3.5 hover:bg-gray-50 transition-colors"
+                    className="flex items-center gap-3 px-5 py-3.5 hover:bg-white/5 transition-colors"
                   >
                     {content}
                   </Link>
@@ -138,7 +138,7 @@ export function ProfileAccountMenu({
                   <button
                     type="button"
                     onClick={item.onClick}
-                    className="flex w-full items-center gap-3 px-5 py-3.5 hover:bg-gray-50 transition-colors"
+                    className="flex w-full items-center gap-3 px-5 py-3.5 hover:bg-white/5 transition-colors"
                   >
                     {content}
                   </button>
@@ -149,8 +149,8 @@ export function ProfileAccountMenu({
         </ul>
 
         {isAuthed && (
-          <div className="border-t border-gray-100 p-4">
-            <LogoutButton className="w-full h-11 rounded-xl bg-red-50 text-red-600 hover:bg-red-100 border border-red-100 shadow-none font-semibold">
+          <div className="border-t border-white/10 p-4">
+            <LogoutButton className="glass-control h-11 w-full rounded-xl font-semibold text-red-300 shadow-none hover:text-red-200">
               <LogOut className="h-4 w-4 mr-2" />
               Đăng xuất
             </LogoutButton>
@@ -179,25 +179,25 @@ export function ProfileAccountMenu({
             }`}
           >
             <div className="flex justify-center pt-3 pb-1 sm:hidden">
-              <div className="w-10 h-1 rounded-full bg-gray-200" />
+              <div className="w-10 h-1 rounded-full bg-white/25" />
             </div>
 
-            <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100 shrink-0">
+            <div className="flex items-center justify-between px-5 py-4 border-b border-white/10 shrink-0">
               <div>
                 <h3
                   id="profile-details-title"
-                  className="text-lg font-semibold text-gray-900"
+                  className="text-lg font-semibold text-foreground"
                 >
                   Thông tin chi tiết
                 </h3>
-                <p className="text-xs text-gray-500 mt-0.5">
+                <p className="text-xs text-foreground/65 mt-0.5">
                   Hồ sơ cá nhân của bạn
                 </p>
               </div>
               <button
                 type="button"
                 onClick={() => setDetailsOpen(false)}
-                className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors"
+                className="glass-control flex h-8 w-8 items-center justify-center rounded-full text-foreground"
                 aria-label="Đóng"
               >
                 <X className="h-4 w-4" />
@@ -208,12 +208,12 @@ export function ProfileAccountMenu({
               {profileRows.map((row) => (
                 <div
                   key={row.label}
-                  className="rounded-xl bg-gray-50 px-4 py-3"
+                  className="glass-control rounded-xl px-4 py-3"
                 >
-                  <p className="text-xs font-medium text-gray-500 mb-1">
+                  <p className="text-xs font-medium text-foreground/65 mb-1">
                     {row.label}
                   </p>
-                  <p className="text-sm font-semibold text-gray-900 break-all">
+                  <p className="text-sm font-semibold text-foreground break-all">
                     {row.value || "—"}
                   </p>
                 </div>

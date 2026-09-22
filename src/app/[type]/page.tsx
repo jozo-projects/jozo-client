@@ -42,23 +42,23 @@ const ROOM_TYPE_SEO: Record<
 > = {
   Small: {
     description:
-      "Đặt S-Box tại JOZO Biên Hòa — phòng box riêng 1–5 người, âm thanh studio, phụ kiện chụp hình miễn phí. Giá sinh viên.",
-    keywords: "music box biên hòa, s-box, box riêng tư",
+      "Đặt S-Box riêng tư tại JOZO Biên Hòa — 1–5 người. Theo dõi thời gian, order đồ ăn trên tablet, thành viên. Giá all-in-one: không thuế, không phí dịch vụ.",
+    keywords: "music box biên hòa, s-box, box riêng tư, không thuế phí dịch vụ",
   },
   Medium: {
     description:
-      "Đặt S-Box tại JOZO Biên Hòa — phòng box riêng 1–5 người, âm thanh studio, phụ kiện chụp hình miễn phí. Giá sinh viên.",
-    keywords: "music box biên hòa, s-box, box riêng tư",
+      "Đặt S-Box riêng tư tại JOZO Biên Hòa — 1–5 người. Theo dõi thời gian, order đồ ăn trên tablet, thành viên. Giá all-in-one: không thuế, không phí dịch vụ.",
+    keywords: "music box biên hòa, s-box, box riêng tư, không thuế phí dịch vụ",
   },
   Large: {
     description:
-      "Đặt L-Box tại JOZO Biên Hòa — phòng box riêng 6–8 người, 4 mic sẵn, phụ kiện chụp hình miễn phí. Giá theo giờ.",
-    keywords: "music box biên hòa, l-box, box nhóm đông",
+      "Đặt L-Box riêng tư tại JOZO Biên Hòa — 6–8 người, 4 mic sẵn. Order trên tablet, theo dõi thời gian. Giá minh bạch — không thuế, không phí dịch vụ.",
+    keywords: "music box biên hòa, l-box, box riêng tư, không thuế phí dịch vụ",
   },
   Dorm: {
     description:
-      "Khu Dorm Nintendo Switch tại JOZO Biên Hòa — chơi game chung, không phải phòng kín. Tính giờ theo bảng giá.",
-    keywords: "nintendo switch biên hòa, dorm jozo, chơi game tại quán",
+      "Khu Dorm Nintendo Switch tại JOZO Biên Hòa — chơi game chung, theo dõi thời gian sử dụng. Giá minh bạch, không thuế hay phí dịch vụ phát sinh.",
+    keywords: "nintendo switch biên hòa, dorm jozo, không thuế phí dịch vụ",
   },
 };
 

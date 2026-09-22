@@ -43,7 +43,7 @@ export default function MenuItems({
       className={`text-primary ${
         mobile
           ? "mt-0 flex flex-col gap-1 bg-transparent"
-          : "mt-4 flex flex-col bg-white md:mt-0 md:flex-row md:space-x-6 md:bg-transparent"
+          : "mt-4 flex flex-col bg-transparent md:mt-0 md:flex-row md:space-x-6 md:bg-transparent"
       }`}
     >
       {visibleItems.map((item) => {

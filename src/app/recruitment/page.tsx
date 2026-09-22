@@ -10,7 +10,7 @@ function Section({
 }) {
   return (
     <section className="border-b border-primary/10 py-6 last:border-0 last:pb-0">
-      <h3 className="mb-3 text-base font-semibold text-foreground">{title}</h3>
+      <h3 className="card-title mb-3">{title}</h3>
       {children}
     </section>
   );
@@ -18,7 +18,7 @@ function Section({
 
 function BulletList({ items }: { items: string[] }) {
   return (
-    <ul className="list-inside list-disc space-y-2 text-primary/80">
+    <ul className="body-copy list-inside list-disc space-y-2">
       {items.map((item) => (
         <li key={item}>{item}</li>
       ))}
@@ -28,19 +28,16 @@ function BulletList({ items }: { items: string[] }) {
 
 export default function RecruitmentPage() {
   return (
-    <div className="min-h-screen bg-background py-6 sm:py-10">
-      <div className="mx-auto max-w-3xl w-full">
-        <header className="mb-8 text-center md:mb-10">
-          <h1 className="mt-2 text-2xl font-semibold text-foreground md:text-3xl">
-            Jozo tìm đồng đội
-          </h1>
+    <div className="mx-auto w-full max-w-3xl">
+        <header className="mb-8 text-center">
+          <h1 className="page-title">Jozo tìm đồng đội</h1>
         </header>
 
-        <div className="mb-8 rounded-xl border border-red-100 bg-white p-4 shadow-sm sm:p-6 md:p-8">
-          <h2 className="mb-1 text-lg font-semibold text-foreground">
+        <div className="mb-8 glass-surface rounded-2xl p-5 sm:p-6">
+          <h2 className="section-title mb-1">
             Mô tả công việc
           </h2>
-          <p className="mb-6 text-sm text-primary/65">
+          <p className="section-lede mb-6">
             Hình thức: Part-time. Không yêu cầu kinh nghiệm — sẽ được đào tạo
             nội quy và nghiệp vụ tại chỗ.
           </p>
@@ -98,7 +95,7 @@ export default function RecruitmentPage() {
           </Section>
 
           <Section title="Chính sách lương">
-            <ul className="space-y-2 text-primary/80">
+            <ul className="body-copy space-y-2">
               <li>
                 <span className="font-medium text-foreground">Lương:</span>{" "}
                 24.000 VNĐ/giờ
@@ -109,7 +106,7 @@ export default function RecruitmentPage() {
 
         <RecruitmentForm />
 
-        <footer className="mt-10 border-t border-primary/15 pt-8 text-center text-sm text-primary/65">
+        <footer className="body-copy mt-10 border-t border-white/10 pt-8 text-center">
           <p>
             Liên hệ:{" "}
             <Link
@@ -142,7 +139,6 @@ export default function RecruitmentPage() {
             quy xử lý thông tin cá nhân của đơn vị.
           </p>
         </footer>
-      </div>
     </div>
   );
 }

@@ -103,7 +103,7 @@ export default function ChangePasswordForm() {
 
       <Button
         type="submit"
-        className="w-full bg-lightpink text-white font-semibold py-3 rounded-lg hover:bg-pink-600 transition-colors"
+        className="w-full"
         disabled={submitting}
       >
         {submitting ? "Đang đổi mật khẩu..." : "Đổi mật khẩu"}

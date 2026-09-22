@@ -69,15 +69,15 @@ export default function ForgotPasswordPage() {
     return (
       <div className="max-w-3xl mx-auto w-full">
         <FormCard className="max-w-md w-full mx-auto">
-          <h2 className="text-2xl font-bold mb-2 text-center text-primary">
+          <h1 className="page-title mb-2 text-center">
             Kiểm tra email của bạn
-          </h2>
-          <p className="text-sm text-center text-primary/70 mb-4">
+          </h1>
+          <p className="body-copy mb-4 text-center">
             Jozo đã gửi liên kết đặt lại mật khẩu đến{" "}
-            <span className="font-semibold text-primary">{submittedEmail}</span>
+            <span className="font-semibold text-foreground">{submittedEmail}</span>
             .
           </p>
-          <p className="text-sm text-center text-primary/70 mb-6">
+          <p className="body-copy mb-6 text-center">
             Vui lòng kiểm tra hộp thư đến. Nếu không thấy email, hãy kiểm tra
             trong hộp thư rác hoặc spam.
           </p>
@@ -92,10 +92,8 @@ export default function ForgotPasswordPage() {
   return (
     <div className="max-w-3xl mx-auto w-full">
       <FormCard className="max-w-md w-full mx-auto">
-        <h2 className="text-2xl font-bold mb-2 text-center text-primary">
-          Quên mật khẩu
-        </h2>
-        <p className="text-sm text-center text-primary/70 mb-6">
+        <h1 className="page-title mb-2 text-center">Quên mật khẩu</h1>
+        <p className="body-copy mb-6 text-center">
           Nhập email đã đăng ký để nhận liên kết đặt lại mật khẩu.
         </p>
 
@@ -111,19 +109,16 @@ export default function ForgotPasswordPage() {
 
           <Button
             type="submit"
-            className="w-full animate-buttonheartbeat bg-lightpink text-white font-semibold py-3 rounded-lg hover:bg-pink-600 transition-colors"
+            className="w-full animate-buttonheartbeat"
             disabled={isSubmitting}
           >
             {isSubmitting ? "Đang gửi..." : "Gửi liên kết đặt lại mật khẩu"}
           </Button>
         </form>
 
-        <p className="mt-4 text-center text-sm text-primary/70">
+        <p className="body-copy mt-4 text-center">
           Nhớ mật khẩu?{" "}
-          <Link
-            href="/login"
-            className="font-semibold text-pink-600 hover:underline"
-          >
+          <Link href="/login" className="text-link">
             Đăng nhập
           </Link>
         </p>

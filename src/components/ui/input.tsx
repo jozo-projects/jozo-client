@@ -79,7 +79,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
   return (
     <div className="mb-4">
       {label && (
-        <label className="block text-primary mb-1">
+        <label className="mb-1.5 block text-sm font-medium text-foreground">
           {label}
           {required && (
             <span className="text-red-500 ml-1" aria-label="required">
@@ -103,7 +103,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
           inputMode={type === "number" ? "numeric" : props.inputMode}
           aria-invalid={Boolean(error)}
           className={cn(
-            "glass-control w-full rounded px-3 py-2 text-foreground outline-none",
+            "glass-control w-full rounded-xl px-3 py-2.5 text-sm text-foreground outline-none",
             error && [
               "border-red-500",
               "animate-shake-vertical",
@@ -136,9 +136,9 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
         )}
       </div>
       {helpText && !error && (
-        <p className="mt-1 text-sm text-primary/55">{helpText}</p>
+        <p className="meta-copy mt-1.5">{helpText}</p>
       )}
-      {error && <p className="mt-1 text-sm text-red-500">{error}</p>}
+      {error && <p className="mt-1.5 text-sm text-red-400">{error}</p>}
     </div>
   );
 });

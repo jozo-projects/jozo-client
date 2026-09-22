@@ -15,12 +15,12 @@ export default function PromotionContent({
         <Typography
           as="h1"
           variant="bold"
-          className="text-3xl text-primary mb-4"
+          className="text-2xl text-foreground mb-4 sm:text-3xl"
         >
           Đăng ký thành viên Jozo — Giảm ngay 10%
         </Typography>
 
-        <div className="relative w-full rounded-xl overflow-hidden border-2 border-red-200 shadow-lg my-6">
+        <div className="relative w-full rounded-xl overflow-hidden border border-white/15 shadow-lg my-6">
           <Image
             src="/images/member-poster-final.webp"
             alt="Poster chương trình thành viên Jozo — giảm ngay 10%"
@@ -35,7 +35,7 @@ export default function PromotionContent({
           <Typography
             as="p"
             variant="semibold"
-            className="text-primary text-lg leading-relaxed"
+            className="text-base leading-relaxed text-foreground sm:text-lg"
           >
             Từ ngày <strong>10/7/2026</strong>, Jozo mở chương trình thành viên
             — đăng ký để nhận <strong>giảm ngay 10%</strong> và hàng loạt ưu
@@ -126,7 +126,7 @@ export default function PromotionContent({
         <Typography
           as="h1"
           variant="bold"
-          className="text-3xl text-primary mb-4"
+          className="text-2xl text-foreground mb-4 sm:text-3xl"
         >
           🔥 Giảm ngay 20% giờ hát/Nintendo từ 20/4 – 24/4
         </Typography>
@@ -146,7 +146,7 @@ export default function PromotionContent({
           <Typography
             as="p"
             variant="semibold"
-            className="text-primary text-lg leading-relaxed"
+            className="text-base leading-relaxed text-foreground sm:text-lg"
           >
             Nhân dịp Jozo quay trở lại với phiên bản{" "}
             <strong>“tiện nghi hơn”</strong> – phòng nhiều, rộng rãi, thêm nhiều
@@ -154,11 +154,11 @@ export default function PromotionContent({
           </Typography>
         </div>
 
-        <div className="bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg">
+        <div className="rounded-r-xl border-l-4 border-primary bg-primary/15 p-4">
           <Typography
             as="p"
             variant="semibold"
-            className="text-red-700 text-lg"
+            className="text-lg leading-relaxed text-foreground"
           >
             💥 Jozo gửi tặng khách iu: <strong>GIẢM NGAY 20%</strong> giờ hát
             &amp; chơi Nintendo.
@@ -246,7 +246,7 @@ export default function PromotionContent({
         <Typography
           as="h1"
           variant="bold"
-          className="text-3xl text-primary mb-4"
+          className="text-2xl text-foreground mb-4 sm:text-3xl"
         >
           Nhân dịp Jozo comeback: Khách iu được tặng 2 giờ hát miễn phí
         </Typography>
@@ -255,7 +255,7 @@ export default function PromotionContent({
           <Typography
             as="p"
             variant="semibold"
-            className="text-primary text-lg leading-relaxed"
+            className="text-base leading-relaxed text-foreground sm:text-lg"
           >
             Nhân dịp Jozo comeback, khách iu sẽ được tặng{" "}
             <strong>2 giờ hát miễn phí</strong> — lời cảm ơn chân thành từ Jozo

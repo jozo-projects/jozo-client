@@ -17,23 +17,23 @@ import Image from "next/image";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Chương trình Thành viên Jozo | Ưu đãi giảm 10%",
+  title: "Chương trình Thành viên Jozo | Ưu đãi minh bạch",
   description:
-    "Tham gia Chương trình Thành viên Jozo từ ngày 10/7/2026. Thành viên được giảm 10%, tích điểm, ưu đãi sinh nhật và quà tặng theo số lần sử dụng dịch vụ.",
+    "Thành viên Jozo: theo dõi thời gian sử dụng, ưu đãi giảm 10%, tích điểm. Mọi quyền lợi minh bạch — không thuế, không phí dịch vụ phát sinh.",
   alternates: { canonical: "/membership" },
   openGraph: {
-    title: "Chương trình Thành viên Jozo | Ưu đãi giảm 10%",
+    title: "Chương trình Thành viên Jozo | Ưu đãi minh bạch",
     description:
-      "Đăng ký thành viên Jozo từ 10/7/2026 để nhận ưu đãi giảm 10%, tích điểm và quyền lợi dành riêng cho hội viên.",
+      "Đăng ký thành viên Jozo: theo dõi thời gian sử dụng, giảm 10%, tích điểm. Minh bạch — không thuế, không phí dịch vụ.",
     url: "/membership",
     images: ["/images/member-poster-final.webp"],
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Chương trình Thành viên Jozo | Ưu đãi giảm 10%",
+    title: "Chương trình Thành viên Jozo | Ưu đãi minh bạch",
     description:
-      "Tham gia Chương trình Thành viên Jozo từ 10/7/2026 — giảm 10% và nhận các quyền lợi dành riêng cho hội viên.",
+      "Thành viên Jozo: theo dõi thời gian, ưu đãi minh bạch — không thuế, không phí dịch vụ phát sinh.",
     images: ["/images/member-poster-final.webp"],
   },
 };
@@ -99,17 +99,14 @@ export default async function MembershipPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen">
       <div className="py-6 sm:py-8">
-        <Link
-          href="/"
-          className="inline-flex items-center text-primary hover:text-brand-hover mb-6 transition-colors"
-        >
-          <ArrowLeft className="w-5 h-5 mr-2" />
+        <Link href="/" className="back-link">
+          <ArrowLeft />
           Quay lại trang chủ
         </Link>
 
-        <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
+        <div className="glass-surface overflow-hidden rounded-2xl">
           <div className="relative bg-gradient-to-br from-[#0f1118] via-[#1a0a0c] to-[#0b0c12] px-6 py-10 md:px-10 md:py-14 text-white overflow-hidden">
             <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(255,40,40,0.35),transparent_45%),radial-gradient(circle_at_85%_10%,rgba(255,255,255,0.08),transparent_35%)]" />
             <div className="relative grid gap-8 md:grid-cols-2 md:items-center">
@@ -157,11 +154,11 @@ export default async function MembershipPage() {
           </div>
 
           <div className="p-6 md:p-10 space-y-10">
-            <div className="bg-accent/60 border-l-4 border-primary p-4 rounded">
+            <div className="rounded-xl border-l-4 border-primary bg-accent/60 p-4">
               <Typography
                 as="p"
                 variant="semibold"
-                className="text-primary text-lg"
+                className="text-base leading-relaxed text-foreground sm:text-lg"
               >
                 Từ ngày <strong>10/7/2026</strong>, khách hàng đăng ký thành viên
                 Jozo sẽ được giảm 10% khi sử dụng dịch vụ, đồng thời tham gia hệ
@@ -173,7 +170,7 @@ export default async function MembershipPage() {
               <Typography
                 as="h2"
                 variant="semibold"
-                className="text-2xl text-foreground mb-6"
+                className="section-title mb-4"
               >
                 Quyền lợi thành viên
               </Typography>
@@ -181,22 +178,22 @@ export default async function MembershipPage() {
                 {benefits.map(({ icon: Icon, title, description }) => (
                   <div
                     key={title}
-                    className="rounded-xl border border-red-100 bg-white p-5 shadow-sm hover:shadow-md transition-shadow"
+                    className="glass-surface rounded-xl p-5"
                   >
-                    <div className="mb-3 inline-flex h-11 w-11 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                    <div className="mb-3 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-primary/15 text-primary">
                       <Icon className="h-5 w-5" />
                     </div>
                     <Typography
                       as="h3"
                       variant="semibold"
-                      className="text-base text-foreground mb-1"
+                      className="card-title mb-1"
                     >
                       {title}
                     </Typography>
                     <Typography
                       as="p"
                       variant="default"
-                      className="text-primary/70 text-sm"
+                      className="body-copy"
                     >
                       {description}
                     </Typography>
@@ -210,7 +207,7 @@ export default async function MembershipPage() {
                 <Typography
                   as="h2"
                   variant="semibold"
-                  className="text-2xl text-foreground mb-4"
+                  className="section-title mb-4"
                 >
                   Hạng thành viên
                 </Typography>
@@ -218,7 +215,7 @@ export default async function MembershipPage() {
                   <Typography
                     as="p"
                     variant="default"
-                    className="text-primary/70 text-sm mb-4"
+                    className="body-copy mb-4"
                   >
                     Tỷ lệ tích điểm: {formatPoints(pointPerCurrency)} điểm /{" "}
                     {formatVnd(currencyUnit)} đồng.
@@ -228,7 +225,7 @@ export default async function MembershipPage() {
                   {tiers.map(([name, points], index) => (
                     <div
                       key={name}
-                      className="flex items-center justify-between gap-3 rounded-xl border border-red-100 bg-white px-4 py-3"
+                      className="glass-surface flex items-center justify-between gap-3 rounded-xl px-4 py-3"
                     >
                       <div className="min-w-0">
                         <p className="text-xs uppercase tracking-wide text-primary/50">
@@ -252,7 +249,7 @@ export default async function MembershipPage() {
                 <Typography
                   as="h2"
                   variant="semibold"
-                  className="text-2xl text-foreground mb-4"
+                  className="section-title mb-4"
                 >
                   Quà tặng theo số lần sử dụng
                 </Typography>
@@ -260,7 +257,7 @@ export default async function MembershipPage() {
                   <Typography
                     as="p"
                     variant="default"
-                    className="text-primary/70 text-sm mb-4"
+                    className="body-copy mb-4"
                   >
                     Số lần sử dụng được ghi nhận trong vòng {windowDays} ngày.
                     Thành viên đạt từng mốc sẽ nhận phần thưởng tương ứng.
@@ -270,7 +267,7 @@ export default async function MembershipPage() {
                   {streakRewards.map((reward) => (
                     <div
                       key={reward.count}
-                      className="rounded-xl border border-red-100 bg-white p-4"
+                      className="glass-surface rounded-xl p-4"
                     >
                       <p className="text-sm font-semibold text-foreground">
                         Mốc {reward.count} lần
@@ -291,7 +288,7 @@ export default async function MembershipPage() {
               <Typography
                 as="h2"
                 variant="semibold"
-                className="text-2xl text-foreground mb-4"
+                className="section-title mb-4"
               >
                 Cách tham gia
               </Typography>
@@ -314,7 +311,7 @@ export default async function MembershipPage() {
               <Typography
                 as="h2"
                 variant="semibold"
-                className="text-2xl text-foreground mb-4"
+                className="section-title mb-4"
               >
                 Điều khoản & lưu ý
               </Typography>
@@ -344,7 +341,7 @@ export default async function MembershipPage() {
               </Link>
               <a
                 href="tel:0359660934"
-                className="bg-white border-2 border-primary text-primary hover:bg-accent font-semibold py-3 px-8 rounded-lg transition-colors text-center"
+                className="glass-control text-foreground font-semibold py-3 px-8 rounded-lg text-center"
               >
                 Liên hệ: 035 966 0934
               </a>

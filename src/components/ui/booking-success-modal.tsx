@@ -35,10 +35,10 @@ export default function BookingSuccessModal({
         <div className="absolute top-4 right-4 flex gap-2">
           <button
             onClick={onDownloadTicket}
-            className="p-2 bg-primary text-primary-foreground rounded-lg hover:bg-brand-hover transition-colors"
+            className="rounded-xl bg-primary p-2 text-primary-foreground transition-colors hover:bg-brand-hover"
             title="Tải vé"
           >
-            <Download className="w-5 h-5" />
+          <Download className="h-4 w-4" />
           </button>
         </div>
 
@@ -46,7 +46,7 @@ export default function BookingSuccessModal({
           <Check className="text-primary-foreground w-8 h-8" />
         </div>
 
-        <h2 className="text-2xl font-bold text-center text-primary mb-4">
+        <h2 className="page-title mb-4 text-center">
           Đặt box thành công!
         </h2>
 
@@ -120,7 +120,7 @@ export default function BookingSuccessModal({
           </Link>
           <Link
             href="/booking-search"
-            className="w-full py-3 bg-white text-center text-primary border-2 border-primary rounded-lg hover:bg-primary hover:text-primary-foreground transition-colors"
+            className="w-full py-3 glass-control text-center text-foreground rounded-lg"
           >
             Tra cứu đặt box
           </Link>

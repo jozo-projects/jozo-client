@@ -682,22 +682,22 @@ export default function BookingForm({ roomType, prices }: BookingFormProps) {
       <div className="flex items-center justify-between mb-4">
         <button
           onClick={() => router.push("/")}
-          className="flex items-center gap-2 py-2 text-primary/70 hover:bg-primary/8 rounded-lg transition-colors"
+          className="flex items-center gap-2 py-2 text-sm font-medium text-foreground/80 transition-colors hover:text-foreground"
         >
-          <ArrowLeft className="w-4 h-4" />
-          <span className="text-sm font-medium">Quay về</span>
+          <ArrowLeft className="h-4 w-4" />
+          <span>Quay về</span>
         </button>
 
-        <h1 className="md:text-3xl text-xl font-bold text-primary text-center">
+        <h1 className="page-title text-center text-xl sm:text-2xl">
           {ROOM_TYPE_LABELS[roomType]}
         </h1>
 
         <div className="hidden md:block" />
       </div>
 
-      <div className="mb-5 bg-accent/60 border-l-4 border-primary p-3 rounded-r-lg text-sm text-primary">
+      <div className="mb-5 rounded-r-xl border-l-4 border-primary bg-accent/60 p-3 text-sm text-foreground">
         <p className="font-semibold">Thành viên mới giảm ngay 10% lần đầu</p>
-        <p className="mt-1 text-primary/80">
+        <p className="mt-1 text-foreground/75">
           Không áp dụng cho các ngày lễ.
         </p>
         <Link
@@ -718,7 +718,7 @@ export default function BookingForm({ roomType, prices }: BookingFormProps) {
       <form onSubmit={handleSubmit(onSubmit)}>
         {/* Customer Information */}
         <div className="mb-6">
-          <h2 className="text-xl font-semibold text-primary mb-4">
+          <h2 className="section-title mb-4">
             Thông tin khách hàng
           </h2>
 
@@ -746,13 +746,13 @@ export default function BookingForm({ roomType, prices }: BookingFormProps) {
 
             {!isDorm && (
               <div>
-                <label className="block text-primary mb-1">
+                <label className="mb-1.5 block text-sm font-medium text-foreground">
                   Dịch vụ
                   <span className="text-red-500 ml-1">*</span>
                 </label>
                 <select
                   {...register("activityType")}
-                  className="booking-form-select w-full rounded border border-primary/20 bg-white px-3 py-2 text-gray-900 outline-none focus:border-primary focus:ring-2 focus:ring-primary disabled:cursor-not-allowed disabled:bg-gray-100 disabled:text-gray-500"
+                  className="booking-form-select glass-control w-full rounded-xl px-3 py-2.5 text-sm text-foreground outline-none focus:border-primary focus:ring-2 focus:ring-primary disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   <option value="" className="bg-white text-gray-900">
                     Chọn dịch vụ
@@ -797,7 +797,7 @@ export default function BookingForm({ roomType, prices }: BookingFormProps) {
 
         {/* Booking Information */}
         <div className="mb-6">
-          <h2 className="text-xl font-semibold text-primary mb-4">
+          <h2 className="section-title mb-4">
             Thông tin đặt box
           </h2>
 
@@ -841,9 +841,9 @@ export default function BookingForm({ roomType, prices }: BookingFormProps) {
 
             {/* Start Time Selection */}
             <div>
-              <label className="block text-primary mb-1">
+              <label className="mb-1.5 block text-sm font-medium text-foreground">
                 Giờ bắt đầu
-                <span className="text-red-500 ml-1">*</span>
+                <span className="ml-1 text-red-400">*</span>
               </label>
               <div className="relative">
                 <select
@@ -857,7 +857,7 @@ export default function BookingForm({ roomType, prices }: BookingFormProps) {
                       shouldTouch: true,
                     });
                   }}
-                  className="booking-form-select w-full rounded border border-primary/20 bg-white px-3 py-2 text-gray-900 outline-none focus:border-primary focus:ring-2 focus:ring-primary disabled:cursor-not-allowed disabled:bg-gray-100 disabled:text-gray-500"
+                  className="booking-form-select glass-control w-full rounded-xl px-3 py-2.5 text-sm text-foreground outline-none focus:border-primary focus:ring-2 focus:ring-primary disabled:cursor-not-allowed disabled:opacity-50"
                   disabled={!isClient || !selectedDate}
                 >
                   <option value="" className="bg-white text-gray-900">
@@ -891,7 +891,7 @@ export default function BookingForm({ roomType, prices }: BookingFormProps) {
             {/* Duration Selection */}
             {selectedStartTime && (
               <div>
-                <label className="block text-primary mb-1">
+                <label className="mb-1.5 block text-sm font-medium text-foreground">
                   Thời lượng
                   <span className="text-red-500 ml-1">*</span>
                 </label>
@@ -902,7 +902,7 @@ export default function BookingForm({ roomType, prices }: BookingFormProps) {
                       const duration = parseFloat(e.target.value);
                       setSelectedDuration(duration);
                     }}
-                    className="booking-form-select w-full rounded border border-primary/20 bg-white px-3 py-2 text-gray-900 outline-none focus:border-primary focus:ring-2 focus:ring-primary disabled:cursor-not-allowed disabled:bg-gray-100 disabled:text-gray-500"
+                    className="booking-form-select glass-control w-full rounded-xl px-3 py-2.5 text-sm text-foreground outline-none focus:border-primary focus:ring-2 focus:ring-primary disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     {durationOptions.map((option) => (
                       <option
@@ -935,7 +935,7 @@ export default function BookingForm({ roomType, prices }: BookingFormProps) {
           selectedDate &&
           !isTetDay1Off(selectedDate) && (
             <div className="mb-6 p-4 bg-primary/6 rounded-md">
-              <h2 className="text-lg font-semibold text-primary mb-2">
+              <h2 className="card-title mb-2">
                 Thông tin đặt box
               </h2>
               <div className="space-y-2">
@@ -1016,7 +1016,7 @@ export default function BookingForm({ roomType, prices }: BookingFormProps) {
           )}
 
         {isTetDay1Off(selectedDate) ? (
-          <div className="w-full py-3 mt-6 text-center font-medium text-primary bg-accent/45 border border-primary/30 rounded-lg">
+          <div className="mt-6 w-full rounded-xl border border-primary/30 bg-accent/45 py-3 text-center text-sm font-medium text-foreground">
             Jozo nghỉ ngày mùng 1, hẹn khách iu vào ngày mùng 2.
           </div>
         ) : (
@@ -1030,7 +1030,7 @@ export default function BookingForm({ roomType, prices }: BookingFormProps) {
               !selectedDuration ||
               (isClient && selectedDate && availableTimes.length === 0)
             }
-            className="w-full py-3 mt-6 font-medium tracking-wide text-primary-foreground bg-primary rounded-lg hover:bg-brand-hover transition duration-2000 animate-buttonheartbeat disabled:opacity-50 disabled:cursor-not-allowed"
+            className="mt-6 w-full animate-buttonheartbeat rounded-xl bg-primary py-3 font-semibold tracking-wide text-primary-foreground hover:bg-brand-hover disabled:cursor-not-allowed disabled:opacity-50"
           >
             {isSubmitting ? "Đang xử lý..." : "Đặt ngay"}
           </button>

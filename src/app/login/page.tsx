@@ -210,13 +210,11 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="max-w-3xl mx-auto w-full space-y-4">
+    <div className="mx-auto w-full max-w-md space-y-4">
       <FormCard>
-        <h1 className="text-2xl font-bold text-primary mb-2">
-          Đăng nhập thành viên
-        </h1>
+        <h1 className="page-title mb-2">Đăng nhập thành viên</h1>
         {member && (
-          <p className="text-sm text-primary/70 mb-4">
+          <p className="body-copy mb-4">
             Đã lưu: {memberName || member.username || "Thành viên"}
           </p>
         )}
@@ -245,28 +243,22 @@ export default function LoginPage() {
           />
 
           <div className="flex justify-end">
-            <Link
-              href="/forgot-password"
-              className="text-sm font-semibold text-pink-600 hover:underline"
-            >
+            <Link href="/forgot-password" className="text-link text-sm">
               Quên mật khẩu?
             </Link>
           </div>
 
           <Button
             type="submit"
-            className="w-full animate-buttonheartbeat bg-lightpink text-white font-semibold py-3 rounded-lg hover:bg-pink-600 transition-colors"
+            className="w-full animate-buttonheartbeat"
             disabled={loading}
           >
             {loading ? "Đang đăng nhập..." : "Đăng nhập"}
           </Button>
 
-          <p className="text-center text-sm text-primary/70">
+          <p className="body-copy text-center">
             Chưa có tài khoản?{" "}
-            <Link
-              href="/register"
-              className="font-semibold text-pink-600 hover:underline"
-            >
+            <Link href="/register" className="text-link">
               Đăng ký
             </Link>
           </p>

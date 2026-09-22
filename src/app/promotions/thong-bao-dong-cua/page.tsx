@@ -27,34 +27,31 @@ export default function TemporaryClosurePage() {
   return (
     <div className="min-h-screen bg-background">
       <div className="py-6 sm:py-8">
-        <Link
-          href="/"
-          className="inline-flex items-center text-primary hover:text-brand-hover mb-6 transition-colors"
-        >
-          <ArrowLeft className="w-5 h-5 mr-2" />
+        <Link href="/" className="back-link">
+          <ArrowLeft />
           Quay lại trang chủ
         </Link>
 
-        <div className="bg-white rounded-2xl shadow-xl overflow-hidden max-w-3xl mx-auto">
+        <div className="glass-surface overflow-hidden rounded-2xl max-w-3xl mx-auto">
           {/* Header */}
-          <div className="bg-amber-500 text-amber-950 px-6 py-8 md:px-10 md:py-10">
+          <div className="border-b border-white/10 bg-amber-500/20 px-6 py-8 text-foreground md:px-10 md:py-10">
             <div className="flex items-start gap-4">
-              <AlertTriangle
-                className="w-12 h-12 flex-shrink-0 mt-1"
+                <AlertTriangle
+                className="mt-1 h-10 w-10 shrink-0 text-amber-300"
                 aria-hidden
               />
               <div>
                 <Typography
                   as="h1"
                   variant="bold"
-                  className="text-2xl md:text-3xl mb-2"
+                  className="page-title mb-2"
                 >
                   Thông báo đóng cửa tạm thời
                 </Typography>
                 <Typography
                   as="p"
                   variant="default"
-                  className="text-amber-900/90 text-lg"
+                  className="text-foreground/80 text-lg"
                 >
                   Jozo tạm ngưng hoạt động để sửa chữa, nâng cấp
                 </Typography>
@@ -64,11 +61,11 @@ export default function TemporaryClosurePage() {
 
           {/* Content */}
           <div className="p-6 md:p-10 space-y-6">
-            <div className="bg-amber-50 border-l-4 border-amber-500 p-4 rounded">
+            <div className="glass-control border-l-4 border-amber-400 p-4 rounded">
               <Typography
                 as="p"
                 variant="semibold"
-                className="text-amber-900 text-lg"
+                className="text-foreground text-lg"
               >
                 {CLOSURE_MESSAGE}
               </Typography>
@@ -76,7 +73,7 @@ export default function TemporaryClosurePage() {
 
             <ul className="space-y-3 text-primary/80">
               <li className="flex items-center gap-3">
-                <CalendarOff className="w-5 h-5 text-amber-600 flex-shrink-0" />
+                <CalendarOff className="w-5 h-5 text-amber-300 flex-shrink-0" />
                 <span>
                   <strong>Không nhận đặt phòng</strong> — Mọi đặt box tạm thời
                   bị tạm ngưng từ ngày {fromDate}.

@@ -186,18 +186,17 @@ export function DateSelect({
 
   return (
     <div className="relative">
-      <label className="block font-medium text-primary mb-1">
+      <label className="mb-1.5 block text-sm font-medium text-foreground">
         {label}
-        {required && <span className="text-red-500 ml-1">*</span>}
+        {required && <span className="ml-1 text-red-400">*</span>}
       </label>
       <button
         ref={triggerRef}
         type="button"
         onClick={handleToggle}
         className={cn(
-          "w-full rounded-md border border-primary/20 bg-white px-4 py-2 text-left text-gray-900",
-          "focus:outline-none focus:ring-2 focus:ring-black/20",
-          "flex items-center justify-between",
+          "glass-control flex w-full items-center justify-between rounded-xl px-3 py-2.5 text-left text-sm text-foreground",
+          "focus:outline-none focus:ring-2 focus:ring-primary/30",
           error && "border-red-500"
         )}
       >
@@ -235,11 +234,11 @@ export function DateSelect({
                   left: popoverPosition.left,
                   width: popoverPosition.width,
                 }}
-                className="z-[9998] rounded-md border border-primary/20 bg-white text-gray-900 shadow-lg"
+                className="z-[9998] glass-overlay rounded-md text-foreground"
               >
                 <div className="grid grid-cols-3 p-2 gap-2">
                   <div className="space-y-1">
-                    <label className="text-xs font-medium text-gray-500">
+                    <label className="text-xs font-medium text-foreground/70">
                       Ngày
                     </label>
                     <div
@@ -255,7 +254,7 @@ export function DateSelect({
                           whileTap={{ scale: 0.98 }}
                           onClick={() => handleSelect("day", day)}
                           className={cn(
-                            "w-full rounded-md px-2 py-1 text-sm text-gray-900",
+                            "w-full rounded-md px-2 py-1 text-sm text-foreground",
                             isClient && selectedDate.getDate() === day
                               ? "bg-primary text-primary-foreground"
                               : "hover:bg-primary/5"
@@ -268,7 +267,7 @@ export function DateSelect({
                   </div>
 
                   <div className="space-y-1">
-                    <label className="text-xs font-medium text-gray-500">
+                    <label className="text-xs font-medium text-foreground/70">
                       Tháng
                     </label>
                     <div
@@ -284,7 +283,7 @@ export function DateSelect({
                           whileTap={{ scale: 0.98 }}
                           onClick={() => handleSelect("month", month)}
                           className={cn(
-                            "w-full rounded-md px-2 py-1 text-sm text-gray-900",
+                            "w-full rounded-md px-2 py-1 text-sm text-foreground",
                             isClient && selectedDate.getMonth() + 1 === month
                               ? "bg-primary text-primary-foreground"
                               : "hover:bg-primary/5"
@@ -297,7 +296,7 @@ export function DateSelect({
                   </div>
 
                   <div className="space-y-1">
-                    <label className="text-xs font-medium text-gray-500">
+                    <label className="text-xs font-medium text-foreground/70">
                       Năm
                     </label>
                     <div
@@ -313,7 +312,7 @@ export function DateSelect({
                           whileTap={{ scale: 0.98 }}
                           onClick={() => handleSelect("year", year)}
                           className={cn(
-                            "w-full rounded-md px-2 py-1 text-sm text-gray-900",
+                            "w-full rounded-md px-2 py-1 text-sm text-foreground",
                             isClient && selectedDate.getFullYear() === year
                               ? "bg-primary text-primary-foreground"
                               : "hover:bg-primary/5"

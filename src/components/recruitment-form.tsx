@@ -186,10 +186,10 @@ export function RecruitmentForm() {
         noValidate
         aria-busy={isSubmitting}
       >
-        <h3 className="mb-6 text-lg font-semibold text-foreground md:text-xl">
+        <h3 className="card-title mb-2">
           Đơn ứng tuyển
         </h3>
-        <p className="mb-6 text-sm text-primary/65">
+        <p className="body-copy mb-6">
           Vui lòng điền đầy đủ thông tin. Dữ liệu chỉ dùng cho mục đích tuyển
           dụng và được bảo mật theo chính sách của Jozo.
         </p>
@@ -222,7 +222,7 @@ export function RecruitmentForm() {
                     required
                   />
                 ) : (
-                  <div className="w-full rounded-lg border border-border bg-muted px-3 py-2 text-sm text-muted-foreground">
+                  <div className="w-full rounded-xl border border-border bg-muted px-3 py-2.5 text-sm text-muted-foreground">
                     Đang tải...
                   </div>
                 )
@@ -254,7 +254,7 @@ export function RecruitmentForm() {
                   <RadioGroupItem value={key} id={`gender-${key}`} />
                   <Label
                     htmlFor={`gender-${key}`}
-                    className="cursor-pointer font-normal text-primary/80"
+                    className="cursor-pointer font-normal text-foreground/80"
                   >
                     {GENDERS[key]}
                   </Label>
@@ -306,7 +306,7 @@ export function RecruitmentForm() {
                   />
                   <Label
                     htmlFor={`status-${opt.value}`}
-                    className="cursor-pointer font-normal text-primary/80"
+                    className="cursor-pointer font-normal text-foreground/80"
                   >
                     {opt.label}
                   </Label>
@@ -348,7 +348,7 @@ export function RecruitmentForm() {
                   />
                   <Label
                     htmlFor={`pos-${key}`}
-                    className="cursor-pointer font-normal text-primary/80"
+                    className="cursor-pointer font-normal text-foreground/80"
                   >
                     {POSITIONS[key]}
                   </Label>
@@ -378,7 +378,7 @@ export function RecruitmentForm() {
                   />
                   <Label
                     htmlFor={`shift-${key}`}
-                    className="cursor-pointer font-normal text-primary/80"
+                    className="cursor-pointer font-normal text-foreground/80"
                   >
                     {WORK_SHIFTS[key]}
                   </Label>
@@ -435,7 +435,7 @@ export function RecruitmentForm() {
               id="recruitment-note"
               rows={4}
               placeholder=""
-              className="w-full resize-y rounded-lg border border-primary/15 bg-white px-3 py-2 text-sm text-foreground shadow-sm outline-none transition-colors placeholder:text-primary/50 focus:border-primary/25 focus:ring-2 focus:ring-primary/15"
+              className="w-full resize-y rounded-xl glass-control px-3 py-2.5 text-sm text-foreground shadow-sm outline-none transition-colors placeholder:text-foreground/50 focus:border-primary/25 focus:ring-2 focus:ring-primary/15"
               {...register("note")}
               aria-invalid={errors.note ? true : undefined}
             />

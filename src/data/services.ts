@@ -18,32 +18,33 @@ export type JozoService = {
 export const jozoVenue = {
   name: "JOZO Biên Hòa",
   address: "30 Phan Trung, Tam Hiệp, Biên Hòa, Đồng Nai",
-  headline: "Tổ hợp giải trí đa dạng tại Biên Hòa",
+  headline: "Box riêng tư all-in-one tại Biên Hòa",
   intro:
-    "JOZO — viết tắt của Joy Zone — là không gian vui chơi, giải trí đa dạng tại Biên Hòa, nơi bạn có thể hát Music Box, xem Netflix, chơi Nintendo Switch và Board Game cùng bạn bè. Phòng rộng rãi, giá hợp lý, không phụ thu, không tính thuế.",
+    "JOZO — viết tắt của Joy Zone — là không gian giải trí riêng tư tại Biên Hòa. All-in-one trong một box: hát Music Box, xem Netflix, chơi Nintendo Switch và Board Game. Theo dõi thời gian sử dụng, chương trình thành viên, order đồ ăn ngay trên tablet. Mọi thứ luôn minh bạch — không thuế, không phí dịch vụ phát sinh.",
 };
 
 export const jozoServices: JozoService[] = [
   {
     id: "music-box",
     title: "Music Box",
-    tagline: "Phòng rộng rãi — box riêng chỉ có nhóm mình",
+    tagline: "Box riêng tư — chỉ có nhóm mình",
     summary:
-      "Không gian box đang dạng concept, rộng rãi và thoải mái. S-Box 1–5 người, L-Box 6–8 người trang bị sẵn 4 mic. Âm thanh studio, phụ kiện chụp hình miễn phí. Giá rẻ — không phụ thu, không tính thuế.",
+      "Box riêng tư chỉ có nhóm mình. S-Box 1–5 người, L-Box 6–8 người với 4 mic sẵn. Theo dõi thời gian sử dụng, order đồ ăn trên tablet, chương trình thành viên. Giá all-in-one — không thuế, không phí dịch vụ phát sinh.",
     highlights: [
-      "Phòng rộng rãi · S-Box 1–5 · L-Box 6–8 người",
-      "L-Box trang bị sẵn 4 mic",
-      "Giá rẻ — không phụ thu, không tính thuế",
-      "Phụ kiện chụp hình miễn phí",
+      "Box riêng tư · S-Box 1–5 · L-Box 6–8 người",
+      "Theo dõi thời gian sử dụng ngay trong phòng",
+      "Order đồ ăn & nước trên tablet",
+      "Giá all-in-one — không thuế, không phí dịch vụ",
     ],
     bookingLabel: "Đặt box",
     bookingHref: "/#booking",
     keywords: [
       "music box biên hòa",
       "box riêng tư",
-      "box style hàn quốc",
+      "box riêng tư biên hòa",
       "đặt phòng music box",
-      "giá rẻ không phụ thu",
+      "không thuế không phí dịch vụ",
+      "order đồ ăn tablet",
     ],
   },
   {
@@ -102,50 +103,68 @@ export const jozoServices: JozoService[] = [
 ];
 
 export const jozoServicesSeoDescription =
-  "JOZO Biên Hòa — tổ hợp giải trí đa dạng: music box, Netflix, Nintendo Switch và board game. Giá rẻ, không phụ thu, không tính thuế. 30 Phan Trung, Tam Hiệp.";
+  "JOZO Biên Hòa — box riêng tư all-in-one: theo dõi thời gian sử dụng, thành viên, order đồ ăn trên tablet. Minh bạch — không thuế, không phí dịch vụ phát sinh. 30 Phan Trung, Tam Hiệp.";
 
 export const jozoServicesFaq = [
   {
     question: "JOZO có nghĩa là gì?",
     answer:
-      "JOZO là viết tắt của Joy Zone — không gian vui chơi, giải trí đa dạng dành cho những buổi gặp gỡ và thư giãn cùng bạn bè tại Biên Hòa.",
+      "JOZO là viết tắt của Joy Zone — không gian giải trí riêng tư all-in-one tại Biên Hòa: hát, xem phim, chơi game và order đồ ăn trong cùng một box, mọi thứ luôn minh bạch.",
   },
   {
     question: "JOZO có những dịch vụ gì?",
     answer:
-      "JOZO là tổ hợp giải trí đa dạng tại Biên Hòa gồm music box, xem Netflix, khu Nintendo Switch (Dorm) và board game có sẵn tại quán.",
+      "JOZO là tổ hợp giải trí riêng tư tại Biên Hòa: music box, xem Netflix, khu Nintendo Switch (Dorm) và board game. All-in-one — theo dõi thời gian sử dụng, thành viên và order trên tablet.",
   },
   {
     question: "Music box tại JOZO có gì?",
     answer:
-      "Phòng box rộng rãi, đa dạng concept — S-Box 1–5 người, L-Box 6–8 người trang bị sẵn 4 mic. Âm thanh studio, phụ kiện chụp hình miễn phí. Giá rẻ, không phụ thu, không tính thuế.",
+      "Box riêng tư chỉ có nhóm mình — S-Box 1–5 người, L-Box 6–8 người với 4 mic sẵn. Theo dõi thời gian sử dụng, order đồ ăn trên tablet. Giá all-in-one, không thuế, không phí dịch vụ phát sinh.",
+  },
+  {
+    question: "Có theo dõi thời gian sử dụng không?",
+    answer:
+      "Có. JOZO hiển thị thời gian sử dụng ngay trong box để nhóm luôn nắm giờ còn lại — minh bạch, không bị tính thêm ngoài khung đã đặt.",
+  },
+  {
+    question: "Order đồ ăn tại JOZO thế nào?",
+    answer:
+      "Bạn order đồ ăn và nước ngay trên tablet trong phòng, không cần ra quầy. Giá hiển thị rõ ràng trên tablet — không phụ thu thuế hay phí dịch vụ.",
+  },
+  {
+    question: "Chương trình thành viên JOZO là gì?",
+    answer:
+      "Đăng ký thành viên để quản lý lịch sử sử dụng, nhận ưu đãi và tích điểm. Mọi quyền lợi đều minh bạch trên tài khoản — không thuế, không phí dịch vụ phát sinh.",
   },
   {
     question: "JOZO có xem Netflix không?",
     answer:
-      "Có. JOZO có góc xem Netflix để nhóm bạn ngồi chill, chọn phim hoặc series — kết hợp snack và đồ uống tại quán, không cần mang thiết bị theo.",
+      "Có. JOZO có góc xem Netflix để nhóm bạn ngồi chill, chọn phim hoặc series — kết hợp snack và đồ uống order trên tablet, không cần mang thiết bị theo.",
   },
   {
-    question: "Giá tại JOZO có phụ thu hay thuế không?",
+    question: "Giá tại JOZO có thuế hay phí dịch vụ không?",
     answer:
-      "Không. Giá trên bảng giá là giá bạn trả — không phụ thu, không tính thuế thêm.",
+      "Không. Giá trên bảng giá là giá all-in-one bạn trả — không thuế, không phí dịch vụ, không phụ thu phát sinh.",
   },
   {
     question: "Dorm Nintendo Switch là gì?",
     answer:
-      "Dorm là khu chơi Nintendo Switch chung tại JOZO — không phải phòng box riêng. Bạn đi nhóm, chọn game và chơi thoải mái. Giá tính theo giờ trên bảng giá Dorm.",
+      "Dorm là khu chơi Nintendo Switch chung tại JOZO — không phải phòng box riêng. Bạn đi nhóm, chọn game và chơi thoải mái. Giá tính theo giờ trên bảng giá Dorm, không thuế hay phí dịch vụ thêm.",
   },
   {
     question: "Board game có cần đặt trước không?",
     answer:
-      "Không cần đặt trước. JOZO có sẵn board game như Uno, Ma Sói tại quán — ghé và chơi tại chỗ, kết hợp đồ uống và snack.",
+      "Không cần đặt trước. JOZO có sẵn board game như Uno, Ma Sói tại quán — ghé và chơi tại chỗ, kết hợp đồ uống và snack order trên tablet.",
   },
 ];
 
 export const jozoServicesKeywords = [
   "jozo biên hòa",
+  "box riêng tư biên hòa",
+  "all in one biên hòa",
+  "thành viên jozo",
+  "theo dõi thời gian sử dụng",
   "tổ hợp giải trí biên hòa",
-  "tổ hợp giải trí đa dạng biên hòa",
   ...jozoServices.flatMap((service) => service.keywords),
 ];
 
@@ -168,7 +187,7 @@ export function buildJozoServicesJsonLd() {
         },
         hasOfferCatalog: {
           "@type": "OfferCatalog",
-          name: "Dịch vụ giải trí tại JOZO",
+          name: "Dịch vụ giải trí all-in-one tại JOZO",
           itemListElement: jozoServices.map((service, index) => ({
             "@type": "Offer",
             position: index + 1,

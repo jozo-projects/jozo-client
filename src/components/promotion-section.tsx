@@ -14,13 +14,13 @@ export default function PromotionSection({
   if (!promotions.length) return null;
 
   return (
-    <section className="glass-surface mb-10 rounded-2xl p-4 sm:mb-16 sm:p-8 md:p-10">
+    <section className="glass-surface mb-10 rounded-2xl p-5 sm:mb-16 sm:p-6 md:p-8">
       <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between mb-4 sm:mb-6">
         <div>
           <Typography
             as="h2"
             variant="bold"
-            className="text-2xl sm:text-3xl text-primary mb-1 sm:mb-2"
+            className="section-title mb-1 sm:mb-2"
           >
             Khuyến mãi hot
           </Typography>

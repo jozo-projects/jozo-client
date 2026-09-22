@@ -22,11 +22,11 @@ export default function NotFound() {
         </div>
 
         {/* Error Message */}
-        <div className="glass-surface mb-8 rounded-3xl p-8">
-          <h2 className="text-3xl font-bold text-foreground mb-4">
-            Oops! Trang không tồn tại
+        <div className="glass-surface mb-8 rounded-2xl p-6 sm:p-8">
+          <h2 className="page-title mb-3">
+            Trang không tồn tại
           </h2>
-          <p className="text-lg text-primary/70 mb-6">
+          <p className="body-copy mb-6">
             Trang bạn đang tìm kiếm không tồn tại hoặc đã bị xóa. Có thể bạn đã
             nhập sai địa chỉ hoặc link đã hết hạn.
           </p>
@@ -35,7 +35,7 @@ export default function NotFound() {
           <div className="space-y-4">
             <Link
               href="/"
-              className="inline-block bg-gradient-to-r from-primary to-red-700 text-primary-foreground font-semibold py-3 px-8 rounded-xl hover:from-red-800 hover:to-brand-hover transition-all duration-300 transform hover:scale-105 shadow-lg"
+              className="inline-block rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-lg transition-colors hover:bg-brand-hover"
             >
               🏠 Về trang chủ
             </Link>
@@ -43,13 +43,13 @@ export default function NotFound() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
               <Link
                 href="/medium"
-                className="glass-control text-primary font-semibold py-3 px-6 rounded-xl transition-all duration-300"
+                className="glass-control rounded-xl px-6 py-3 text-sm font-semibold text-foreground"
               >
                 Đặt S-Box (1-5 người)
               </Link>
               <Link
                 href="/large"
-                className="glass-control text-primary font-semibold py-3 px-6 rounded-xl transition-all duration-300"
+                className="glass-control rounded-xl px-6 py-3 text-sm font-semibold text-foreground"
               >
                 Đặt L-Box
               </Link>
@@ -58,18 +58,18 @@ export default function NotFound() {
         </div>
 
         {/* Contact Info */}
-        <div className="text-primary/70">
+        <div className="body-copy">
           <p className="mb-2">Cần hỗ trợ? Liên hệ với chúng tôi:</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <a
               href="tel:0359660934"
-              className="flex items-center gap-2 text-primary hover:text-brand-hover font-semibold"
+              className="inline-flex items-center gap-2 text-sm font-semibold text-foreground/80 hover:text-foreground"
             >
               📞 035 966 0934
             </a>
             <a
               href="mailto:jozostudiollc@gmail.com"
-              className="flex items-center gap-2 text-primary hover:text-brand-hover font-semibold"
+              className="inline-flex items-center gap-2 text-sm font-semibold text-foreground/80 hover:text-foreground"
             >
               📧 jozostudiollc@gmail.com
             </a>

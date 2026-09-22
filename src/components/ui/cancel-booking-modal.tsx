@@ -28,9 +28,9 @@ export default function CancelBookingModal({
     <div className="fixed inset-0 flex items-center justify-center z-50 bg-primary/40">
       <div className="glass-overlay relative mx-4 w-full max-w-md rounded-2xl p-6">
         <div className="text-center">
-          <div className="bg-red-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+          <div className="bg-primary/15 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
             <svg
-              className="w-8 h-8 text-red-600"
+              className="w-8 h-8 text-primary"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -44,17 +44,17 @@ export default function CancelBookingModal({
             </svg>
           </div>
 
-          <h2 className="text-xl font-bold text-foreground mb-2">Xác nhận hủy</h2>
+          <h2 className="section-title mb-2">Xác nhận hủy</h2>
 
-          <p className="text-primary/70 mb-6">
+          <p className="body-copy mb-6">
             Bạn có chắc chắn muốn hủy box này không? Hành động này không thể
             hoàn tác.
           </p>
 
           {bookingDetails && (
-            <div className="bg-primary/6 rounded-lg p-4 mb-6 text-left">
-              <h3 className="font-semibold text-foreground mb-2">Thông tin:</h3>
-              <div className="space-y-1 text-sm">
+            <div className="mb-6 rounded-xl bg-primary/10 p-4 text-left">
+              <h3 className="card-title mb-2">Thông tin:</h3>
+              <div className="body-copy space-y-1">
                 <div className="flex justify-between">
                   <span className="text-primary/70">Mã đặt box:</span>
                   <span className="font-medium">{bookingCode}</span>
@@ -82,7 +82,7 @@ export default function CancelBookingModal({
           <div className="flex gap-3">
             <button
               onClick={onClose}
-              className="flex-1 py-2 px-4 border border-primary/18 rounded-lg text-primary/80 hover:bg-primary/8 transition-colors"
+              className="glass-control flex-1 rounded-xl px-4 py-2.5 text-sm font-semibold text-foreground"
               disabled={isCancelling}
             >
               Không hủy
@@ -90,7 +90,7 @@ export default function CancelBookingModal({
             <button
               onClick={onConfirm}
               disabled={isCancelling}
-              className="flex-1 py-2 px-4 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex-1 rounded-xl bg-red-500 px-4 py-2.5 text-sm font-semibold text-white hover:bg-red-600 disabled:cursor-not-allowed disabled:opacity-50"
             >
               {isCancelling ? "Đang hủy..." : "Xác nhận hủy"}
             </button>

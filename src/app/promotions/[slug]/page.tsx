@@ -82,16 +82,13 @@ export default async function PromotionDetailPage({
     <div className="min-h-screen bg-background">
       <div className="py-6 sm:py-8">
         {/* Back button */}
-        <Link
-          href="/"
-          className="inline-flex items-center text-primary hover:text-brand-hover mb-6 transition-colors"
-        >
-          <ArrowLeft className="w-5 h-5 mr-2" />
+        <Link href="/" className="back-link">
+          <ArrowLeft />
           Quay lại trang chủ
         </Link>
 
         {/* Main content */}
-        <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
+        <div className="glass-surface overflow-hidden rounded-2xl">
           {/* Hero image */}
           <div className="relative h-64 md:h-96 w-full">
             <Image
@@ -108,12 +105,12 @@ export default async function PromotionDetailPage({
               <Typography
                 as="h1"
                 variant="bold"
-                className="text-3xl md:text-4xl mb-2"
+                className="mb-2 text-2xl sm:text-3xl"
               >
                 {promotion.title}
               </Typography>
               <div className="flex items-center text-sm md:text-base">
-                <Calendar className="w-5 h-5 mr-2" />
+                <Calendar className="mr-2 h-4 w-4" />
                 <span>{formatDate(promotion.postedAt)}</span>
               </div>
             </div>
@@ -126,7 +123,7 @@ export default async function PromotionDetailPage({
               <Typography
                 as="p"
                 variant="semibold"
-                className="text-primary text-lg"
+                className="text-base leading-relaxed text-foreground sm:text-lg"
               >
                 {promotion.shortDescription}
               </Typography>
@@ -143,19 +140,19 @@ export default async function PromotionDetailPage({
                 <>
                   <Link
                     href="/register"
-                    className="bg-primary hover:bg-brand-hover text-primary-foreground font-semibold py-3 px-8 rounded-lg transition-colors text-center"
+                    className="rounded-xl bg-primary px-6 py-3 text-center text-sm font-semibold text-primary-foreground transition-colors hover:bg-brand-hover"
                   >
                     Đăng ký ngay!
                   </Link>
                   <Link
                     href="/membership"
-                    className="bg-white border-2 border-primary text-primary hover:bg-accent font-semibold py-3 px-8 rounded-lg transition-colors text-center"
+                    className="glass-control rounded-xl px-6 py-3 text-center text-sm font-semibold text-foreground"
                   >
                     Xem chương trình thành viên
                   </Link>
                   <a
                     href="tel:0359660934"
-                    className="bg-white border-2 border-primary text-primary hover:bg-accent font-semibold py-3 px-8 rounded-lg transition-colors text-center"
+                    className="glass-control rounded-xl px-6 py-3 text-center text-sm font-semibold text-foreground"
                   >
                     Liên hệ: 035 966 0934
                   </a>
@@ -164,19 +161,19 @@ export default async function PromotionDetailPage({
                 <>
                   <Link
                     href="/medium"
-                    className="bg-primary hover:bg-brand-hover text-primary-foreground font-semibold py-3 px-8 rounded-lg transition-colors text-center"
+                    className="rounded-xl bg-primary px-6 py-3 text-center text-sm font-semibold text-primary-foreground transition-colors hover:bg-brand-hover"
                   >
                     Đặt S-Box (1-5 người)
                   </Link>
                   <Link
                     href="/large"
-                    className="bg-primary hover:bg-brand-hover text-primary-foreground font-semibold py-3 px-8 rounded-lg transition-colors text-center"
+                    className="rounded-xl bg-primary px-6 py-3 text-center text-sm font-semibold text-primary-foreground transition-colors hover:bg-brand-hover"
                   >
                     Đặt box Large (6-8 người)
                   </Link>
                   <a
                     href="tel:0359660934"
-                    className="bg-white border-2 border-primary text-primary hover:bg-accent font-semibold py-3 px-8 rounded-lg transition-colors text-center"
+                    className="glass-control rounded-xl px-6 py-3 text-center text-sm font-semibold text-foreground"
                   >
                     Liên hệ: 035 966 0934
                   </a>

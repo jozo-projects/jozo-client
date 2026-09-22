@@ -77,10 +77,8 @@ export default function RegisterForm() {
   };
 
   return (
-    <FormCard className="max-w-md w-full mx-auto">
-      <h2 className="text-2xl font-bold mb-6 text-center text-primary">
-        Đăng ký thành viên
-      </h2>
+    <FormCard className="mx-auto w-full max-w-md">
+      <h1 className="page-title mb-6 text-center">Đăng ký thành viên</h1>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <Input
@@ -138,7 +136,7 @@ export default function RegisterForm() {
                   error={errors.date_of_birth?.message}
                 />
               ) : (
-                <div className="w-full border rounded px-3 py-2 text-primary/50 bg-primary/8">
+                <div className="glass-control w-full rounded-xl px-3 py-2.5 text-sm text-foreground/50">
                   Đang tải...
                 </div>
               )
@@ -148,7 +146,7 @@ export default function RegisterForm() {
 
         <Button
           type="submit"
-          className="w-full animate-buttonheartbeat bg-primary text-primary-foreground"
+          className="w-full animate-buttonheartbeat"
           onClick={handleSubmit(onSubmit)}
         >
           Đăng ký

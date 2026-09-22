@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 
 export const formCardClassName =
-  "glass-surface rounded-lg p-4 sm:p-6";
+  "glass-surface rounded-2xl p-5 sm:p-6";
 
 type FormCardProps = React.ComponentProps<"div">;
 

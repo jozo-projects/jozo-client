@@ -2,7 +2,8 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Đăng ký thành viên - Jozo Music Box",
-  description: "Đăng ký thành viên Jozo để nhận ưu đãi và quản lý lịch sử đặt box dễ dàng hơn.",
+  description:
+    "Đăng ký thành viên Jozo: theo dõi thời gian sử dụng, nhận ưu đãi minh bạch — không thuế, không phí dịch vụ phát sinh.",
   robots: {
     index: true,
     follow: true,

@@ -16,7 +16,7 @@ const TYPE_BADGE: Record<string, string> = {
 
 const BADGE_CLASS: Record<string, string> = {
   small:
-    "bg-red-50 text-primary ring-1 ring-red-200/90 font-semibold tracking-tight",
+    "bg-primary/15 text-primary ring-1 ring-primary/25 font-semibold tracking-tight",
   medium:
     "bg-primary/8 text-primary ring-1 ring-primary/20 font-semibold tracking-tight",
   large:

@@ -18,7 +18,7 @@ const RoomDetail: React.FC<RoomDetailProps> = ({ roomData }) => {
   return (
     <div className="glass-surface mx-auto max-w-4xl rounded-2xl p-6">
       {/* Room Name */}
-      <h1 className="text-3xl font-bold mb-4">{roomData.name}</h1>
+      <h1 className="page-title mb-4">{roomData.name}</h1>
 
       {/* Room Images */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
@@ -39,7 +39,7 @@ const RoomDetail: React.FC<RoomDetailProps> = ({ roomData }) => {
       </div>
 
       {/* Room Description */}
-      <p className="text-primary/80 mb-4">{roomData.description}</p>
+      <p className="body-copy mb-4">{roomData.description}</p>
 
       {/* Pricing */}
       <p className="text-lg font-semibold text-foreground mb-4">

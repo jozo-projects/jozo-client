@@ -167,12 +167,12 @@ function FaqItem({
       whileInView={reducedMotion ? undefined : { opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-40px" }}
       transition={{ duration: 0.45, delay: index * 0.06 }}
-      className="overflow-hidden rounded-xl border border-border/80 bg-white shadow-sm"
+      className="glass-surface overflow-hidden rounded-2xl"
     >
       <button
         type="button"
         onClick={() => setOpen((value) => !value)}
-        className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left"
+        className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left text-foreground transition-colors hover:bg-white/5"
         aria-expanded={open}
       >
         <span className="text-sm font-semibold text-foreground sm:text-base">
@@ -181,7 +181,7 @@ function FaqItem({
         <motion.span
           animate={{ rotate: open ? 45 : 0 }}
           transition={{ duration: 0.2 }}
-          className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-foreground/8 text-foreground text-lg leading-none"
+          className="glass-control flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-lg leading-none text-foreground"
           aria-hidden
         >
           +
@@ -196,7 +196,7 @@ function FaqItem({
         transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
         className="overflow-hidden"
       >
-        <p className="px-5 pb-4 text-sm leading-relaxed text-foreground/75">
+        <p className="px-5 pb-4 text-sm leading-relaxed text-foreground/80">
           {answer}
         </p>
       </motion.div>
@@ -216,9 +216,9 @@ export default function AboutServicesPage() {
       >
         <Link
           href="/"
-          className="mb-6 inline-flex items-center text-sm font-medium text-foreground/80 transition-colors hover:text-foreground"
+          className="back-link"
         >
-          <ArrowLeft className="mr-2 h-4 w-4" aria-hidden />
+          <ArrowLeft aria-hidden />
           Quay lại trang chủ
         </Link>
       </motion.div>
@@ -262,7 +262,7 @@ export default function AboutServicesPage() {
               className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/8 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-white/75 backdrop-blur-sm"
             >
               <Sparkles className="h-3.5 w-3.5" aria-hidden />
-              Tổ hợp giải trí Biên Hòa
+              Box riêng tư all-in-one
             </motion.span>
 
             <motion.h1
@@ -314,7 +314,7 @@ export default function AboutServicesPage() {
         </div>
       </section>
 
-      <div className="space-y-10 rounded-2xl border border-border/70 bg-white p-5 shadow-lg sm:space-y-12 sm:p-8">
+      <div className="glass-surface space-y-10 rounded-2xl p-5 sm:space-y-12 sm:p-8">
         {/* Services bento */}
         <section aria-labelledby="services-heading">
           <div className="mb-6 sm:mb-8">
@@ -322,11 +322,12 @@ export default function AboutServicesPage() {
               id="services-heading"
               className="text-2xl font-bold text-foreground sm:text-3xl"
             >
-              Đa dạng giải trí tại JOZO
+              All-in-one tại JOZO
             </h2>
-            <p className="mt-2 max-w-2xl text-sm leading-relaxed text-foreground/70 sm:text-base">
-              Music box, Netflix, Nintendo Switch và board game — chọn một hoặc
-              kết hợp cả buổi trong cùng một địa điểm.
+            <p className="mt-2 max-w-2xl text-sm leading-relaxed text-foreground/80 sm:text-base">
+              Music box riêng tư, Netflix, Nintendo Switch và board game —
+              all-in-one tại một chỗ. Theo dõi thời gian, thành viên, order trên
+              tablet. Giá luôn minh bạch — không thuế, không phí dịch vụ.
             </p>
           </div>
 
@@ -350,8 +351,9 @@ export default function AboutServicesPage() {
           >
             Câu hỏi thường gặp
           </h2>
-          <p className="mt-2 text-sm text-foreground/70">
-            Thông tin nhanh về dịch vụ tại JOZO Biên Hòa.
+          <p className="mt-2 text-sm text-foreground/80">
+            Thông tin nhanh về box riêng tư, giá minh bạch và dịch vụ tại JOZO
+            Biên Hòa.
           </p>
           <div className="mt-5 space-y-3">
             {jozoServicesFaq.map((item, index) => (

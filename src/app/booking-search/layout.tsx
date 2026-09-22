@@ -2,7 +2,8 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Tra cứu đặt box - Jozo Music Box",
-  description: "Tra cứu thông tin đặt box tại Jozo Music Box bằng số điện thoại",
+  description:
+    "Tra cứu đặt box tại Jozo: xem thời gian sử dụng và thông tin minh bạch bằng số điện thoại — không thuế, không phí dịch vụ phát sinh.",
   robots: {
     index: true,
     follow: true,

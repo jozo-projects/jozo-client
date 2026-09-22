@@ -29,7 +29,7 @@ export default function TimeSlot({
           {/* Chú thích */}
           <div className="flex items-center gap-4 mb-4">
             <div className="flex items-center gap-2">
-              <span className="w-4 h-4 bg-white border rounded-sm border-primary/35 block"></span>
+              <span className="w-4 h-4 glass-control border rounded-sm border-primary/35 block"></span>
               <p className="text-sm">Khả dụng</p>
             </div>
             <div className="flex items-center gap-2">
@@ -59,7 +59,7 @@ export default function TimeSlot({
                       ? "bg-primary/20 border-primary/25 text-primary/50 cursor-not-allowed"
                       : isSelected
                       ? "bg-primary text-primary-foreground border-primary"
-                      : "bg-white border-primary/40 text-primary"
+                      : "glass-control border-primary/40 text-foreground"
                   }`}
                 >
                   {slot}

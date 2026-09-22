@@ -135,14 +135,14 @@ export default async function ProfilePage() {
             <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_30%,rgba(255,255,255,0.08),transparent_45%),radial-gradient(circle_at_80%_0%,rgba(255,66,66,0.2),transparent_35%)]" />
             <div className="relative space-y-4">
               <div className="space-y-1">
-                <p className="text-xs uppercase tracking-wide text-gray-400">
+                <p className="meta-copy uppercase tracking-wide">
                   Hạng
                 </p>
                 <p className="text-2xl font-extrabold">
                   {currentTier || "Chưa có hạng"}
                 </p>
                 {nextTierName && remainingToNextTier !== null && (
-                  <p className="text-xs text-gray-300">
+                  <p className="meta-copy">
                     Còn{" "}
                     <span className="font-semibold text-amber-300">
                       {remainingToNextTier.toLocaleString("vi-VN")} điểm
@@ -178,7 +178,7 @@ export default async function ProfilePage() {
             </div>
           </div>
 
-          <div className="rounded-2xl border border-gray-100 bg-white p-4 sm:p-5 shadow-sm">
+          <div className="glass-surface rounded-2xl p-4 sm:p-5">
             <StreakRewards
               windowDays={streakWindowDays}
               currentCount={streakCount}

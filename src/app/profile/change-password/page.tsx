@@ -15,23 +15,23 @@ export default async function ChangePasswordPage() {
     <div className="max-w-3xl mx-auto w-full space-y-5">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-semibold text-primary">Đổi mật khẩu</h1>
-          <p className="text-sm text-primary/70">
+          <h1 className="page-title">Đổi mật khẩu</h1>
+          <p className="page-lede">
             {isAuthed
               ? `Xin chào ${displayName}, hãy cập nhật mật khẩu mới của bạn.`
               : "Bạn cần đăng nhập để đổi mật khẩu."}
           </p>
         </div>
-        <Button asChild variant="outline" className="text-black bg-white">
+        <Button asChild variant="outline">
           <Link href="/profile">Quay lại hồ sơ</Link>
         </Button>
       </div>
 
       {!isAuthed ? (
         <FormCard className="space-y-3">
-          <p className="text-sm text-primary/80">
+          <p className="body-copy">
             Bạn chưa đăng nhập. Vui lòng{" "}
-            <Link href="/login" className="text-pink-600 underline">
+            <Link href="/login" className="text-link">
               đăng nhập
             </Link>{" "}
             để tiếp tục.
@@ -40,8 +40,8 @@ export default async function ChangePasswordPage() {
       ) : (
         <FormCard className="space-y-4">
           <div className="space-y-1">
-            <h2 className="text-lg font-semibold text-primary">Cập nhật mật khẩu</h2>
-            <p className="text-sm text-primary/70">
+            <h2 className="card-title">Cập nhật mật khẩu</h2>
+            <p className="body-copy">
               Nhập mật khẩu hiện tại và thiết lập mật khẩu mới.
             </p>
           </div>

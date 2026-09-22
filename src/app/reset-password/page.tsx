@@ -73,10 +73,10 @@ function ResetPasswordContent() {
   if (!token) {
     return (
       <FormCard className="max-w-md w-full mx-auto">
-        <h2 className="text-2xl font-bold mb-4 text-center text-primary">
+        <h2 className="page-title mb-4 text-center">
           Liên kết không hợp lệ
         </h2>
-        <p className="text-sm text-center text-primary/70 mb-6">
+        <p className="body-copy mb-6 text-center">
           Liên kết đặt lại mật khẩu không hợp lệ hoặc đã hết hạn. Vui lòng yêu
           cầu gửi lại email đặt lại mật khẩu.
         </p>
@@ -89,10 +89,8 @@ function ResetPasswordContent() {
 
   return (
     <FormCard className="max-w-md w-full mx-auto">
-      <h2 className="text-2xl font-bold mb-2 text-center text-primary">
-        Đặt lại mật khẩu
-      </h2>
-      <p className="text-sm text-center text-primary/70 mb-6">
+      <h1 className="page-title mb-2 text-center">Đặt lại mật khẩu</h1>
+      <p className="body-copy mb-6 text-center">
         Nhập mật khẩu mới cho tài khoản của bạn.
       </p>
 
@@ -118,7 +116,7 @@ function ResetPasswordContent() {
 
         <Button
           type="submit"
-          className="w-full animate-buttonheartbeat bg-primary text-primary-foreground"
+          className="w-full animate-buttonheartbeat"
           disabled={isSubmitting}
         >
           {isSubmitting ? "Đang xử lý..." : "Đặt lại mật khẩu"}

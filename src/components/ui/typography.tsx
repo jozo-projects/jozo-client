@@ -12,7 +12,7 @@ type TypographyProps = {
 const Typography: React.FC<TypographyProps> = ({
   as = "p",
   children,
-  className = "text-foreground dark:text-red-100",
+  className = "text-foreground",
   href,
   variant = "default",
 }) => {
@@ -21,13 +21,13 @@ const Typography: React.FC<TypographyProps> = ({
   // Áp dụng class CSS theo từng thẻ và responsive
   const baseClass = clsx(
     {
-      h1: "text-2xl sm:text-3xl md:text-4xl font-bold leading-tight",
-      h2: "text-xl sm:text-2xl md:text-3xl font-semibold leading-snug",
-      h3: "text-lg sm:text-xl md:text-2xl font-medium",
-      h4: "text-base sm:text-lg md:text-xl font-medium",
-      h5: "text-sm sm:text-base md:text-lg font-medium",
-      h6: "text-xs sm:text-sm md:text-base font-medium",
-      p: "text-sm sm:text-base leading-relaxed",
+      h1: "text-2xl font-bold leading-tight tracking-tight sm:text-3xl",
+      h2: "text-xl font-semibold leading-snug tracking-tight sm:text-2xl",
+      h3: "text-base font-semibold sm:text-lg",
+      h4: "text-sm font-semibold sm:text-base",
+      h5: "text-sm font-medium",
+      h6: "text-xs font-medium",
+      p: "text-sm leading-relaxed sm:text-base",
       span: "text-xs sm:text-sm",
       a: "text-primary hover:underline",
     }[as],

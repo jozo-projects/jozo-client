@@ -82,8 +82,8 @@ export function StreakRewards({ windowDays, currentCount, rewards }: Props) {
       `}</style>
       <div className="flex items-center justify-between">
         <div>
-          <p className="text-sm font-semibold text-gray-800">Lượt sử dụng</p>
-          <p className="text-xs text-gray-500">
+          <p className="text-sm font-semibold text-foreground">Lượt sử dụng</p>
+          <p className="text-xs text-foreground/70">
             {currentCount} / {cappedWindow} lượt · Chạm vào mốc để xem quà
           </p>
         </div>
@@ -110,8 +110,8 @@ export function StreakRewards({ windowDays, currentCount, rewards }: Props) {
               onClick={() => reward && hasGiftConfig && setSelected(reward)}
               className={`relative flex h-14 w-full items-center justify-center rounded-xl border text-[11px] font-semibold overflow-hidden transition focus:outline-none ${
                 active
-                  ? "bg-gradient-to-br from-emerald-100 via-white to-emerald-50 border-emerald-200 text-emerald-800 shadow-sm"
-                  : "bg-gray-50 border-gray-200 text-gray-600"
+                  ? "bg-emerald-500/20 border-emerald-300/40 text-emerald-100 shadow-sm"
+                  : "glass-control text-foreground/70"
               } ${isNext ? "ring-2 ring-emerald-300" : ""} ${
                 reward && hasGiftConfig
                   ? "hover:-translate-y-[1px] hover:shadow"
@@ -141,22 +141,22 @@ export function StreakRewards({ windowDays, currentCount, rewards }: Props) {
 
                   <div className="relative flex flex-col items-center gap-1">
                     {hasGiftConfig ? (
-                      <div className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-emerald-600 shadow ring-1 ring-emerald-100 animate-pulse">
+                      <div className="flex h-9 w-9 items-center justify-center rounded-full bg-emerald-400/20 text-emerald-200 ring-1 ring-emerald-300/30 animate-pulse">
                         <GiftIcon className="h-5 w-5" />
                       </div>
                     ) : (
-                      <span className="text-[10px] text-gray-600">
+                      <span className="text-[10px] text-foreground/70">
                         Quà tặng
                       </span>
                     )}
                   </div>
                 </div>
               ) : active ? (
-                <span className="flex h-9 w-9 items-center justify-center rounded-full bg-white/90 shadow ring-1 ring-white/60 text-[11px] font-bold text-emerald-800">
+                <span className="flex h-9 w-9 items-center justify-center rounded-full bg-emerald-400/25 ring-1 ring-emerald-300/40 text-[11px] font-bold text-emerald-100">
                   ✓
                 </span>
               ) : (
-                <span className="text-[11px] font-semibold text-gray-700">
+                <span className="text-[11px] font-semibold text-foreground/75">
                   {visitLabel(day)}
                 </span>
               )}
@@ -171,64 +171,64 @@ export function StreakRewards({ windowDays, currentCount, rewards }: Props) {
           onClick={() => setSelected(null)}
         >
           <div
-            className="relative max-h-[85vh] w-full max-w-md overflow-y-auto rounded-2xl bg-white p-5 shadow-2xl"
+            className="glass-overlay relative max-h-[85vh] w-full max-w-md overflow-y-auto rounded-2xl p-5"
             onClick={(event) => event.stopPropagation()}
           >
             <button
               type="button"
               onClick={() => setSelected(null)}
-              className="absolute right-3 top-3 rounded-full bg-gray-100 px-2 py-1 text-xs font-semibold text-gray-600 hover:bg-gray-200"
+              className="glass-control absolute right-3 top-3 rounded-full px-2 py-1 text-xs font-semibold text-foreground"
             >
               Đóng
             </button>
 
             <div className="space-y-1 pr-10">
-              <p className="text-xs font-semibold uppercase tracking-wide text-emerald-700">
+              <p className="text-xs font-semibold uppercase tracking-wide text-emerald-300">
                 Mốc {selected.count}/{cappedWindow}
               </p>
-              <h3 className="text-lg font-bold text-gray-900">
+              <h3 className="text-lg font-bold text-foreground">
                 Phần thưởng mốc này
               </h3>
             </div>
 
             <div className="mt-4 space-y-4">
-              <div className="rounded-xl border border-amber-100 bg-amber-50 px-4 py-3">
-                <p className="text-xs font-semibold uppercase tracking-wide text-amber-700">
+              <div className="glass-control rounded-xl border-l-4 border-amber-400 px-4 py-3">
+                <p className="text-xs font-semibold uppercase tracking-wide text-amber-200">
                   Điểm thưởng
                 </p>
-                <p className="mt-1 text-2xl font-extrabold text-amber-900">
+                <p className="mt-1 text-2xl font-extrabold text-foreground">
                   +{selected.bonusPoints.toLocaleString("vi-VN")} điểm
                 </p>
               </div>
 
               {selectedGift ? (
-                <div className="space-y-3 rounded-xl border border-emerald-100 bg-emerald-50/60 p-4">
+                <div className="glass-control space-y-3 rounded-xl p-4">
                   <div className="flex items-start gap-3">
                     {selectedGift.image ? (
                       // eslint-disable-next-line @next/next/no-img-element
                       <img
                         src={selectedGift.image}
                         alt={selectedGift.name}
-                        className="h-20 w-20 shrink-0 rounded-xl object-cover border border-emerald-100 bg-white"
+                        className="h-20 w-20 shrink-0 rounded-xl object-cover border border-emerald-300/30 bg-emerald-500/10"
                       />
                     ) : (
-                      <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-xl border border-dashed border-emerald-200 bg-white text-emerald-600">
+                      <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-xl border border-dashed border-emerald-300/40 bg-emerald-500/10 text-emerald-200">
                         <GiftIcon className="h-8 w-8" />
                       </div>
                     )}
 
                     <div className="min-w-0 space-y-1">
-                      <p className="text-xs font-semibold uppercase tracking-wide text-emerald-700">
+                      <p className="text-xs font-semibold uppercase tracking-wide text-emerald-300">
                         Quà tặng kèm
                       </p>
-                      <p className="text-base font-bold text-gray-900">
+                      <p className="text-base font-bold text-foreground">
                         {selectedGift.name}
                       </p>
-                      <p className="text-xs text-gray-600">
+                      <p className="text-xs text-foreground/70">
                         {giftTypeLabel[selectedGift.type]}
                       </p>
                       {formatGiftValue(selectedGift) ? (
-                        <p className="text-sm font-semibold text-emerald-700">
+                        <p className="text-sm font-semibold text-emerald-200">
                           {formatGiftValue(selectedGift)}
                         </p>
                       ) : null}
@@ -236,9 +236,9 @@ export function StreakRewards({ windowDays, currentCount, rewards }: Props) {
                   </div>
 
                   {selectedGift.items && selectedGift.items.length > 0 ? (
-                    <div className="space-y-2 rounded-xl border border-white bg-white p-3">
+                    <div className="space-y-2 rounded-xl border border-white/10 p-3">
                       <div className="flex items-center justify-between gap-3">
-                        <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">
+                        <p className="text-xs font-semibold uppercase tracking-wide text-foreground/60">
                           Danh sách món trong quà
                         </p>
                       </div>
@@ -246,14 +246,14 @@ export function StreakRewards({ windowDays, currentCount, rewards }: Props) {
                         {selectedGift.items.map((item, index) => (
                           <li
                             key={`${normalizeObjectId(item.itemId) || item.name}-${index}`}
-                            className="flex items-center justify-between gap-3 rounded-lg border border-gray-100 bg-gray-50 px-3 py-2.5"
+                            className="glass-control flex items-center justify-between gap-3 rounded-lg px-3 py-2.5"
                           >
                             <div className="min-w-0">
-                              <p className="text-sm font-semibold text-gray-900">
+                              <p className="text-sm font-semibold text-foreground">
                                 {item.name}
                               </p>
                             </div>
-                            <span className="shrink-0 rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-bold text-emerald-800">
+                            <span className="shrink-0 rounded-full bg-emerald-400/20 px-2.5 py-1 text-xs font-bold text-emerald-100">
                               x{item.quantity}
                             </span>
                           </li>
@@ -261,13 +261,13 @@ export function StreakRewards({ windowDays, currentCount, rewards }: Props) {
                       </ul>
                     </div>
                   ) : (
-                    <div className="rounded-xl border border-dashed border-emerald-200 bg-white px-4 py-3 text-sm text-gray-600">
+                    <div className="rounded-xl border border-dashed border-emerald-300/30 px-4 py-3 text-sm text-foreground/70">
                       Quà này chưa có danh sách món chi tiết.
                     </div>
                   )}
                 </div>
               ) : (
-                <div className="rounded-xl border border-dashed border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-600">
+                <div className="rounded-xl border border-dashed border-white/15 px-4 py-3 text-sm text-foreground/70">
                   Không tìm thấy thông tin quà cho mốc này.
                 </div>
               )}
