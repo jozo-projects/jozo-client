@@ -311,9 +311,7 @@ function BookingSearchContent() {
       <div className="mx-auto w-full max-w-3xl py-2">
         {/* Header */}
         <div className="mb-8 text-center">
-          <h1 className="page-title">
-            Tra cứu đặt box
-          </h1>
+          <h1 className="page-title">Tra cứu đặt box</h1>
           <p className="page-lede mx-auto max-w-2xl">
             Nhập số điện thoại để tra cứu thông tin đặt box
           </p>
@@ -475,11 +473,11 @@ function BookingSearchContent() {
                       <div
                         key={booking._id}
                         onClick={() => handleBookingClick(booking)}
-                        className="group bg-gradient-to-r from-white to-primary/5 border border-primary/12 rounded-2xl overflow-hidden hover:shadow-xl hover:border-red-200 transition-all duration-300 transform hover:-translate-y-1 cursor-pointer"
+                        className="group glass-surface cursor-pointer overflow-hidden rounded-2xl transition-transform duration-300 hover:-translate-y-1"
                         style={{ animationDelay: `${index * 100}ms` }}
                       >
                         {/* Header - Status & Action Buttons */}
-                        <div className="bg-gradient-to-r from-muted/40 to-white px-6 py-4 border-b border-border flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+                        <div className="flex flex-col gap-3 border-b border-white/10 bg-white/5 px-6 py-4 md:flex-row md:items-center md:justify-between">
                           <div className="flex items-center gap-3">
                             <p
                               className={`text-lg font-bold ${getStatusColor(
@@ -547,7 +545,7 @@ function BookingSearchContent() {
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             {/* Customer Info */}
                             <div className="space-y-3">
-                              <h3 className="font-bold text-lg text-foreground flex items-center gap-2">
+                              <h3 className="flex items-center gap-2 text-lg font-bold text-white">
                                 <svg
                                   className="w-5 h-5 text-primary"
                                   fill="none"
@@ -564,7 +562,7 @@ function BookingSearchContent() {
                                 {booking.customerName}
                               </h3>
                               <div className="space-y-2">
-                                <p className="text-sm text-primary/70 flex items-center gap-2">
+                                <p className="text-sm text-foreground/70 flex items-center gap-2">
                                   <svg
                                     className="w-4 h-4 text-primary flex-shrink-0"
                                     fill="none"
@@ -581,7 +579,7 @@ function BookingSearchContent() {
                                   {booking.customerPhone}
                                 </p>
                                 {booking.customerEmail && (
-                                  <p className="text-sm text-primary/70 flex items-center gap-2 break-all">
+                                  <p className="text-sm text-foreground/70 flex items-center gap-2 break-all">
                                     <svg
                                       className="w-4 h-4 text-primary flex-shrink-0"
                                       fill="none"
@@ -603,7 +601,7 @@ function BookingSearchContent() {
 
                             {/* Booking Details */}
                             <div className="space-y-3">
-                              <h3 className="font-bold text-lg text-foreground flex items-center gap-2">
+                              <h3 className="flex items-center gap-2 text-lg font-bold text-white">
                                 <svg
                                   className="w-5 h-5 text-primary"
                                   fill="none"
@@ -620,7 +618,7 @@ function BookingSearchContent() {
                                 {getBookingRoomName(booking)}
                               </h3>
                               <div className="space-y-2">
-                                <p className="text-sm text-primary/70 flex items-center gap-2">
+                                <p className="text-sm text-foreground/70 flex items-center gap-2">
                                   <svg
                                     className="w-4 h-4 text-blue-500 flex-shrink-0"
                                     fill="none"
@@ -637,7 +635,7 @@ function BookingSearchContent() {
                                   <span className="font-medium">Ngày đặt:</span>
                                   {formatDateTime(booking.createdAt || "")}
                                 </p>
-                                <p className="text-sm text-primary/70 flex items-center gap-2">
+                                <p className="text-sm text-foreground/70 flex items-center gap-2">
                                   <svg
                                     className="w-4 h-4 text-green-500 flex-shrink-0"
                                     fill="none"
@@ -654,7 +652,7 @@ function BookingSearchContent() {
                                   <span className="font-medium">Bắt đầu:</span>
                                   {formatDateTime(booking.startTime)}
                                 </p>
-                                <p className="text-sm text-primary/70 flex items-center gap-2">
+                                <p className="text-sm text-foreground/70 flex items-center gap-2">
                                   <svg
                                     className="w-4 h-4 text-red-500 flex-shrink-0"
                                     fill="none"
@@ -740,16 +738,16 @@ function BookingSearchContent() {
                   Thông tin khách hàng
                 </h3>
                 <div className="space-y-2">
-                  <p className="text-primary/80">
+                  <p className="text-white">
                     <span className="font-medium">Tên:</span>{" "}
                     {selectedBooking.customerName}
                   </p>
-                  <p className="text-primary/80">
+                  <p className="text-white">
                     <span className="font-medium">SĐT:</span>{" "}
                     {selectedBooking.customerPhone}
                   </p>
                   {selectedBooking.customerEmail && (
-                    <p className="text-primary/80">
+                    <p className="text-white">
                       <span className="font-medium">Email:</span>{" "}
                       {selectedBooking.customerEmail}
                     </p>
