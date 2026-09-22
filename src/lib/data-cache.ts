@@ -3,6 +3,7 @@ import {
   serializeMongoDocument,
   serializeMongoDocuments,
 } from "@/lib/serialize-utils";
+import { extractQueueSongs } from "@/lib/queue-songs";
 import { Booking } from "@/types/booking";
 import { Price } from "@/types/price";
 import { RoomType } from "@/types/room";
@@ -49,16 +50,19 @@ export const getPrices = unstable_cache(
 );
 
 /**
- * Cached function để lấy booking details
- * Sử dụng unstable_cache với tags để có thể revalidate
+ * Lấy booking details kèm queue hiện tại.
+ * Không dùng unstable_cache vì queueSongs đổi thường xuyên.
  */
-export const getBookingDetails = unstable_cache(
+export const getBookingDetails = cache(
   async (id: string): Promise<Booking | null> => {
     try {
+      if (!ObjectId.isValid(id)) {
+        return null;
+      }
+
       const client = await clientPromise;
       const db = client.db("jozo");
 
-      // Tìm booking theo _id
       const booking = await db.collection("room_schedules").findOne({
         _id: new ObjectId(id),
       });
@@ -67,18 +71,16 @@ export const getBookingDetails = unstable_cache(
         return null;
       }
 
-      // Serialize MongoDB document để có thể truyền sang Client Component
-      return serializeMongoDocument(booking) as Booking;
+      const serialized = serializeMongoDocument(booking) as Booking;
+      return {
+        ...serialized,
+        queueSongs: extractQueueSongs(serialized),
+      };
     } catch (error) {
       console.error("Error fetching booking details:", error);
       return null;
     }
   },
-  ["booking-details"],
-  {
-    tags: ["booking-details"],
-    revalidate: 60, // Cache trong 60 giây
-  }
 );
 
 /**

@@ -2,10 +2,10 @@
 
 import { JozoLoaderWithText } from "@/components/ui/jozo-loader";
 import { useToast } from "@/hooks/use-toast";
-import { addSongToQueue, removeSongFromQueue } from "@/lib/api-utils";
+import { addSongToQueue, fetchQueueSongs, removeSongFromQueue } from "@/lib/api-utils";
+import { extractQueueSongs } from "@/lib/queue-songs";
 import { Booking, QueueSong } from "@/types/booking.d";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 
 interface VideoItem {
@@ -36,14 +36,10 @@ async function searchYouTube(
   roomScheduleId?: string,
 ): Promise<VideoData> {
   const searchQuery = query.trim();
+  const params = new URLSearchParams({ query: searchQuery });
+  if (roomScheduleId) params.set("booking", roomScheduleId);
 
-  const url = roomScheduleId
-    ? `/api/search-videos?query=${encodeURIComponent(
-        searchQuery,
-      )}&booking=${encodeURIComponent(roomScheduleId)}`
-    : `/api/search-videos?query=${encodeURIComponent(searchQuery)}`;
-
-  const res = await fetch(url);
+  const res = await fetch(`/api/search-videos?${params.toString()}`);
   const data = await res.json();
   return data;
 }
@@ -55,7 +51,6 @@ export default function SearchSongsClient({
   initialBookingDetails,
 }: SearchSongsClientProps) {
   const { toast } = useToast();
-  const router = useRouter();
 
   const [searchQuery, setSearchQuery] = useState("");
   const [data, setData] = useState<VideoData | null>(null);
@@ -68,7 +63,7 @@ export default function SearchSongsClient({
   const [loadingBooking, setLoadingBooking] = useState(false);
   const [addingToQueue, setAddingToQueue] = useState<string | null>(null);
   const [queueSongs, setQueueSongs] = useState<QueueSong[]>(
-    initialBookingDetails?.queueSongs || [],
+    extractQueueSongs(initialBookingDetails),
   );
   const [showQueueModal, setShowQueueModal] = useState(false);
 
@@ -76,27 +71,26 @@ export default function SearchSongsClient({
   useEffect(() => {
     if (initialBookingDetails) {
       setBookingDetails(initialBookingDetails);
-      setQueueSongs(initialBookingDetails.queueSongs || []);
+      const songs = extractQueueSongs(initialBookingDetails);
+      if (songs.length) {
+        setQueueSongs(songs);
+      }
     }
   }, [initialBookingDetails]);
 
-  // Function để refresh booking details và queue songs
-  const refreshBookingDetails = useCallback(async () => {
+  const loadQueueSongs = useCallback(async () => {
     if (!roomScheduleId) return;
-
-    setLoadingBooking(true);
     try {
-      // Force refresh SSR data - SSR sẽ tự động fetch dữ liệu mới từ cache
-      router.refresh();
-
-      // SSR sẽ re-render component với dữ liệu mới từ getBookingDetails()
-      // Không cần fetch client-side vì SSR đã handle
+      const songs = await fetchQueueSongs(roomScheduleId);
+      setQueueSongs(songs);
     } catch (error) {
-      console.error("Error refreshing booking details:", error);
-    } finally {
-      setLoadingBooking(false);
+      console.error("Error loading queue songs:", error);
     }
-  }, [roomScheduleId, router]);
+  }, [roomScheduleId]);
+
+  useEffect(() => {
+    void loadQueueSongs();
+  }, [loadQueueSongs]);
 
   // Debounce effect để delay việc tìm kiếm
   useEffect(() => {
@@ -116,7 +110,10 @@ export default function SearchSongsClient({
       setError(null);
 
       try {
-        const result = await searchYouTube(query, roomScheduleId || undefined);
+        const result = await searchYouTube(
+          query,
+          roomScheduleId || undefined,
+        );
         setData(result);
       } catch {
         setError("Có lỗi xảy ra khi tìm kiếm video");
@@ -155,7 +152,7 @@ export default function SearchSongsClient({
   }, [showQueueModal]);
 
   return (
-    <div className="w-full">
+    <div className={`w-full ${queueSongs.length > 0 ? "pb-28" : ""}`}>
       <h1 className="text-3xl font-bold mb-6">Tìm kiếm video</h1>
 
       {roomScheduleId && (
@@ -258,6 +255,9 @@ export default function SearchSongsClient({
         </div>
       ) : data ? (
         <div className="space-y-6">
+          {data.total > 0 && (
+            <p className="text-sm text-primary/60">{data.total} kết quả</p>
+          )}
           <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
             {data.videos.map((video) => (
               <div
@@ -330,8 +330,11 @@ export default function SearchSongsClient({
                             title: "Thành công!",
                             description: `Đã thêm "${video.title}" vào danh sách phát!`,
                           });
-                          // Refresh danh sách video sau khi thêm thành công
-                          refreshBookingDetails();
+                          if (result.queueSongs?.length) {
+                            setQueueSongs(result.queueSongs);
+                          } else {
+                            await loadQueueSongs();
+                          }
                         } else {
                           toast({
                             variant: "destructive",
@@ -383,8 +386,51 @@ export default function SearchSongsClient({
         </div>
       ) : null}
 
-      {/* Floating Button */}
-      {roomScheduleId && (
+      {/* Thanh danh sách phát — luôn hiện khi đã có bài, kể cả lúc mở lại app */}
+      {roomScheduleId && queueSongs.length > 0 && !showQueueModal && (
+        <button
+          type="button"
+          onClick={() => setShowQueueModal(true)}
+          className="fixed bottom-0 left-0 right-0 z-50 border-t border-primary/15 bg-background/95 px-4 py-3 shadow-[0_-8px_24px_rgba(0,0,0,0.18)] backdrop-blur-md"
+        >
+          <div className="mx-auto flex max-w-3xl items-center gap-3">
+            <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground">
+              <svg
+                className="h-5 w-5"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z" />
+              </svg>
+            </div>
+            <div className="min-w-0 flex-1 text-left">
+              <p className="text-sm font-semibold text-foreground">
+                Danh sách phát
+              </p>
+              <p className="truncate text-xs text-primary/70">
+                {queueSongs.length} bài · {queueSongs[0]?.title}
+              </p>
+            </div>
+            <div className="flex -space-x-2">
+              {queueSongs.slice(0, 3).map((song, index) => (
+                <Image
+                  key={`${song.video_id}-${index}`}
+                  src={song.thumbnail}
+                  alt=""
+                  width={36}
+                  height={36}
+                  className="h-9 w-9 rounded-md border border-background object-cover"
+                />
+              ))}
+            </div>
+            <span className="flex h-7 min-w-7 items-center justify-center rounded-full bg-red-500 px-2 text-xs font-bold text-white">
+              {queueSongs.length}
+            </span>
+          </div>
+        </button>
+      )}
+
+      {roomScheduleId && queueSongs.length === 0 && (
         <button
           onClick={() => setShowQueueModal(true)}
           className="fixed bottom-6 right-6 w-14 h-14 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-200 z-50 flex items-center justify-center"
@@ -402,11 +448,6 @@ export default function SearchSongsClient({
               d="M4 6h16M4 10h16M4 14h16M4 18h16"
             />
           </svg>
-          {queueSongs.length > 0 && (
-            <div className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-bold">
-              {queueSongs.length}
-            </div>
-          )}
         </button>
       )}
 
@@ -561,8 +602,11 @@ export default function SearchSongsClient({
                                 title: "Thành công!",
                                 description: `Đã xóa "${song.title}" khỏi danh sách phát!`,
                               });
-                              // Refresh danh sách video sau khi xóa thành công
-                              refreshBookingDetails();
+                              if (result.queueSongs) {
+                                setQueueSongs(result.queueSongs);
+                              } else {
+                                await loadQueueSongs();
+                              }
                             } else {
                               toast({
                                 variant: "destructive",

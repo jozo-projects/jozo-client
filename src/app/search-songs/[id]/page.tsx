@@ -2,6 +2,8 @@ import SearchSongsClient from "@/components/search-songs-client";
 import { getBookingDetails } from "@/lib/data-cache";
 import { Metadata } from "next";
 
+export const dynamic = "force-dynamic";
+
 // Ngăn không cho Google index các trang search-songs
 export const metadata: Metadata = {
   title: "Chọn nhạc - Jozo Music Box",

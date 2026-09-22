@@ -68,6 +68,17 @@ body {
     text-wrap: balance;
   }
 
+  /* Keep accent copy readable on the ruby-dark foundation. */
+  .text-primary\/50,
+  .text-primary\/55,
+  .text-primary\/60,
+  .text-primary\/65,
+  .text-primary\/70,
+  .text-primary\/75,
+  .text-primary\/80 {
+    color: hsl(var(--primary) / 0.86) !important;
+  }
+
   .scrollbar-hide {
     -ms-overflow-style: none;
     scrollbar-width: none;
@@ -224,6 +235,7 @@ body {
     /* Medium-dark ruby ambient foundation: red remains JOZO's accent and light source. */
     --background: 0 26% 12%;
     --foreground: 0 20% 96%;
+    --heading: 0 12% 88%;
     --card: 0 24% 17%;
     --card-foreground: 0 20% 96%;
     --popover: 0 24% 17%;
@@ -269,6 +281,7 @@ body {
   .dark {
     --background: 0 35% 8%;
     --foreground: 0 40% 92%;
+    --heading: 0 24% 88%;
     --card: 0 30% 11%;
     --card-foreground: 0 40% 92%;
     --popover: 0 30% 11%;
@@ -313,6 +326,13 @@ body {
 }
 
 @layer base {
+  /* Headings should anchor the page; reserve red for actions and links. */
+  h2[class*="text-primary"],
+  h3[class*="text-primary"],
+  h4[class*="text-primary"] {
+    color: hsl(var(--heading)) !important;
+  }
+
   * {
     border-color: hsl(var(--border));
   }

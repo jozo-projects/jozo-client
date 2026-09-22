@@ -1,5 +1,7 @@
+import { searchYoutubeVideos } from "@/lib/youtube-search";
 import { NextResponse } from "next/server";
-import { YouTube } from "youtube-sr";
+
+export const dynamic = "force-dynamic";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -11,43 +13,39 @@ export async function GET(request: Request) {
   }
 
   try {
-    const results = await YouTube.search(query, { limit: 30, type: "video" });
-    if (!results.length) {
+    const result = await searchYoutubeVideos(query);
+    if (!result.videos.length) {
       return NextResponse.json({ error: "No video found" }, { status: 404 });
     }
 
-    const videos = results.map((v) => ({
-      video_id: v.id,
-      title: v.title,
-      duration: v.duration / 1000, // convert ms → seconds
-      url: `https://youtube.com/watch?v=${v.id}`,
-      thumbnail: v.thumbnail?.url,
-      author: v.channel?.name,
-      booking_code: booking || null, // Thêm mã booking nếu có
+    const videos = result.videos.map((video) => ({
+      ...video,
+      booking_code: booking || null,
     }));
 
-    const data = {
-      videos,
-      total: videos.length,
-      query,
-      booking_code: booking || null,
-    };
-
-    // Optional: set cache header (10 phút)
-    return new NextResponse(JSON.stringify(data), {
-      status: 200,
-      headers: {
-        "Content-Type": "application/json",
-        "Cache-Control": "public, max-age=600",
+    return new NextResponse(
+      JSON.stringify({
+        videos,
+        total: videos.length,
+        query,
+        search_query: result.search_query,
+        booking_code: booking || null,
+      }),
+      {
+        status: 200,
+        headers: {
+          "Content-Type": "application/json",
+          "Cache-Control": "public, max-age=600",
+        },
       },
-    });
+    );
   } catch (err: unknown) {
     if (err instanceof Error) {
       return NextResponse.json({ error: err.message }, { status: 500 });
     }
     return NextResponse.json(
       { error: "An unknown error occurred" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

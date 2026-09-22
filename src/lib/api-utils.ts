@@ -1,3 +1,6 @@
+import { extractQueueSongs } from "@/lib/queue-songs";
+import { QueueSong } from "@/types/booking.d";
+
 /**
  * Utility function để lấy API URL từ environment variables
  * Fallback về localhost:4000 cho development
@@ -71,6 +74,7 @@ export const addSongToQueue = async (
 ): Promise<{
   success: boolean;
   message?: string;
+  queueSongs?: QueueSong[];
 }> => {
   // Sử dụng Next.js API route để có cache revalidation
   const apiUrl = `/api/bookings/${bookingId}/queue-songs`;
@@ -93,7 +97,10 @@ export const addSongToQueue = async (
     body: JSON.stringify(requestData),
   });
   const result = await response.json();
-  return result;
+  return {
+    ...result,
+    queueSongs: extractQueueSongs(result),
+  };
 };
 
 export interface ResetPasswordRequestBody {
@@ -180,12 +187,23 @@ export const resetPassword = async (
   }
 };
 
+export const fetchQueueSongs = async (
+  bookingId: string,
+): Promise<QueueSong[]> => {
+  const response = await fetch(`/api/bookings/${bookingId}/queue-songs`, {
+    cache: "no-store",
+  });
+  const result = await response.json();
+  return extractQueueSongs(result);
+};
+
 export const removeSongFromQueue = async (
   bookingId: string,
   index: number
 ): Promise<{
   success: boolean;
   message?: string;
+  queueSongs?: QueueSong[];
 }> => {
   try {
     // Sử dụng Next.js API route để có cache revalidation
@@ -197,13 +215,13 @@ export const removeSongFromQueue = async (
         "Content-Type": "application/json",
       },
     });
-
     const result = await response.json();
 
     if (response.ok) {
       return {
         success: true,
         message: result.message || "Đã xóa bài khỏi danh sách phát",
+        queueSongs: extractQueueSongs(result),
       };
     } else {
       return {
