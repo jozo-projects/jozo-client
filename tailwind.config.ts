@@ -98,6 +98,10 @@ const config: Config = {
         lg: "1024px",
         xl: "1280px",
       },
+      fontFamily: {
+        sans: ["var(--font-body)", "sans-serif"],
+        display: ["var(--font-display)", "sans-serif"],
+      },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",

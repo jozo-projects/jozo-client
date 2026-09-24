@@ -4,21 +4,22 @@ import TwoColumnFooter from "@/components/ui/footer";
 import { Toaster } from "@/components/ui/toaster";
 import { jozoServicesSeoDescription } from "@/data/services";
 import type { Metadata } from "next";
-import localFont from "next/font/local";
+import { Be_Vietnam_Pro, Outfit } from "next/font/google";
 import { Suspense } from "react";
 import Nav from "@/components/nav";
 import "./globals.css";
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
+const beVietnamPro = Be_Vietnam_Pro({
+  subsets: ["latin", "vietnamese"],
+  weight: ["400", "500", "600", "700", "800"],
+  variable: "--font-body",
   display: "swap",
 });
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
+
+const outfit = Outfit({
+  subsets: ["latin", "latin-ext"],
+  weight: ["500", "600", "700", "800"],
+  variable: "--font-display",
   display: "swap",
 });
 
@@ -70,10 +71,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="vi">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} relative flex min-h-screen flex-col overflow-x-hidden bg-background text-foreground antialiased`}
-      >
+    <html
+      lang="vi"
+      className={`${beVietnamPro.variable} ${outfit.variable}`}
+    >
+      <body className="relative flex min-h-screen flex-col overflow-x-hidden bg-background font-sans text-foreground antialiased">
         <SignalParticlesBackground
           className="fixed inset-0 z-0"
           spacing={16}

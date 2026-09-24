@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import Image from "next/image";
 import Link from "next/link";
 import type { IMemberProfile } from "@/types/membership";
@@ -45,7 +46,13 @@ export default function UserMenu({
   currentUser?: IMemberProfile | null;
 }) {
   const [open, setOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const [menuBox, setMenuBox] = useState<{ top: number; right: number } | null>(
+    null,
+  );
   const containerRef = useRef<HTMLDivElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
   const router = useRouter();
 
   const displayName = useMemo(
@@ -57,15 +64,42 @@ export default function UserMenu({
   const isAuthed = Boolean(currentUser);
 
   useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!open) return;
+
+    const placeMenu = () => {
+      const rect = buttonRef.current?.getBoundingClientRect();
+      if (!rect) return;
+      setMenuBox({
+        top: rect.bottom + 8,
+        right: Math.max(12, window.innerWidth - rect.right),
+      });
+    };
+
+    placeMenu();
+    window.addEventListener("resize", placeMenu);
+    window.addEventListener("scroll", placeMenu, true);
+    return () => {
+      window.removeEventListener("resize", placeMenu);
+      window.removeEventListener("scroll", placeMenu, true);
+    };
+  }, [open]);
+
+  useEffect(() => {
     if (!open) return;
 
     const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Node;
       if (
-        containerRef.current &&
-        !containerRef.current.contains(event.target as Node)
+        containerRef.current?.contains(target) ||
+        menuRef.current?.contains(target)
       ) {
-        setOpen(false);
+        return;
       }
+      setOpen(false);
     };
 
     const handleEsc = (event: KeyboardEvent) => {
@@ -100,6 +134,7 @@ export default function UserMenu({
   return (
     <div ref={containerRef} className="relative z-20 hidden sm:block">
       <button
+        ref={buttonRef}
         type="button"
         onClick={() => setOpen((value) => !value)}
         aria-expanded={open}
@@ -143,11 +178,16 @@ export default function UserMenu({
         </svg>
       </button>
 
-      {open && (
+      {mounted &&
+        open &&
+        menuBox &&
+        createPortal(
         <div
+          ref={menuRef}
           role="menu"
+          style={{ top: menuBox.top, right: menuBox.right }}
           className={cn(
-          "glass-overlay absolute right-0 z-[10002] mt-2 w-72 overflow-hidden rounded-2xl",
+          "glass-overlay !fixed z-[10002] w-72 overflow-hidden rounded-2xl",
           "text-primary shadow-[0_20px_50px_hsl(var(--foreground)/0.18)]",
           )}
         >
@@ -212,8 +252,9 @@ export default function UserMenu({
               Đăng xuất
             </button>
           </div>
-        </div>
-      )}
+        </div>,
+          document.body,
+        )}
     </div>
   );
 }

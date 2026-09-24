@@ -1,42 +1,27 @@
 "use client";
 
-import { extractGiftId, normalizeObjectId } from "@/lib/object-id";
-import type { Gift } from "@/types/gift";
-import { useMemo, useState } from "react";
+import { Check, ChevronRight, X } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
+
+export type StreakGiftItem = {
+  itemId?: string;
+  name: string;
+  quantity?: number;
+  category?: string;
+  image?: string;
+};
 
 type StreakReward = {
   count: number;
   bonusPoints: number;
-  giftId?: string;
-  gift?: Gift;
+  itemCount?: number;
+  claimedItems?: StreakGiftItem[];
 };
 
 type Props = {
   windowDays: number;
   currentCount: number;
   rewards: StreakReward[];
-};
-
-const visitLabel = (visit: number) => `Lượt ${visit}`;
-
-const giftTypeLabel: Record<Gift["type"], string> = {
-  snacks_drinks: "Đồ ăn & thức uống",
-  discount_percentage: "Voucher giảm giá",
-  discount_amount: "Voucher giảm giá",
-  discount: "Voucher giảm giá",
-};
-
-const formatGiftValue = (gift: Gift) => {
-  if (gift.discountAmount) {
-    return `Giảm ${gift.discountAmount.toLocaleString("vi-VN")}đ`;
-  }
-  if (gift.discountPercentage) {
-    return `Giảm ${gift.discountPercentage}%`;
-  }
-  if (gift.price) {
-    return `Trị giá ${gift.price.toLocaleString("vi-VN")}đ`;
-  }
-  return null;
 };
 
 const GiftIcon = ({ className }: { className?: string }) => (
@@ -50,148 +35,176 @@ const GiftIcon = ({ className }: { className?: string }) => (
   </svg>
 );
 
-export function StreakRewards({ windowDays, currentCount, rewards }: Props) {
+export function StreakRewards({
+  windowDays,
+  currentCount,
+  rewards,
+}: Props) {
   const cappedWindow = Math.max(1, Math.min(windowDays || 0, 60));
 
-  const rewardMap = useMemo(() => {
-    const map = new Map<number, StreakReward>();
-    rewards?.forEach((reward) => {
-      map.set(reward.count, {
-        ...reward,
-        gift: reward.gift,
-        giftId: extractGiftId(reward) || reward.giftId,
-      });
-    });
-    return map;
-  }, [rewards]);
+  const milestones = useMemo(
+    () => [...(rewards || [])].sort((a, b) => a.count - b.count),
+    [rewards],
+  );
 
   const [selected, setSelected] = useState<StreakReward | null>(null);
-  const selectedGift = selected?.gift;
+  const claimedItems = selected?.claimedItems ?? [];
+  const itemCount = selected?.itemCount ?? 0;
+  const visitPercent = Math.min(
+    100,
+    Math.round((currentCount / cappedWindow) * 100),
+  );
+  const nextMilestone = milestones.find((reward) => reward.count > currentCount);
+
+  useEffect(() => {
+    if (!selected) return;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setSelected(null);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = previous;
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [selected]);
 
   return (
-    <div className="space-y-3">
-      <style jsx>{`
-        @keyframes shimmerGift {
-          0% {
-            background-position: -200% 0;
-          }
-          100% {
-            background-position: 200% 0;
-          }
-        }
-      `}</style>
-      <div className="flex items-center justify-between">
-        <div>
-          <p className="text-sm font-semibold text-foreground">Lượt sử dụng</p>
-          <p className="text-xs text-foreground/70">
-            {currentCount} / {cappedWindow} lượt · Chạm vào mốc để xem quà
+    <div className="space-y-4">
+      <div>
+        <div className="flex items-end justify-between gap-3">
+          <div>
+            <p className="text-sm font-semibold text-foreground">Lượt sử dụng</p>
+            <p className="mt-0.5 text-sm text-foreground/70">
+              Trong {cappedWindow} ngày gần nhất
+            </p>
+          </div>
+          <p className="text-right text-2xl font-extrabold leading-none text-foreground">
+            {currentCount}
+            <span className="text-sm font-semibold text-foreground/55">
+              /{cappedWindow}
+            </span>
           </p>
+        </div>
+        <div
+          className="mt-3 h-2.5 w-full overflow-hidden rounded-full bg-white/10"
+          role="progressbar"
+          aria-valuenow={currentCount}
+          aria-valuemin={0}
+          aria-valuemax={cappedWindow}
+          aria-label="Số lượt sử dụng"
+        >
+          <div
+            className="h-full rounded-full bg-emerald-400"
+            style={{ width: `${visitPercent}%` }}
+          />
         </div>
       </div>
 
-      <div
-        className="grid gap-2"
-        style={{
-          gridTemplateColumns: "repeat(auto-fill, minmax(60px, 1fr))",
-        }}
-      >
-        {Array.from({ length: cappedWindow }).map((_, idx) => {
-          const day = idx + 1;
-          const active = day <= currentCount;
-          const reward = rewardMap.get(day);
-          const isNext = day === currentCount + 1;
-          const giftId = reward ? extractGiftId(reward) : null;
-          const hasGiftConfig = Boolean(reward?.gift || giftId);
+      {milestones.length > 0 && (
+        <ul className="space-y-2">
+          {milestones.map((reward) => {
+            const reached = currentCount >= reward.count;
+            const isNext = nextMilestone?.count === reward.count;
+            const received = reward.claimedItems ?? [];
+            const detail =
+              received.length > 0
+                ? `Đã nhận: ${received.map((item) => item.name).join(", ")}`
+                : reward.itemCount
+                  ? `tặng ${reward.itemCount} món bất kỳ, trừ trái cây`
+                  : "";
 
-          return (
-            <button
-              key={day}
-              type="button"
-              onClick={() => reward && hasGiftConfig && setSelected(reward)}
-              className={`relative flex h-14 w-full items-center justify-center rounded-xl border text-[11px] font-semibold overflow-hidden transition focus:outline-none ${
-                active
-                  ? "bg-emerald-500/20 border-emerald-300/40 text-emerald-100 shadow-sm"
-                  : "glass-control text-foreground/70"
-              } ${isNext ? "ring-2 ring-emerald-300" : ""} ${
-                reward && hasGiftConfig
-                  ? "hover:-translate-y-[1px] hover:shadow"
-                  : ""
-              }`}
-              title={
-                reward
-                  ? `Mốc ${day}: +${reward.bonusPoints} điểm${
-                      reward.gift ? ` · ${reward.gift.name}` : ""
-                    }`
-                  : visitLabel(day)
-              }
-            >
-              {reward ? (
-                <div className="flex h-full w-full flex-col items-center justify-center gap-1 px-1 text-center relative">
-                  {hasGiftConfig && (
-                    <div
-                      className="absolute inset-0 opacity-60"
-                      style={{
-                        background:
-                          "linear-gradient(110deg, rgba(16,185,129,0.08) 0%, rgba(16,185,129,0.18) 45%, rgba(16,185,129,0.08) 100%)",
-                        backgroundSize: "200% 100%",
-                        animation: "shimmerGift 2.2s linear infinite",
-                      }}
-                    />
-                  )}
-
-                  <div className="relative flex flex-col items-center gap-1">
-                    {hasGiftConfig ? (
-                      <div className="flex h-9 w-9 items-center justify-center rounded-full bg-emerald-400/20 text-emerald-200 ring-1 ring-emerald-300/30 animate-pulse">
-                        <GiftIcon className="h-5 w-5" />
-                      </div>
+            return (
+              <li key={reward.count}>
+                <button
+                  type="button"
+                  onClick={() => setSelected(reward)}
+                  className={`flex min-h-16 w-full items-center gap-3 rounded-2xl border px-3 py-3 text-left ${
+                    reached
+                      ? "border-emerald-300/40 bg-emerald-500/15"
+                      : isNext
+                        ? "border-amber-300/50 bg-amber-400/10"
+                        : "glass-control"
+                  }`}
+                >
+                  <span
+                    className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full ${
+                      reached
+                        ? "bg-emerald-400/25 text-emerald-100"
+                        : "bg-white/10 text-foreground/80"
+                    }`}
+                  >
+                    {reached ? (
+                      <Check className="h-5 w-5" />
                     ) : (
-                      <span className="text-[10px] text-foreground/70">
-                        Quà tặng
-                      </span>
+                      <GiftIcon className="h-5 w-5" />
                     )}
-                  </div>
-                </div>
-              ) : active ? (
-                <span className="flex h-9 w-9 items-center justify-center rounded-full bg-emerald-400/25 ring-1 ring-emerald-300/40 text-[11px] font-bold text-emerald-100">
-                  ✓
-                </span>
-              ) : (
-                <span className="text-[11px] font-semibold text-foreground/75">
-                  {visitLabel(day)}
-                </span>
-              )}
-            </button>
-          );
-        })}
-      </div>
+                  </span>
+                  <span className="min-w-0 flex-1">
+                    <span className="flex items-center gap-2">
+                      <span className="text-sm font-semibold text-foreground">
+                        Mốc {reward.count} lượt
+                      </span>
+                      {isNext && (
+                        <span className="rounded-full bg-amber-300/20 px-2 py-0.5 text-[11px] font-semibold text-amber-100">
+                          Tiếp theo
+                        </span>
+                      )}
+                    </span>
+                    <span className="mt-0.5 block truncate text-sm text-foreground/70">
+                      +{reward.bonusPoints.toLocaleString("vi-VN")} điểm
+                      {detail ? ` · ${detail}` : ""}
+                    </span>
+                  </span>
+                  <ChevronRight className="h-5 w-5 shrink-0 text-foreground/45" />
+                </button>
+              </li>
+            );
+          })}
+        </ul>
+      )}
 
       {selected && (
-        <div
-          className="fixed inset-0 z-40 flex items-center justify-center bg-black/50 px-4"
-          onClick={() => setSelected(null)}
-        >
+        <div className="fixed inset-0 z-50 flex items-end sm:items-center sm:justify-center sm:p-4">
+          <button
+            type="button"
+            className="absolute inset-0 bg-black/50"
+            aria-label="Đóng"
+            onClick={() => setSelected(null)}
+          />
           <div
-            className="glass-overlay relative max-h-[85vh] w-full max-w-md overflow-y-auto rounded-2xl p-5"
-            onClick={(event) => event.stopPropagation()}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="streak-reward-title"
+            className="glass-overlay relative flex max-h-[85vh] w-full flex-col rounded-t-3xl sm:max-w-md sm:rounded-2xl"
           >
-            <button
-              type="button"
-              onClick={() => setSelected(null)}
-              className="glass-control absolute right-3 top-3 rounded-full px-2 py-1 text-xs font-semibold text-foreground"
-            >
-              Đóng
-            </button>
-
-            <div className="space-y-1 pr-10">
-              <p className="text-xs font-semibold uppercase tracking-wide text-emerald-300">
-                Mốc {selected.count}/{cappedWindow}
-              </p>
-              <h3 className="text-lg font-bold text-foreground">
-                Phần thưởng mốc này
-              </h3>
+            <div className="flex justify-center pt-3 sm:hidden">
+              <div className="h-1 w-10 rounded-full bg-white/25" />
             </div>
-
-            <div className="mt-4 space-y-4">
+            <div className="flex items-start justify-between gap-3 px-4 pb-3 pt-3">
+              <div className="min-w-0">
+                <p className="text-xs font-semibold uppercase tracking-wide text-emerald-300">
+                  Mốc {selected.count}/{cappedWindow}
+                </p>
+                <h3
+                  id="streak-reward-title"
+                  className="text-lg font-bold text-foreground"
+                >
+                  Phần thưởng mốc này
+                </h3>
+              </div>
+              <button
+                type="button"
+                onClick={() => setSelected(null)}
+                className="glass-control flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-foreground"
+                aria-label="Đóng"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+            <div className="overflow-y-auto px-4 pb-6">
+            <div className="space-y-4">
               <div className="glass-control rounded-xl border-l-4 border-amber-400 px-4 py-3">
                 <p className="text-xs font-semibold uppercase tracking-wide text-amber-200">
                   Điểm thưởng
@@ -201,76 +214,37 @@ export function StreakRewards({ windowDays, currentCount, rewards }: Props) {
                 </p>
               </div>
 
-              {selectedGift ? (
-                <div className="glass-control space-y-3 rounded-xl p-4">
-                  <div className="flex items-start gap-3">
-                    {selectedGift.image ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
-                        src={selectedGift.image}
-                        alt={selectedGift.name}
-                        className="h-20 w-20 shrink-0 rounded-xl object-cover border border-emerald-300/30 bg-emerald-500/10"
-                      />
-                    ) : (
-                      <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-xl border border-dashed border-emerald-300/40 bg-emerald-500/10 text-emerald-200">
-                        <GiftIcon className="h-8 w-8" />
-                      </div>
-                    )}
-
-                    <div className="min-w-0 space-y-1">
-                      <p className="text-xs font-semibold uppercase tracking-wide text-emerald-300">
-                        Quà tặng kèm
-                      </p>
-                      <p className="text-base font-bold text-foreground">
-                        {selectedGift.name}
-                      </p>
-                      <p className="text-xs text-foreground/70">
-                        {giftTypeLabel[selectedGift.type]}
-                      </p>
-                      {formatGiftValue(selectedGift) ? (
-                        <p className="text-sm font-semibold text-emerald-200">
-                          {formatGiftValue(selectedGift)}
+              {claimedItems.length > 0 ? (
+                <div className="space-y-2">
+                  <p className="text-xs font-semibold uppercase tracking-wide text-emerald-300">
+                    Món đã nhận
+                  </p>
+                  <ul className="space-y-2">
+                    {claimedItems.map((item, index) => (
+                      <li
+                        key={`${item.itemId || item.name}-${index}`}
+                        className="glass-control flex items-center justify-between gap-3 rounded-xl px-3 py-2.5"
+                      >
+                        <p className="min-w-0 text-sm font-semibold text-foreground">
+                          {item.name}
                         </p>
-                      ) : null}
-                    </div>
-                  </div>
-
-                  {selectedGift.items && selectedGift.items.length > 0 ? (
-                    <div className="space-y-2 rounded-xl border border-white/10 p-3">
-                      <div className="flex items-center justify-between gap-3">
-                        <p className="text-xs font-semibold uppercase tracking-wide text-foreground/60">
-                          Danh sách món trong quà
-                        </p>
-                      </div>
-                      <ul className="space-y-2">
-                        {selectedGift.items.map((item, index) => (
-                          <li
-                            key={`${normalizeObjectId(item.itemId) || item.name}-${index}`}
-                            className="glass-control flex items-center justify-between gap-3 rounded-lg px-3 py-2.5"
-                          >
-                            <div className="min-w-0">
-                              <p className="text-sm font-semibold text-foreground">
-                                {item.name}
-                              </p>
-                            </div>
-                            <span className="shrink-0 rounded-full bg-emerald-400/20 px-2.5 py-1 text-xs font-bold text-emerald-100">
-                              x{item.quantity}
-                            </span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  ) : (
-                    <div className="rounded-xl border border-dashed border-emerald-300/30 px-4 py-3 text-sm text-foreground/70">
-                      Quà này chưa có danh sách món chi tiết.
-                    </div>
-                  )}
+                        <span className="shrink-0 rounded-full bg-emerald-400/20 px-2.5 py-1 text-xs font-bold text-emerald-100">
+                          x{item.quantity || 1}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-              ) : (
-                <div className="rounded-xl border border-dashed border-white/15 px-4 py-3 text-sm text-foreground/70">
-                  Không tìm thấy thông tin quà cho mốc này.
-                </div>
-              )}
+              ) : itemCount > 0 ? (
+                <p className="text-sm leading-relaxed text-foreground/80">
+                  Được tặng{" "}
+                  <span className="font-semibold text-foreground">
+                    {itemCount} món bất kỳ
+                  </span>
+                  , trừ trái cây.
+                </p>
+              ) : null}
+            </div>
             </div>
           </div>
         </div>

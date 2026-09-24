@@ -123,7 +123,7 @@ export default async function MembershipPage() {
                   Chương trình Thành viên Jozo
                 </Typography>
                 <div className="inline-flex items-center rounded-xl border-2 border-white/30 bg-primary px-4 py-2 shadow-[0_0_24px_rgba(220,38,38,0.45)]">
-                  <span className="text-xl md:text-2xl font-extrabold tracking-wide">
+                  <span className="font-display text-xl font-extrabold tracking-wide md:text-2xl">
                     GIẢM NGAY 10%
                   </span>
                 </div>
@@ -275,7 +275,7 @@ export default async function MembershipPage() {
                       <p className="text-sm text-primary/70 mt-1">
                         +{formatPoints(reward.bonusPoints)} điểm thưởng
                         {reward.itemCount
-                          ? ` và ${reward.itemCount} phần quà`
+                          ? ` · tặng ${reward.itemCount} món bất kỳ, trừ trái cây`
                           : ""}
                       </p>
                     </div>

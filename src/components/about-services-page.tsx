@@ -111,7 +111,7 @@ function ServiceCard({
           </span>
         </div>
 
-        <h2 className="text-2xl font-bold tracking-tight">{service.title}</h2>
+        <h2 className="font-display text-2xl font-bold tracking-tight">{service.title}</h2>
         <p className="mt-1 text-sm font-medium text-white/65">
           {service.tagline}
         </p>
@@ -268,7 +268,7 @@ export default function AboutServicesPage() {
             <motion.h1
               variants={fadeUp}
               transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-              className="mt-5 text-3xl font-extrabold leading-tight tracking-tight sm:text-4xl md:text-5xl"
+              className="mt-5 font-display text-3xl font-extrabold leading-tight tracking-tight sm:text-4xl md:text-5xl"
             >
               {jozoVenue.name}
             </motion.h1>
@@ -320,7 +320,7 @@ export default function AboutServicesPage() {
           <div className="mb-6 sm:mb-8">
             <h2
               id="services-heading"
-              className="text-2xl font-bold text-foreground sm:text-3xl"
+              className="font-display text-2xl font-bold text-foreground sm:text-3xl"
             >
               All-in-one tại JOZO
             </h2>
@@ -347,7 +347,7 @@ export default function AboutServicesPage() {
         <section aria-labelledby="faq-heading">
           <h2
             id="faq-heading"
-            className="text-xl font-bold text-foreground sm:text-2xl"
+            className="font-display text-xl font-bold text-foreground sm:text-2xl"
           >
             Câu hỏi thường gặp
           </h2>

@@ -21,8 +21,8 @@ const Typography: React.FC<TypographyProps> = ({
   // Áp dụng class CSS theo từng thẻ và responsive
   const baseClass = clsx(
     {
-      h1: "text-2xl font-bold leading-tight tracking-tight sm:text-3xl",
-      h2: "text-xl font-semibold leading-snug tracking-tight sm:text-2xl",
+      h1: "font-display text-2xl font-bold leading-tight tracking-tight sm:text-3xl",
+      h2: "font-display text-xl font-semibold leading-snug tracking-tight sm:text-2xl",
       h3: "text-base font-semibold sm:text-lg",
       h4: "text-sm font-semibold sm:text-base",
       h5: "text-sm font-medium",

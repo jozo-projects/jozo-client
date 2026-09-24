@@ -1,74 +1,116 @@
-"use client";
-
 type TierThreshold = [string, number];
+
+export type TierBenefit = {
+  discountPercentage?: number;
+  discountAmount?: number;
+  note?: string;
+};
 
 type MembershipTierProgressProps = {
   tierThresholds: TierThreshold[];
   maxThreshold: number;
   absolutePercent: number;
+  currentTier?: string | null;
+  currentPoints?: number;
+  tierBenefits?: Record<string, TierBenefit[]>;
+};
+
+const benefitsForTier = (
+  tierBenefits: Record<string, TierBenefit[]> | undefined,
+  tier: string,
+) => {
+  if (!tierBenefits) return [];
+  const direct = tierBenefits[tier];
+  if (Array.isArray(direct)) return direct;
+  const match = Object.entries(tierBenefits).find(
+    ([name]) => name.toLowerCase() === tier.toLowerCase(),
+  );
+  return match && Array.isArray(match[1]) ? match[1] : [];
+};
+
+const formatBenefit = (benefit: TierBenefit) => {
+  if (
+    typeof benefit.discountPercentage === "number" &&
+    benefit.discountPercentage > 0
+  ) {
+    return `Giảm ${benefit.discountPercentage}%`;
+  }
+  if (typeof benefit.discountAmount === "number" && benefit.discountAmount > 0) {
+    return `Giảm ${benefit.discountAmount.toLocaleString("vi-VN")}đ`;
+  }
+  if (benefit.discountPercentage === 0) {
+    return "Chưa giảm giá";
+  }
+  return null;
 };
 
 export function MembershipTierProgress({
   tierThresholds,
   maxThreshold,
   absolutePercent,
+  currentTier,
+  currentPoints = 0,
+  tierBenefits,
 }: MembershipTierProgressProps) {
+  const percent = Math.min(100, Math.max(0, absolutePercent || 0));
+
   return (
     <div>
-      {/* Track — chiều cao cố định, fill không tràn ra ngoài */}
-      <div className="relative h-2.5 w-full">
-        <div className="absolute inset-0 rounded-full bg-white/15" />
+      <div
+        className="h-2.5 w-full overflow-hidden rounded-full bg-white/20"
+        role="progressbar"
+        aria-valuenow={Math.round(percent)}
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-label="Tiến độ hạng thành viên"
+      >
         <div
-          className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-white to-amber-200 shadow-[0_0_12px_rgba(255,255,255,0.4)]"
-          style={{
-            width: `${Math.min(100, Math.max(0, absolutePercent || 0))}%`,
-          }}
+          className="h-full rounded-full bg-gradient-to-r from-white to-amber-200"
+          style={{ width: `${percent}%` }}
         />
-        {tierThresholds.length > 0 &&
-          maxThreshold > 0 &&
-          tierThresholds.map(([tier, value]) => {
-            const pct = Math.min(
-              100,
-              Math.max(0, (value / maxThreshold) * 100),
-            );
-            return (
-              <div
-                key={`dot-${tier}`}
-                className="absolute top-1/2 z-10 -translate-x-1/2 -translate-y-1/2"
-                style={{ left: `${pct}%` }}
-              >
-                <span className="block h-2 w-2 rounded-full border border-white/80 bg-white shadow" />
-              </div>
-            );
-          })}
       </div>
 
-      {/* Nhãn mốc — hàng riêng bên dưới track */}
       {tierThresholds.length > 0 && maxThreshold > 0 && (
-        <div className="relative mt-2 h-8 w-full">
-          {tierThresholds.map(([tier, value], index) => {
-            const pct = Math.min(
-              100,
-              Math.max(0, (value / maxThreshold) * 100),
-            );
-            const isFirst = index === 0;
-            const isLast = index === tierThresholds.length - 1;
+        <div className="mt-3 grid grid-cols-2 gap-2">
+          {tierThresholds.map(([tier, value]) => {
+            const reached = currentPoints >= value;
+            const isCurrent =
+              currentTier?.toLowerCase() === tier.toLowerCase();
 
             return (
               <div
-                key={`label-${tier}`}
-                className={`absolute top-0 whitespace-nowrap text-[10px] leading-tight text-white/80 ${
-                  isFirst
-                    ? "left-0 text-left"
-                    : isLast
-                      ? "right-0 text-right"
-                      : "-translate-x-1/2 text-center"
+                key={tier}
+                className={`min-h-16 min-w-0 rounded-xl border px-3 py-2.5 text-left ${
+                  isCurrent
+                    ? "border-white bg-white text-red-700"
+                    : reached
+                      ? "border-white/40 bg-white/15 text-white"
+                      : "border-white/15 bg-black/20 text-white/75"
                 }`}
-                style={isLast ? undefined : { left: isFirst ? 0 : `${pct}%` }}
               >
-                <span className="font-semibold text-white/90">{tier}</span>
-                <br />
-                {value.toLocaleString("vi-VN")} điểm
+                <p className="truncate text-sm font-bold capitalize">{tier}</p>
+                <p
+                  className={`mt-0.5 text-xs font-medium ${
+                    isCurrent ? "text-red-700/70" : "text-inherit opacity-80"
+                  }`}
+                >
+                  {value.toLocaleString("vi-VN")} điểm
+                </p>
+                {benefitsForTier(tierBenefits, tier).map((benefit) => {
+                  const label = formatBenefit(benefit);
+                  if (!label) return null;
+                  return (
+                    <p
+                      key={label}
+                      className={`mt-1 text-xs font-semibold ${
+                        isCurrent ? "text-red-700" : "text-amber-200"
+                      }`}
+                    >
+                      {label}
+                      {benefit.note ? ` · ${benefit.note}` : ""}
+                    </p>
+                  );
+                })}
               </div>
             );
           })}
