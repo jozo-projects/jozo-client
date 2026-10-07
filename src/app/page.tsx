@@ -61,11 +61,10 @@ export default function Home() {
     <>
       <div className="w-full">
         <TestimonialCarousel />
-        <PromotionSection promotions={promotions} />
-
         <Suspense fallback={<RoomSectionSkeleton />}>
           <HomeRoomSection />
         </Suspense>
+        <PromotionSection promotions={promotions} />
       </div>
       <FloatingContactButtons />
     </>
