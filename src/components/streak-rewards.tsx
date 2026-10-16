@@ -19,7 +19,6 @@ type StreakReward = {
 };
 
 type Props = {
-  windowDays: number;
   currentCount: number;
   rewards: StreakReward[];
 };
@@ -35,13 +34,7 @@ const GiftIcon = ({ className }: { className?: string }) => (
   </svg>
 );
 
-export function StreakRewards({
-  windowDays,
-  currentCount,
-  rewards,
-}: Props) {
-  const cappedWindow = Math.max(1, Math.min(windowDays || 0, 60));
-
+export function StreakRewards({ currentCount, rewards }: Props) {
   const milestones = useMemo(
     () => [...(rewards || [])].sort((a, b) => a.count - b.count),
     [rewards],
@@ -50,9 +43,11 @@ export function StreakRewards({
   const [selected, setSelected] = useState<StreakReward | null>(null);
   const claimedItems = selected?.claimedItems ?? [];
   const itemCount = selected?.itemCount ?? 0;
+  const maxMilestone = milestones[milestones.length - 1]?.count ?? 0;
+  const progressMax = Math.max(maxMilestone, currentCount, 1);
   const visitPercent = Math.min(
     100,
-    Math.round((currentCount / cappedWindow) * 100),
+    Math.round((currentCount / progressMax) * 100),
   );
   const nextMilestone = milestones.find((reward) => reward.count > currentCount);
 
@@ -77,14 +72,16 @@ export function StreakRewards({
           <div>
             <p className="text-sm font-semibold text-foreground">Lượt sử dụng</p>
             <p className="mt-0.5 text-sm text-foreground/70">
-              Trong {cappedWindow} ngày gần nhất
+              Streak tích lũy theo mỗi lần sử dụng dịch vụ
             </p>
           </div>
           <p className="text-right text-2xl font-extrabold leading-none text-foreground">
             {currentCount}
-            <span className="text-sm font-semibold text-foreground/55">
-              /{cappedWindow}
-            </span>
+            {maxMilestone > 0 && (
+              <span className="text-sm font-semibold text-foreground/55">
+                /{maxMilestone}
+              </span>
+            )}
           </p>
         </div>
         <div
@@ -92,7 +89,7 @@ export function StreakRewards({
           role="progressbar"
           aria-valuenow={currentCount}
           aria-valuemin={0}
-          aria-valuemax={cappedWindow}
+          aria-valuemax={progressMax}
           aria-label="Số lượt sử dụng"
         >
           <div
@@ -185,7 +182,8 @@ export function StreakRewards({
             <div className="flex items-start justify-between gap-3 px-4 pb-3 pt-3">
               <div className="min-w-0">
                 <p className="text-xs font-semibold uppercase tracking-wide text-emerald-300">
-                  Mốc {selected.count}/{cappedWindow}
+                  Mốc {selected.count}
+                  {maxMilestone > 0 ? `/${maxMilestone}` : ""}
                 </p>
                 <h3
                   id="streak-reward-title"

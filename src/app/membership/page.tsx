@@ -47,7 +47,6 @@ export default async function MembershipPage() {
   const streakRewards = [...(config?.streak?.rewards || [])].sort(
     (a, b) => a.count - b.count,
   );
-  const windowDays = config?.streak?.windowDays ?? 0;
   const pointPerCurrency = config?.pointPerCurrency ?? 0;
   const currencyUnit = config?.currencyUnit ?? 0;
   const birthdayMultiplier = config?.bonusRules?.birthdayMultiplier ?? 1;
@@ -86,9 +85,7 @@ export default async function MembershipPage() {
       icon: Gift,
       title: `Quà tặng theo mốc ${streakMilestones} lần`,
       description:
-        windowDays > 0
-          ? `Trong vòng ${windowDays} ngày, thành viên đạt đủ số lần sử dụng dịch vụ sẽ nhận điểm thưởng và quà tặng theo từng mốc.`
-          : "Thành viên đạt đủ số lần sử dụng dịch vụ theo từng mốc sẽ nhận quà tặng tương ứng.",
+        "Thành viên đạt đủ số lần sử dụng theo từng mốc sẽ nhận điểm thưởng và quà tặng.",
     },
     {
       icon: Utensils,
@@ -253,16 +250,6 @@ export default async function MembershipPage() {
                 >
                   Quà tặng theo số lần sử dụng
                 </Typography>
-                {windowDays > 0 && (
-                  <Typography
-                    as="p"
-                    variant="default"
-                    className="body-copy mb-4"
-                  >
-                    Số lần sử dụng được ghi nhận trong vòng {windowDays} ngày.
-                    Thành viên đạt từng mốc sẽ nhận phần thưởng tương ứng.
-                  </Typography>
-                )}
                 <div className="grid gap-3 sm:grid-cols-2">
                   {streakRewards.map((reward) => (
                     <div

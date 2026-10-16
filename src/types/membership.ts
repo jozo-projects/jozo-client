@@ -8,7 +8,8 @@ export interface IStreakReward {
 }
 
 export interface IStreakConfig {
-  windowDays: number;
+  /** Số ngày không đi thì streak reset về 0. Độc lập với mốc rewards. */
+  resetAfterDays: number;
   rewards: IStreakReward[];
 }
 

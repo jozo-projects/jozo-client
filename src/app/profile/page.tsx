@@ -30,7 +30,7 @@ type MembershipResult = {
       }[]
     >;
     streak?: {
-      windowDays?: number;
+      resetAfterDays?: number;
       rewards?: {
         count: number;
         bonusPoints: number;
@@ -48,7 +48,7 @@ type MembershipResult = {
     points?: number;
     nextTier?: { tier?: string; required?: number };
   };
-  streak?: { count?: number; windowDays?: number; isActive?: boolean };
+  streak?: { count?: number; resetAfterDays?: number; isActive?: boolean };
 };
 
 const asRecord = (value: unknown): Record<string, unknown> | null => {
@@ -195,10 +195,6 @@ export default async function ProfilePage() {
   } = computeMembershipProgress(membershipResult, tierThresholds || undefined);
 
   const isAuthed = Boolean(member);
-  const streakWindowDays =
-    membershipResult?.config?.streak?.windowDays ||
-    membershipResult?.streak?.windowDays ||
-    20;
   const streakCount = Math.max(0, membershipResult?.streak?.count ?? 0);
 
   return (
@@ -276,7 +272,6 @@ export default async function ProfilePage() {
 
           <div className="glass-surface rounded-2xl p-4 sm:p-5">
             <StreakRewards
-              windowDays={streakWindowDays}
               currentCount={streakCount}
               rewards={streakRewards}
             />
