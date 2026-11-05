@@ -59,6 +59,12 @@ export function ProfileAccountMenu({
 
           <div className="space-y-2 border-t border-white/10 p-4">
             <Link
+              href="/profile/history"
+              className="glass-control flex h-12 w-full items-center justify-center gap-2 rounded-xl text-sm font-semibold text-foreground"
+            >
+              Lịch sử sử dụng
+            </Link>
+            <Link
               href="/profile/change-password"
               className="glass-control flex h-12 w-full items-center justify-center gap-2 rounded-xl text-sm font-semibold text-foreground"
             >
