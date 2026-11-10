@@ -268,6 +268,11 @@ export default async function MembershipPage() {
                     </div>
                   ))}
                 </div>
+                {streakRewards.some((reward) => (reward.itemCount ?? 0) > 0) && (
+                  <p className="mt-3 text-sm leading-relaxed text-primary/70">
+                    Khi nhận quà streak, hóa đơn đó không áp dụng giảm giá theo % hạng thành viên.
+                  </p>
+                )}
               </section>
             )}
 

@@ -162,6 +162,12 @@ export function StreakRewards({ currentCount, rewards }: Props) {
         </ul>
       )}
 
+      {milestones.some((reward) => (reward.itemCount ?? 0) > 0 || (reward.claimedItems?.length ?? 0) > 0) && (
+        <p className="text-sm leading-relaxed text-foreground/70">
+          Khi nhận quà streak, hóa đơn đó không áp dụng giảm giá theo % hạng thành viên.
+        </p>
+      )}
+
       {selected && (
         <div className="fixed inset-0 z-50 flex items-end sm:items-center sm:justify-center sm:p-4">
           <button
@@ -242,6 +248,11 @@ export function StreakRewards({ currentCount, rewards }: Props) {
                   , trừ trái cây.
                 </p>
               ) : null}
+              {(itemCount > 0 || claimedItems.length > 0) && (
+                <p className="border-t border-white/10 pt-3 text-sm leading-relaxed text-foreground/70">
+                  Khi nhận quà streak, hóa đơn đó không áp dụng giảm giá theo % hạng thành viên.
+                </p>
+              )}
             </div>
             </div>
           </div>
