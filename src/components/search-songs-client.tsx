@@ -6,7 +6,7 @@ import { addSongToQueue, fetchQueueSongs, removeSongFromQueue } from "@/lib/api-
 import { extractQueueSongs } from "@/lib/queue-songs";
 import { Booking, QueueSong } from "@/types/booking.d";
 import Image from "next/image";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 interface VideoItem {
   video_id: string;
@@ -53,6 +53,7 @@ export default function SearchSongsClient({
   const { toast } = useToast();
 
   const [searchQuery, setSearchQuery] = useState("");
+  const searchVersion = useRef(0);
   const [data, setData] = useState<VideoData | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -105,6 +106,7 @@ export default function SearchSongsClient({
   const performSearch = useCallback(
     async (query: string) => {
       if (!query.trim()) return;
+      const version = searchVersion.current;
 
       setLoading(true);
       setError(null);
@@ -114,11 +116,11 @@ export default function SearchSongsClient({
           query,
           roomScheduleId || undefined,
         );
-        setData(result);
+        if (version === searchVersion.current) setData(result);
       } catch {
-        setError("Có lỗi xảy ra khi tìm kiếm video");
+        if (version === searchVersion.current) setError("Có lỗi xảy ra khi tìm kiếm video");
       } finally {
-        setLoading(false);
+        if (version === searchVersion.current) setLoading(false);
       }
     },
     [roomScheduleId],
@@ -206,13 +208,25 @@ export default function SearchSongsClient({
             <input
               type="text"
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Nhập tên bài, ca sĩ hoặc lời nhạc"
+              onChange={(e) => {
+                searchVersion.current += 1;
+                setSearchQuery(e.target.value);
+                setData(null);
+                setError(null);
+                setLoading(false);
+              }}
+              placeholder="Nhập tên bài, ca sĩ hoặc dán link YouTube"
               className="glass-control w-full rounded-xl px-4 py-2.5 pr-12 text-sm text-foreground outline-none focus:ring-2 focus:ring-primary"
             />
             {searchQuery && (
               <button
-                onClick={() => setSearchQuery("")}
+                onClick={() => {
+                  searchVersion.current += 1;
+                  setSearchQuery("");
+                  setData(null);
+                  setError(null);
+                  setLoading(false);
+                }}
                 className="absolute right-3 top-1/2 transform -translate-y-1/2 p-1 text-primary/50 hover:text-primary/70 transition-colors duration-200"
                 type="button"
               >

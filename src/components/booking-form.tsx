@@ -19,7 +19,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
 import { vi } from "date-fns/locale";
 import { Phone, User, ArrowLeft } from "lucide-react";
-import Link from "next/link";
+
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -695,25 +695,6 @@ export default function BookingForm({ roomType, prices }: BookingFormProps) {
         <div className="hidden md:block" />
       </div>
 
-      <div className="mb-5 rounded-r-xl border-l-4 border-primary bg-accent/60 p-3 text-sm text-foreground">
-        <p className="font-semibold">Thành viên mới giảm ngay 10% lần đầu</p>
-        <p className="mt-1 text-foreground/75">
-          Không áp dụng cho các ngày lễ.
-        </p>
-        <Link
-          href="/register"
-          className="font-semibold underline underline-offset-2 hover:text-primary"
-        >
-          Đăng ký ngay
-        </Link>
-        {" · "}
-        <Link
-          href="/promotions/dang-ky-thanh-vien"
-          className="underline underline-offset-2 hover:text-primary"
-        >
-          Xem chi tiết
-        </Link>
-      </div>
 
       <form onSubmit={handleSubmit(onSubmit)}>
         {/* Customer Information */}
@@ -767,6 +748,9 @@ export default function BookingForm({ roomType, prices }: BookingFormProps) {
                     </option>
                   ))}
                 </select>
+                <p className="mt-2 text-sm text-foreground/70">
+                  Hát, chơi Nintendo Switch hoặc xem Netflix trong cùng một box.
+                </p>
                 {errors.activityType && (
                   <p className="mt-1 text-sm text-red-500">
                     {errors.activityType.message}
@@ -786,9 +770,11 @@ export default function BookingForm({ roomType, prices }: BookingFormProps) {
                     : "Nhập ghi chú"
               }
               helpText={
-                activityType === ""
-                  ? "VD: Tổ chức sinh nhật, tổ chức tiệc, ..."
-                  : undefined
+                !isDorm
+                  ? "Muốn chơi Nintendo Switch? Ghi chú để Jozo chuẩn bị máy trước nhé."
+                  : activityType === ""
+                    ? "VD: Tổ chức sinh nhật, tổ chức tiệc, ..."
+                    : undefined
               }
               maxLength={100}
             />

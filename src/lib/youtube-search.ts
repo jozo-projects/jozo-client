@@ -288,6 +288,44 @@ export async function searchYoutubeVideos(query: string): Promise<{
   videos: SearchVideo[];
   search_query: string;
 }> {
+  const input = query.trim();
+  if (/^(?:https?:\/\/|www\.|(?:m\.|music\.)?youtube\.com\/|youtu\.be\/)/i.test(input)) {
+    let url: URL;
+    try {
+      url = new URL(/^https?:\/\//i.test(input) ? input : `https://${input}`);
+    } catch {
+      throw new Error("Link YouTube không hợp lệ.");
+    }
+    const host = url.hostname.toLowerCase();
+    const youtubeHost = ["youtube.com", "www.youtube.com", "m.youtube.com", "music.youtube.com"].includes(host);
+    const parts = url.pathname.split("/").filter(Boolean);
+    const id = host === "youtu.be" || host === "www.youtu.be"
+      ? parts[0]
+      : youtubeHost && url.pathname === "/watch"
+        ? url.searchParams.get("v")
+        : youtubeHost && ["shorts", "embed", "live"].includes(parts[0])
+          ? parts[1]
+          : null;
+    if (!id || !/^[\w-]{11}$/.test(id)) {
+      throw new Error("Link YouTube không hợp lệ hoặc không chứa video.");
+    }
+
+    const yt = await getInnertube();
+    const info = await yt.getBasicInfo(id);
+    const details = info.basic_info;
+    if (details.is_live || details.is_upcoming || details.is_private) {
+      throw new Error("Video này không khả dụng để thêm vào danh sách phát.");
+    }
+    const video = toSearchVideo({
+      video_id: id,
+      title: details.title,
+      duration: details.duration,
+      thumbnail: thumbnailFromList(details.thumbnail),
+      author: details.author || details.channel?.name,
+    });
+    if (!video) throw new Error("Không tìm thấy thông tin video YouTube này.");
+    return { videos: [video], search_query: input };
+  }
   const searchQuery = buildKaraokeQuery(query);
   const videos = await searchRankedVideos(query);
   return { videos, search_query: searchQuery };
