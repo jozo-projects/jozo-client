@@ -339,6 +339,8 @@ export default function BookingForm({ roomType, prices }: BookingFormProps) {
   const [selectedStartTime, setSelectedStartTime] = useState<string>("");
   const [selectedDuration, setSelectedDuration] = useState<number>(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  // null means unknown: do not offer game until the server confirms availability.
+  const [gameEnabled, setGameEnabled] = useState<boolean | null>(null);
   const [isClient, setIsClient] = useState(false);
 
   // Modal states
@@ -435,6 +437,22 @@ export default function BookingForm({ roomType, prices }: BookingFormProps) {
   }, [selectedDate, holidays]);
 
   // Effects
+  useEffect(() => {
+    let active = true;
+    setGameEnabled(null);
+    if (!selectedDate || !selectedStartTime || !endTime) return () => { active = false; };
+    const refresh = () => {
+      const params = new URLSearchParams({ startTime: createISOString(selectedDate, selectedStartTime), endTime: createISOString(selectedDate, endTime) });
+      fetch(`${createApiEndpoint("/bookings/game-config")}?${params}`, { cache: "no-store" })
+        .then(async (res) => { if (!res.ok) throw new Error("Config unavailable"); return res.json(); })
+        .then((data) => { if (active) setGameEnabled(typeof data.enabled === "boolean" ? data.enabled : null); })
+        .catch(() => { if (active) setGameEnabled(null); });
+    };
+    refresh();
+    window.addEventListener("focus", refresh);
+    return () => { active = false; window.removeEventListener("focus", refresh); };
+  }, [selectedDate, selectedStartTime, endTime]);
+
   useEffect(() => {
     setIsClient(true);
     setSelectedDate(new Date());
@@ -535,6 +553,7 @@ export default function BookingForm({ roomType, prices }: BookingFormProps) {
           roomType: data.roomType,
           startTime: startTimeISO,
           endTime: endTimeISO,
+          activityType: data.roomType === "Dorm" ? "nintendo-switch" : data.activityType,
           note: buildBookingNote(data.activityType, data.note),
         };
 
@@ -742,6 +761,7 @@ export default function BookingForm({ roomType, prices }: BookingFormProps) {
                     <option
                       key={opt.value}
                       value={opt.value}
+                      disabled={opt.value === "nintendo-switch" && gameEnabled !== true}
                       className="bg-white text-gray-900"
                     >
                       {opt.label}
@@ -759,6 +779,7 @@ export default function BookingForm({ roomType, prices }: BookingFormProps) {
               </div>
             )}
 
+            {gameEnabled !== true && <p role="status" className="text-sm text-amber-700">{gameEnabled === false ? "Jozo đã hết máy Nintendo trong khung giờ này. Khách iu vui lòng chọn giờ khác." : "Chưa kiểm tra được tình trạng đặt Nintendo. Khách iu vui lòng thử lại sau."}</p>}
             <Input
               label="Ghi chú"
               {...register("note")}
@@ -1010,6 +1031,7 @@ export default function BookingForm({ roomType, prices }: BookingFormProps) {
             type="submit"
             disabled={
               isSubmitting ||
+              ((isDorm || activityType === "nintendo-switch") && gameEnabled !== true) ||
               !isClient ||
               !selectedDate ||
               !selectedStartTime ||
