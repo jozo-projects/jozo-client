@@ -40,6 +40,6 @@ export type BookingRequest = {
   roomType: "Small" | "Medium" | "Large" | "Dorm";
   startTime: string; // ISO string với timezone +07:00
   endTime: string; // ISO string với timezone +07:00
-  activityType: "nintendo-switch" | "music-box";
+  activityType: "nintendo-switch" | "music-box" | "music-box-and-nintendo-switch";
   note?: string;
 };

@@ -17,7 +17,7 @@ export const bookingSchema = z.object({
     .string()
     .min(1, "Vui lòng chọn dịch vụ")
     .pipe(
-      z.enum(["nintendo-switch", "music-box"], {
+      z.enum(["nintendo-switch", "music-box", "music-box-and-nintendo-switch"], {
         errorMap: () => ({ message: "Vui lòng chọn dịch vụ" }),
       }),
     ),

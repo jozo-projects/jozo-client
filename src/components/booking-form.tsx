@@ -1,10 +1,12 @@
 "use client";
 
 import { DateSelect } from "@/components/ui/date-select";
+
 import { formCardClassName } from "@/components/ui/form-card";
 import Input from "@/components/ui/input";
 import CancelBookingModal from "@/components/ui/cancel-booking-modal";
 import BookingSuccessModal from "@/components/ui/booking-success-modal";
+import { rememberBookingProof } from "@/lib/post-booking-event";
 import { useTicketActions } from "@/hooks/use-ticket-actions";
 import { toast } from "@/hooks/use-toast";
 import { cancelBooking, createApiEndpoint } from "@/lib/api-utils";
@@ -90,16 +92,18 @@ const ALL_START_TIMES = generateTimeSlots(9, 23, 30).filter((time) => {
   return hour < 23 || (hour === 23 && minute === 0);
 });
 
-type BookingActivityType = "nintendo-switch" | "music-box";
+type BookingActivityType = "nintendo-switch" | "music-box" | "music-box-and-nintendo-switch";
 
 const ACTIVITY_OPTIONS: { value: BookingActivityType; label: string }[] = [
   { value: "music-box", label: "Music Box" },
   { value: "nintendo-switch", label: "Chơi game Nintendo Switch" },
+  { value: "music-box-and-nintendo-switch", label: "Hát và chơi Nintendo Switch" },
 ];
 
 const ACTIVITY_NOTE_PREFIX: Record<BookingActivityType, string> = {
   "nintendo-switch": "Nintendo Switch",
   "music-box": "Music Box",
+  "music-box-and-nintendo-switch": "Music Box + Nintendo Switch",
 };
 
 function buildBookingNote(
@@ -339,7 +343,8 @@ export default function BookingForm({ roomType, prices }: BookingFormProps) {
   const [selectedStartTime, setSelectedStartTime] = useState<string>("");
   const [selectedDuration, setSelectedDuration] = useState<number>(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  // null means unknown: do not offer game until the server confirms availability.
+
+  // null means availability has not been confirmed for the selected time.
   const [gameEnabled, setGameEnabled] = useState<boolean | null>(null);
   const [isClient, setIsClient] = useState(false);
 
@@ -445,7 +450,7 @@ export default function BookingForm({ roomType, prices }: BookingFormProps) {
       const params = new URLSearchParams({ startTime: createISOString(selectedDate, selectedStartTime), endTime: createISOString(selectedDate, endTime) });
       fetch(`${createApiEndpoint("/bookings/game-config")}?${params}`, { cache: "no-store" })
         .then(async (res) => { if (!res.ok) throw new Error("Config unavailable"); return res.json(); })
-        .then((data) => { if (active) setGameEnabled(typeof data.enabled === "boolean" ? data.enabled : null); })
+        .then((data) => { if (active) setGameEnabled(typeof data.enabled === "boolean" && typeof data.onlineEnabled === "boolean" ? data.enabled && data.onlineEnabled : null); })
         .catch(() => { if (active) setGameEnabled(null); });
     };
     refresh();
@@ -546,7 +551,6 @@ export default function BookingForm({ roomType, prices }: BookingFormProps) {
         const startTimeISO = createISOString(selectedDate, selectedStartTime);
         const endTimeISO = createISOString(selectedDate, endTime);
 
-        // Tạm ẩn photoConsent/photos vì BE chưa hỗ trợ multipart.
         const bookingData: BookingRequest = {
           customerName: data.customerName,
           customerPhone: data.customerPhone,
@@ -560,9 +564,7 @@ export default function BookingForm({ roomType, prices }: BookingFormProps) {
         const apiUrl = createApiEndpoint("/bookings/online");
         const response = await fetch(apiUrl, {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify(bookingData),
         });
 
@@ -571,6 +573,8 @@ export default function BookingForm({ roomType, prices }: BookingFormProps) {
         if (result.success) {
           // Hiển thị modal xác nhận
           const bookingId = result.booking?._id || "";
+          // A storage failure must not turn a successful booking into a failure.
+          try { rememberBookingProof(window.sessionStorage, bookingId, result.bookingOwnerProof); } catch { /* storage unavailable */ }
           const bookingCodeFromApi =
             result.booking?.bookingCode || bookingId.slice(0, 6).toUpperCase();
           setBookingId(bookingId);
@@ -761,7 +765,6 @@ export default function BookingForm({ roomType, prices }: BookingFormProps) {
                     <option
                       key={opt.value}
                       value={opt.value}
-                      disabled={opt.value === "nintendo-switch" && gameEnabled !== true}
                       className="bg-white text-gray-900"
                     >
                       {opt.label}
@@ -779,7 +782,7 @@ export default function BookingForm({ roomType, prices }: BookingFormProps) {
               </div>
             )}
 
-            {gameEnabled !== true && <p role="status" className="text-sm text-amber-700">{gameEnabled === false ? "Jozo đã hết máy Nintendo trong khung giờ này. Khách iu vui lòng chọn giờ khác." : "Chưa kiểm tra được tình trạng đặt Nintendo. Khách iu vui lòng thử lại sau."}</p>}
+            {(isDorm || (activityType !== "" && activityType !== "music-box")) && selectedDate && selectedStartTime && gameEnabled !== true && <p role="status" className="text-sm text-amber-700">{gameEnabled === false ? "Nintendo chưa khả dụng trong khung giờ này hoặc đang tạm ngưng đặt online. Khách iu vui lòng chọn giờ khác hoặc liên hệ Jozo nhé." : "Chưa kiểm tra được tình trạng đặt Nintendo. Khách iu vui lòng thử lại sau."}</p>}
             <Input
               label="Ghi chú"
               {...register("note")}
@@ -1022,6 +1025,7 @@ export default function BookingForm({ roomType, prices }: BookingFormProps) {
             </div>
           )}
 
+
         {isTetDay1Off(selectedDate) ? (
           <div className="mt-6 w-full rounded-xl border border-primary/30 bg-accent/45 py-3 text-center text-sm font-medium text-foreground">
             Jozo nghỉ ngày mùng 1, hẹn khách iu vào ngày mùng 2.
@@ -1031,7 +1035,7 @@ export default function BookingForm({ roomType, prices }: BookingFormProps) {
             type="submit"
             disabled={
               isSubmitting ||
-              ((isDorm || activityType === "nintendo-switch") && gameEnabled !== true) ||
+              ((isDorm || (activityType !== "" && activityType !== "music-box")) && gameEnabled !== true) ||
               !isClient ||
               !selectedDate ||
               !selectedStartTime ||

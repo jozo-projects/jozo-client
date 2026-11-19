@@ -1,7 +1,8 @@
 "use client";
 
-import { Check, ChevronRight, X } from "lucide-react";
+import { Flame, X } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
+import { createPortal } from "react-dom";
 
 export type StreakGiftItem = {
   itemId?: string;
@@ -44,12 +45,9 @@ export function StreakRewards({ currentCount, rewards }: Props) {
   const claimedItems = selected?.claimedItems ?? [];
   const itemCount = selected?.itemCount ?? 0;
   const maxMilestone = milestones[milestones.length - 1]?.count ?? 0;
-  const progressMax = Math.max(maxMilestone, currentCount, 1);
-  const visitPercent = Math.min(
-    100,
-    Math.round((currentCount / progressMax) * 100),
-  );
   const nextMilestone = milestones.find((reward) => reward.count > currentCount);
+  const gridEnd = Math.max(maxMilestone, currentCount);
+  const visibleVisits = Array.from({ length: gridEnd }, (_, index) => index + 1);
 
   useEffect(() => {
     if (!selected) return;
@@ -67,108 +65,56 @@ export function StreakRewards({ currentCount, rewards }: Props) {
 
   return (
     <div className="space-y-4">
-      <div>
-        <div className="flex items-end justify-between gap-3">
-          <div>
-            <p className="text-sm font-semibold text-foreground">Lượt sử dụng</p>
-            <p className="mt-0.5 text-sm text-foreground/70">
-              Streak tích lũy theo mỗi lần sử dụng dịch vụ
+      <div className="rounded-2xl border border-white/15 bg-gradient-to-br from-rose-500/25 via-fuchsia-500/10 to-slate-950/40 p-4 text-white">
+        <div className="flex items-start justify-between gap-3">
+          <div className="min-w-0">
+            <p className="text-4xl font-extrabold leading-none">{currentCount.toLocaleString("vi-VN")}</p>
+            <p className="mt-2 text-sm font-semibold">lượt streak</p>
+            <p className="mt-1 text-sm text-white/70">
+              {nextMilestone
+                ? `Còn ${nextMilestone.count - currentCount} lượt để đến mốc ${nextMilestone.count}`
+                : milestones.length > 0
+                  ? "Khách iu đã đạt tất cả mốc quà"
+                  : "Tích lũy qua mỗi lần sử dụng dịch vụ"}
             </p>
           </div>
-          <p className="text-right text-2xl font-extrabold leading-none text-foreground">
-            {currentCount}
-            {maxMilestone > 0 && (
-              <span className="text-sm font-semibold text-foreground/55">
-                /{maxMilestone}
-              </span>
-            )}
-          </p>
+          <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-rose-400 text-rose-950" aria-hidden="true">
+            <Flame className="h-8 w-8" fill="currentColor" />
+          </span>
         </div>
-        <div
-          className="mt-3 h-2.5 w-full overflow-hidden rounded-full bg-white/10"
-          role="progressbar"
-          aria-valuenow={currentCount}
-          aria-valuemin={0}
-          aria-valuemax={progressMax}
-          aria-label="Số lượt sử dụng"
-        >
-          <div
-            className="h-full rounded-full bg-emerald-400"
-            style={{ width: `${visitPercent}%` }}
-          />
+        <div className="mt-5 grid grid-cols-10 gap-y-1" aria-label={`Tiến trình ${currentCount} lượt trên ${gridEnd} lượt`}>
+          {visibleVisits.map((visit) => {
+            const milestone = milestones.find((reward) => reward.count === visit);
+            const reached = visit <= currentCount;
+            const circle = `flex h-6 w-6 items-center justify-center rounded-full border ${
+              milestone
+                ? reached
+                  ? "border-amber-200 bg-amber-300 text-amber-950 ring-2 ring-amber-300/40"
+                  : "border-amber-300 bg-amber-400/20 text-amber-200 ring-2 ring-amber-300/30"
+                : reached
+                  ? "border-rose-400 bg-rose-400 text-white"
+                  : "border-white/40 text-white/60"
+            }`;
+            return milestone ? (
+              <button
+                key={visit}
+                type="button"
+                onClick={() => setSelected(milestone)}
+                aria-label={`Xem phần thưởng mốc ${visit} lượt, ${reached ? "đã đạt" : "chưa đạt"}`}
+                className="flex min-h-11 items-center justify-center rounded-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-amber-300"
+              >
+                <span className={circle}><GiftIcon className="h-4 w-4" /></span>
+              </button>
+            ) : (
+              <span key={visit} className="flex min-h-11 items-center justify-center" aria-hidden="true">
+                <span className={circle}>{reached && <Flame className="h-3 w-3" fill="currentColor" />}</span>
+              </span>
+            );
+          })}
         </div>
       </div>
 
-      {milestones.length > 0 && (
-        <ul className="space-y-2">
-          {milestones.map((reward) => {
-            const reached = currentCount >= reward.count;
-            const isNext = nextMilestone?.count === reward.count;
-            const received = reward.claimedItems ?? [];
-            const detail =
-              received.length > 0
-                ? `Đã nhận: ${received.map((item) => item.name).join(", ")}`
-                : reward.itemCount
-                  ? `tặng ${reward.itemCount} món bất kỳ, trừ trái cây`
-                  : "";
-
-            return (
-              <li key={reward.count}>
-                <button
-                  type="button"
-                  onClick={() => setSelected(reward)}
-                  className={`flex min-h-16 w-full items-center gap-3 rounded-2xl border px-3 py-3 text-left ${
-                    reached
-                      ? "border-emerald-300/40 bg-emerald-500/15"
-                      : isNext
-                        ? "border-amber-300/50 bg-amber-400/10"
-                        : "glass-control"
-                  }`}
-                >
-                  <span
-                    className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full ${
-                      reached
-                        ? "bg-emerald-400/25 text-emerald-100"
-                        : "bg-white/10 text-foreground/80"
-                    }`}
-                  >
-                    {reached ? (
-                      <Check className="h-5 w-5" />
-                    ) : (
-                      <GiftIcon className="h-5 w-5" />
-                    )}
-                  </span>
-                  <span className="min-w-0 flex-1">
-                    <span className="flex items-center gap-2">
-                      <span className="text-sm font-semibold text-foreground">
-                        Mốc {reward.count} lượt
-                      </span>
-                      {isNext && (
-                        <span className="rounded-full bg-amber-300/20 px-2 py-0.5 text-[11px] font-semibold text-amber-100">
-                          Tiếp theo
-                        </span>
-                      )}
-                    </span>
-                    <span className="mt-0.5 block truncate text-sm text-foreground/70">
-                      +{reward.bonusPoints.toLocaleString("vi-VN")} điểm
-                      {detail ? ` · ${detail}` : ""}
-                    </span>
-                  </span>
-                  <ChevronRight className="h-5 w-5 shrink-0 text-foreground/45" />
-                </button>
-              </li>
-            );
-          })}
-        </ul>
-      )}
-
-      {milestones.some((reward) => (reward.itemCount ?? 0) > 0 || (reward.claimedItems?.length ?? 0) > 0) && (
-        <p className="text-sm leading-relaxed text-foreground/70">
-          Khi nhận quà streak, hóa đơn đó không áp dụng giảm giá theo % hạng thành viên.
-        </p>
-      )}
-
-      {selected && (
+      {selected && createPortal(
         <div className="fixed inset-0 z-50 flex items-end sm:items-center sm:justify-center sm:p-4">
           <button
             type="button"
@@ -256,7 +202,8 @@ export function StreakRewards({ currentCount, rewards }: Props) {
             </div>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body,
       )}
     </div>
   );

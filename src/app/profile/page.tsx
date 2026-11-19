@@ -2,15 +2,13 @@ import { getDisplayName, pickAvatarUrl } from "@/lib/auth-helpers";
 import { getCurrentUser } from "@/lib/auth-server";
 import { cookies } from "next/headers";
 import Image from "next/image";
+import Link from "next/link";
 import {
   StreakRewards,
   type StreakGiftItem,
 } from "../../components/streak-rewards";
 import { ProfileAccountMenu } from "@/components/profile-account-menu";
-import {
-  MembershipTierProgress,
-  type TierBenefit,
-} from "@/components/membership-tier-progress";
+import { MembershipTierProgress } from "@/components/membership-tier-progress";
 import { computeMembershipProgress } from "@/lib/membership-utils";
 
 type MembershipResult = {
@@ -60,36 +58,6 @@ const readNumber = (value: unknown) => {
   if (value === null || value === undefined || value === "") return undefined;
   const num = Number(value);
   return Number.isFinite(num) ? num : undefined;
-};
-
-const readTierBenefits = (raw: unknown): Record<string, TierBenefit[]> | undefined => {
-  const record = asRecord(raw);
-  if (!record) return undefined;
-
-  const benefitsByTier: Record<string, TierBenefit[]> = {};
-  for (const [tier, value] of Object.entries(record)) {
-    const rows = Array.isArray(value) ? value : [value];
-    const benefits = rows.flatMap((item) => {
-      const row = asRecord(item);
-      if (!row) return [];
-      const benefit: TierBenefit = {
-        discountPercentage: readNumber(row.discountPercentage),
-        discountAmount: readNumber(row.discountAmount),
-        note: typeof row.note === "string" && row.note.trim() ? row.note.trim() : undefined,
-      };
-      if (
-        benefit.discountPercentage === undefined &&
-        benefit.discountAmount === undefined &&
-        !benefit.note
-      ) {
-        return [];
-      }
-      return [benefit];
-    });
-    if (benefits.length > 0) benefitsByTier[tier] = benefits;
-  }
-
-  return Object.keys(benefitsByTier).length > 0 ? benefitsByTier : undefined;
 };
 
 const parseMembershipResult = (payload: unknown): MembershipResult | null => {
@@ -147,6 +115,7 @@ export default async function ProfilePage() {
         },
         cache: "no-store",
       });
+      if (!res.ok) throw new Error(`Membership request failed: ${res.status}`);
       const payload = await res.json();
       membershipResult = parseMembershipResult(payload);
     } catch (error) {
@@ -167,9 +136,6 @@ export default async function ProfilePage() {
         })
         .sort((a, b) => a[1] - b[1])
     : undefined;
-  const tierBenefits =
-    readTierBenefits(configRecord?.tierBenefits) ??
-    readTierBenefits(resultRecord?.tierBenefits);
   const claimedByCount = new Map<number, StreakGiftItem[]>();
   for (const reward of membershipResult?.claimedRewards || []) {
     const count = Number(reward.streakCount);
@@ -195,43 +161,45 @@ export default async function ProfilePage() {
   } = computeMembershipProgress(membershipResult, tierThresholds || undefined);
 
   const isAuthed = Boolean(member);
-  const streakCount = Math.max(0, membershipResult?.streak?.count ?? 0);
+  const rawStreakCount = readNumber(membershipResult?.streak?.count);
+  const streakCount = rawStreakCount !== undefined && Number.isInteger(rawStreakCount) && rawStreakCount >= 0
+    ? rawStreakCount
+    : null;
 
   return (
     <div className="mx-auto w-full max-w-lg space-y-4 pb-8">
-      <header className="glass-surface flex items-center gap-3 rounded-2xl p-4">
-        <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-full bg-primary/20 text-primary">
-          {avatarUrl ? (
-            <Image
-              src={avatarUrl}
-              alt=""
-              fill
-              sizes="56px"
-              className="object-cover"
-            />
-          ) : (
-            <span className="flex h-full w-full items-center justify-center text-lg font-bold">
-              {initials || "TV"}
+      <header className="glass-surface space-y-4 rounded-2xl p-4">
+        <div className="flex items-center gap-3">
+          <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-full bg-primary/20 text-primary">
+            {avatarUrl ? (
+              <Image
+                src={avatarUrl}
+                alt=""
+                fill
+                sizes="56px"
+                className="object-cover"
+              />
+            ) : (
+              <span className="flex h-full w-full items-center justify-center text-lg font-bold">
+                {initials || "TV"}
+              </span>
+            )}
+          </div>
+          <div className="min-w-0 flex-1">
+            <p className="truncate text-lg font-bold text-foreground">
+              {displayName}
+            </p>
+            <p className="truncate text-sm text-foreground/70">
+              {isAuthed ? phone : "Chưa đăng nhập"}
+            </p>
+          </div>
+          {currentTier && (
+            <span className="shrink-0 rounded-full bg-primary px-3 py-1.5 text-xs font-bold capitalize text-primary-foreground">
+              {currentTier}
             </span>
           )}
         </div>
-        <div className="min-w-0 flex-1">
-          <p className="truncate text-lg font-bold text-foreground">
-            {displayName}
-          </p>
-          <p className="truncate text-sm text-foreground/70">
-            {isAuthed ? phone : "Chưa đăng nhập"}
-          </p>
-        </div>
-        {currentTier && (
-          <span className="shrink-0 rounded-full bg-primary px-3 py-1.5 text-xs font-bold capitalize text-primary-foreground">
-            {currentTier}
-          </span>
-        )}
-      </header>
-
-      {membershipResult && (
-        <section className="space-y-4">
+        {membershipResult && (
           <div className="space-y-3 text-white">
             <div>
               <p className="text-sm font-medium text-white/80">Điểm hiện có</p>
@@ -239,11 +207,13 @@ export default async function ProfilePage() {
                 <p className="text-4xl font-extrabold leading-none">
                   {currentPoints.toLocaleString("vi-VN")}
                 </p>
-                {nextTierName && (
-                  <span className="rounded-full border border-white/25 bg-white/15 px-2.5 py-1 text-xs font-semibold">
-                    → {nextTierName}
-                  </span>
-                )}
+                <Link
+                  href="/membership"
+                  aria-label="Xem chính sách thành viên"
+                  className="rounded-full border border-white/25 bg-white/15 px-2.5 py-1 text-xs font-semibold"
+                >
+                  → {nextTierName || "Chính sách thành viên"}
+                </Link>
               </div>
               {nextTierName && remainingToNextTier !== null ? (
                 <p className="mt-2 text-sm text-white/90">
@@ -260,21 +230,19 @@ export default async function ProfilePage() {
               )}
             </div>
 
-            <MembershipTierProgress
-              tierThresholds={tierThresholds ?? []}
-              maxThreshold={maxThreshold}
-              absolutePercent={absolutePercent}
-              currentTier={currentTier}
-              currentPoints={currentPoints}
-              tierBenefits={tierBenefits}
-            />
+            <MembershipTierProgress absolutePercent={absolutePercent} />
           </div>
+        )}
+      </header>
 
-          <div className="glass-surface rounded-2xl p-4 sm:p-5">
-            <StreakRewards
-              currentCount={streakCount}
-              rewards={streakRewards}
-            />
+      {membershipResult && (
+        <section className="space-y-4">
+          <div className="rounded-2xl">
+            {streakCount !== null ? (
+              <StreakRewards currentCount={streakCount} rewards={streakRewards} />
+            ) : (
+              <p className="text-sm text-foreground/70">Chưa có dữ liệu streak.</p>
+            )}
           </div>
         </section>
       )}
